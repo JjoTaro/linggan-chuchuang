@@ -1,0 +1,12 @@
+name = "linggan-chuchuang-proxy"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# DeepSeek（OpenAI 兼容）。换其他服务商改 UPSTREAM_URL 即可；
+# 仅 Anthropic 需把 AUTH_STYLE 改成 "x-api-key"。
+[vars]
+UPSTREAM_URL = "https://api.deepseek.com/chat/completions"
+AUTH_STYLE = "bearer"
+
+# 注意：DeepSeek 的密钥是 Secret，不写在这里。
+# 部署后由你本人在终端执行：  wrangler secret put API_KEY

@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>灵感橱窗</title>
+<meta name="theme-color" content="#0b0907">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="灵感橱窗">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+*{ -webkit-tap-highlight-color:transparent; }
+html,body{ margin:0; padding:0; height:100%; background:#0b0907; }
+body{ overscroll-behavior:none; }
+
+.iw-root{
+  position:relative; min-height:100vh; min-height:100dvh; width:100%; overflow:hidden;
+  background: radial-gradient(120% 80% at 50% 8%, #1a1611 0%, #110e0b 45%, #0b0907 100%);
+  color:#ece1cf; display:flex; flex-direction:column;
+  font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.iw-glow{
+  position:absolute; left:50%; top:46%; transform:translate(-50%,-50%);
+  width:760px; height:560px; max-width:130vw; pointer-events:none;
+  background: radial-gradient(closest-side, rgba(224,176,112,0.085), rgba(224,176,112,0) 72%);
+}
+.ic{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.ic-fill{ fill:currentColor; stroke:none; }
+
+.iw-eyebrow{
+  position:relative; z-index:2; display:flex; align-items:center; gap:9px;
+  padding:calc(22px + env(safe-area-inset-top)) 26px 0; font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:12px; letter-spacing:.08em; color:#7d6f5d;
+}
+.iw-clock{ color:#cdb594; letter-spacing:.1em; }
+.iw-dot{ color:#5a4f41; }
+.iw-spacer{ flex:1; }
+.iw-mode{ color:#8a7a60; }
+
+.iw-stage{
+  position:relative; z-index:2; flex:1;
+  display:flex; align-items:center; justify-content:center; padding:24px 30px;
+}
+.iw-card{ max-width:600px; text-align:center; opacity:1; transform:translateY(0); transition:opacity .5s ease, transform .5s ease; }
+.iw-card.out{ opacity:0; transform:translateY(6px); }
+
+.iw-tag{
+  display:inline-block; font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:11.5px; letter-spacing:.16em; color:#d99a52;
+  padding:4px 12px; border:1px solid rgba(217,154,82,0.28); border-radius:999px; margin-bottom:26px;
+}
+.iw-title{
+  font-family:"Songti SC","STSong",Georgia,"Times New Roman",serif;
+  font-weight:600; font-size:40px; line-height:1.28; letter-spacing:.01em; margin:0; color:#f1e7d3;
+}
+.iw-rule{ width:38px; height:1px; margin:24px auto; background:linear-gradient(90deg, transparent, rgba(217,154,82,0.55), transparent); }
+.iw-body{ font-size:18px; line-height:1.85; color:#b8aa92; margin:0 auto; max-width:520px; font-weight:350; }
+.iw-dig{ margin:30px 0 0; font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12.5px; letter-spacing:.06em; color:#6f6250; }
+.iw-dig span{ color:#cf9a57; }
+
+.iw-controls{ position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:6px; padding:0 20px 26px; }
+.iw-btn{
+  position:relative; display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px; border:none; background:transparent; cursor:pointer;
+  color:#6c5f4e; border-radius:12px; transition:color .2s ease, background .2s ease;
+}
+.iw-btn:hover{ color:#d6b88c; background:rgba(217,154,82,0.07); }
+.iw-btn.active{ color:#e0a35c; }
+.iw-divider{ width:1px; height:22px; background:rgba(217,154,82,0.16); margin:0 10px; }
+.iw-count{
+  position:absolute; top:5px; right:4px; min-width:15px; height:15px; padding:0 3px;
+  background:#d99a52; color:#1a1308; border-radius:8px; font-size:9.5px; font-weight:700; line-height:15px;
+  font-family:ui-monospace,Menlo,monospace;
+}
+
+.iw-progress{ position:relative; z-index:2; height:2px; background:rgba(217,154,82,0.07); padding-bottom:env(safe-area-inset-bottom); }
+.iw-progress-fill{ height:2px; width:0%; background:linear-gradient(90deg, rgba(217,154,82,0.4), rgba(224,163,92,0.8)); transition:width .5s linear; }
+
+.iw-toast{
+  position:fixed; left:50%; bottom:96px; transform:translateX(-50%); z-index:60; max-width:84vw; text-align:center;
+  background:rgba(28,23,17,0.96); color:#e9ddc8; border:1px solid rgba(217,154,82,0.22);
+  padding:10px 18px; border-radius:999px; font-size:13.5px; letter-spacing:.02em;
+  box-shadow:0 8px 30px rgba(0,0,0,0.45); opacity:0; pointer-events:none; transition:opacity .25s ease;
+}
+.iw-toast.show{ opacity:1; }
+
+.iw-a2hs{
+  position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom)); transform:translateX(-50%); z-index:55;
+  display:none; align-items:center; gap:10px; max-width:90vw;
+  background:rgba(24,20,15,0.96); border:1px solid rgba(217,154,82,0.2); border-radius:14px;
+  padding:11px 12px 11px 16px; font-size:12.5px; color:#bcae96; line-height:1.5;
+  box-shadow:0 10px 36px rgba(0,0,0,0.5);
+}
+.iw-a2hs.show{ display:flex; }
+.iw-a2hs b{ color:#e6cda0; font-weight:600; }
+.iw-a2hs .x{ display:flex; width:26px; height:26px; align-items:center; justify-content:center; border:none; background:transparent; color:#7d6f5d; cursor:pointer; border-radius:7px; flex-shrink:0; }
+
+/* panels */
+.iw-overlay{ position:fixed; inset:0; z-index:40; background:rgba(8,6,4,0.6); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; padding:20px; }
+.iw-overlay.show{ display:flex; }
+.iw-panel{
+  width:100%; max-width:440px; max-height:82vh; overflow-y:auto;
+  background:#161210; border:1px solid rgba(217,154,82,0.18); border-radius:18px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.6); padding:22px 22px 26px;
+}
+.iw-panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; font-family:"Songti SC",Georgia,serif; font-size:19px; color:#eaddc7; }
+.iw-num{ font-style:normal; font-family:ui-monospace,Menlo,monospace; font-size:13px; color:#d99a52; margin-left:8px; }
+.iw-x{ display:flex; width:32px; height:32px; align-items:center; justify-content:center; border:none; background:transparent; color:#7d6f5d; cursor:pointer; border-radius:9px; }
+.iw-x:hover{ color:#d6b88c; background:rgba(217,154,82,0.08); }
+
+.iw-field{ margin-bottom:22px; }
+.iw-label{ display:block; font-size:13px; color:#8a7c68; margin-bottom:11px; letter-spacing:.02em; }
+.iw-hint{ font-size:12px; color:#6b5e4c; line-height:1.6; margin:11px 0 0; }
+.iw-warn{ font-size:11.5px; color:#b9794f; line-height:1.6; margin:9px 0 0; }
+
+.iw-seg{ display:flex; gap:8px; }
+.iw-seg-btn{ flex:1; display:flex; align-items:center; justify-content:center; padding:11px 8px; border:1px solid rgba(217,154,82,0.2); background:transparent; color:#9a8c76; border-radius:11px; cursor:pointer; font-size:13px; transition:all .2s ease; }
+.iw-seg-btn:hover{ border-color:rgba(217,154,82,0.4); color:#cbb89c; }
+.iw-seg-btn.active{ background:rgba(217,154,82,0.14); border-color:rgba(217,154,82,0.55); color:#f0d8b0; }
+
+.iw-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+.iw-chip{ padding:8px 15px; border:1px solid rgba(217,154,82,0.2); background:transparent; color:#9a8c76; border-radius:999px; cursor:pointer; font-size:13px; font-family:ui-monospace,Menlo,monospace; transition:all .2s ease; }
+.iw-chip:hover{ border-color:rgba(217,154,82,0.4); color:#cbb89c; }
+.iw-chip.active{ background:rgba(217,154,82,0.14); border-color:rgba(217,154,82,0.55); color:#f0d8b0; }
+
+.iw-textarea, .iw-input{ width:100%; box-sizing:border-box; background:#100d0a; border:1px solid rgba(217,154,82,0.18); border-radius:11px; color:#d8cab2; padding:12px 13px; font-size:14px; line-height:1.6; outline:none; }
+.iw-textarea{ resize:none; font-family:-apple-system,"PingFang SC",sans-serif; }
+.iw-input{ font-family:ui-monospace,Menlo,monospace; font-size:13px; }
+.iw-textarea:focus, .iw-input:focus{ border-color:rgba(217,154,82,0.45); }
+.iw-textarea::placeholder, .iw-input::placeholder{ color:#5d5141; }
+.iw-sub{ margin-top:12px; }
+
+.iw-regen{ margin-top:12px; display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border:1px solid rgba(217,154,82,0.3); background:rgba(217,154,82,0.1); color:#ecc88f; border-radius:11px; cursor:pointer; font-size:13.5px; transition:all .2s ease; }
+.iw-regen:hover:not(:disabled){ background:rgba(217,154,82,0.18); }
+.iw-regen:disabled{ opacity:.55; cursor:default; }
+
+.iw-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.iw-switch{ width:42px; height:24px; border-radius:999px; border:1px solid rgba(217,154,82,0.3); background:#100d0a; position:relative; cursor:pointer; transition:all .2s; flex-shrink:0; }
+.iw-switch::after{ content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#7d6f5d; transition:all .2s; }
+.iw-switch.on{ background:rgba(217,154,82,0.25); border-color:rgba(217,154,82,0.6); }
+.iw-switch.on::after{ left:21px; background:#e0a35c; }
+
+.iw-head-actions{ display:flex; align-items:center; gap:6px; }
+.iw-copy{ display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid rgba(217,154,82,0.22); background:transparent; color:#b6a587; border-radius:9px; cursor:pointer; font-size:12.5px; transition:all .2s ease; }
+.iw-copy:hover:not(:disabled){ color:#e6cda0; border-color:rgba(217,154,82,0.45); }
+.iw-copy:disabled{ opacity:.4; cursor:default; }
+
+.iw-empty{ text-align:center; padding:40px 10px; color:#9a8c76; }
+.iw-empty p{ margin:0 0 8px; font-size:15px; }
+.iw-empty-sub{ font-size:13px; color:#6b5e4c; line-height:1.6; }
+
+.iw-lib-list{ display:flex; flex-direction:column; gap:10px; }
+.iw-lib-item{ display:flex; gap:10px; align-items:flex-start; padding:14px; background:#120f0c; border:1px solid rgba(217,154,82,0.12); border-radius:13px; }
+.iw-lib-body{ flex:1; min-width:0; }
+.iw-lib-tag{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; letter-spacing:.1em; color:#cf9a57; margin-bottom:6px; }
+.iw-lib-title{ font-family:"Songti SC",Georgia,serif; font-size:17px; color:#ecddc6; margin-bottom:6px; line-height:1.4; }
+.iw-lib-text{ font-size:13.5px; color:#a99b84; line-height:1.6; }
+.iw-lib-dig{ font-family:ui-monospace,Menlo,monospace; font-size:11px; color:#6b5e4c; margin-top:8px; }
+.iw-trash{ flex-shrink:0; display:flex; width:32px; height:32px; align-items:center; justify-content:center; border:none; background:transparent; color:#6b5e4c; cursor:pointer; border-radius:9px; transition:all .2s ease; }
+.iw-trash:hover{ color:#cf8a6a; background:rgba(207,138,106,0.1); }
+
+@media (max-width:520px){ .iw-title{ font-size:30px; } .iw-body{ font-size:16.5px; } .iw-stage{ padding:20px 22px; } }
+@media (prefers-reduced-motion: reduce){ .iw-card{ transition:none; } .iw-progress-fill{ transition:none; } }
+.iw-panel::-webkit-scrollbar{ width:8px; }
+.iw-panel::-webkit-scrollbar-thumb{ background:rgba(217,154,82,0.18); border-radius:4px; }
+.iw-panel::-webkit-scrollbar-track{ background:transparent; }
+</style>
+</head>
+<body>
+<div class="iw-root">
+  <div class="iw-glow"></div>
+
+  <div class="iw-eyebrow">
+    <span class="iw-clock" id="clock">--:--</span>
+    <span class="iw-dot">·</span>
+    <span id="date"></span>
+    <span class="iw-spacer"></span>
+    <span class="iw-mode" id="modeLabel">精选库</span>
+  </div>
+
+  <div class="iw-stage">
+    <article class="iw-card" id="card">
+      <div class="iw-tag" id="tag"></div>
+      <h1 class="iw-title" id="title"></h1>
+      <div class="iw-rule"></div>
+      <p class="iw-body" id="body"></p>
+      <p class="iw-dig" id="dig"></p>
+    </article>
+  </div>
+
+  <div class="iw-controls">
+    <button class="iw-btn" id="btnPrev" aria-label="上一张"><svg class="ic" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="iw-btn" id="btnPlay" aria-label="暂停"></button>
+    <button class="iw-btn" id="btnNext" aria-label="下一张"><svg class="ic" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <span class="iw-divider"></span>
+    <button class="iw-btn" id="btnStar" aria-label="收藏">
+      <svg class="ic" id="starIcon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+    </button>
+    <button class="iw-btn" id="btnLib" aria-label="灵感库">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span class="iw-count" id="libCount" style="display:none">0</span>
+    </button>
+    <button class="iw-btn" id="btnSet" aria-label="设置">
+      <svg class="ic" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1.5" y1="14" x2="6.5" y2="14"/><line x1="9.5" y1="8" x2="14.5" y2="8"/><line x1="17.5" y1="16" x2="22.5" y2="16"/></svg>
+    </button>
+    <button class="iw-btn" id="btnFs" aria-label="全屏" style="display:none">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+    </button>
+  </div>
+
+  <div class="iw-progress"><div class="iw-progress-fill" id="progFill"></div></div>
+
+  <div class="iw-toast" id="toast"></div>
+
+  <div class="iw-a2hs" id="a2hs">
+    <span>想常驻？用 <b>Safari</b> 打开 → 分享 → <b>添加到主屏幕</b>，即可全屏运行。</span>
+    <button class="x" id="a2hsClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+
+  <!-- settings -->
+  <div class="iw-overlay" id="setOverlay">
+    <div class="iw-panel">
+      <header class="iw-panel-head"><span>设置</span><button class="iw-x" id="setClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></header>
+
+      <div class="iw-field">
+        <label class="iw-label">内容来源</label>
+        <div class="iw-seg">
+          <button class="iw-seg-btn" id="segCurated">精选库</button>
+          <button class="iw-seg-btn" id="segAi"><svg class="ic ic-fill" viewBox="0 0 24 24" style="width:14px;height:14px;margin-right:6px"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>AI 现编（无限）</button>
+        </div>
+        <p class="iw-hint">精选库离线可用；AI 现编会在精选基础上不断补充新内容，按下面的兴趣方向生成。需先配置 AI 接入。</p>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">翻页间隔</label>
+        <div class="iw-chips" id="chips"></div>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">兴趣方向（AI 现编时偏向，可留空）</label>
+        <textarea class="iw-textarea" id="interests" rows="2" placeholder="例如：天体物理, 行为经济学, 量化交易, 历史趣闻…"></textarea>
+        <button class="iw-regen" id="btnRegen" style="display:none"><svg class="ic ic-fill" viewBox="0 0 24 24" style="width:15px;height:15px;margin-right:7px"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg><span id="regenLabel">换一批 AI 灵感</span></button>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">AI 服务商（AI 现编时使用）</label>
+        <select class="iw-input" id="provider">
+          <option value="deepseek">DeepSeek（国产·便宜）</option>
+          <option value="zhipu">智谱 GLM-4-Flash（国产·免费）</option>
+          <option value="qwen">通义千问 Qwen（国产·有免费额度）</option>
+          <option value="moonshot">Moonshot Kimi（国产）</option>
+          <option value="gemini">Google Gemini Flash（免费额度·需梯子）</option>
+          <option value="openrouter">OpenRouter（含免费模型·需梯子）</option>
+          <option value="anthropic">Anthropic Claude（最贵）</option>
+          <option value="custom">自定义（任意 OpenAI 兼容接口）</option>
+        </select>
+        <input class="iw-input" id="model" placeholder="模型名" style="margin-top:10px">
+        <div id="endpointWrap" class="iw-sub" style="display:none">
+          <input class="iw-input" id="endpoint" placeholder="https://api.example.com/v1/chat/completions">
+        </div>
+        <label class="iw-label" style="margin-top:16px">调用方式</label>
+        <div class="iw-seg">
+          <button class="iw-seg-btn" id="trDirect">浏览器直连</button>
+          <button class="iw-seg-btn" id="trProxy">通过代理</button>
+        </div>
+        <div id="directKeyWrap" class="iw-sub" style="display:none">
+          <input class="iw-input" id="apiKey" type="password" placeholder="API Key">
+          <p class="iw-warn">Key 只存在这台设备的浏览器里，不会写进公开网页源码，别人打开你的网址看不到。风险仅有：Key 会在请求里发给服务商，也能被能操作这台设备的人翻到——只在自己的私人设备上填。想彻底不暴露就用「通过代理」。</p>
+        </div>
+        <div id="proxyWrap" class="iw-sub" style="display:none">
+          <input class="iw-input" id="proxyUrl" placeholder="https://your-worker.workers.dev">
+          <p class="iw-hint">Key 放在代理服务器端，浏览器看不到；国产接口（多数不允许浏览器跨域）也只能走这条。见 README 里的 Worker 脚本。</p>
+        </div>
+        <p class="iw-hint" id="providerNote" style="margin-top:11px"></p>
+        <p class="iw-hint" id="aiStatus"></p>
+      </div>
+
+      <div class="iw-field" style="margin-bottom:4px">
+        <div class="iw-row">
+          <div>
+            <label class="iw-label" style="margin-bottom:4px">保持屏幕常亮</label>
+            <span class="iw-hint" style="margin:0">页面在前台时尝试阻止息屏（部分浏览器支持）</span>
+          </div>
+          <div class="iw-switch" id="wakeSwitch"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- library -->
+  <div class="iw-overlay" id="libOverlay">
+    <div class="iw-panel">
+      <header class="iw-panel-head">
+        <span>灵感库 <em class="iw-num" id="libNum">0</em></span>
+        <div class="iw-head-actions">
+          <button class="iw-copy" id="btnCopy"><span id="copyIcon"><svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span><span id="copyLabel">复制为 Markdown</span></button>
+          <button class="iw-x" id="libClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+      </header>
+      <div id="libEmpty" class="iw-empty"><p>灵感库还是空的。</p><p class="iw-empty-sub">看到喜欢的卡片，点底部的 ★ 存下来，回头一起挑方向深挖。</p></div>
+      <div class="iw-lib-list" id="libList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const CURATED = [
+  { domain:"宇宙·物理", title:"万物由原子构成", body:"费曼说：若只能给末日后的文明留一句话，他会说\u201c一切由原子构成\u201d。", dig:"原子论" },
+  { domain:"宇宙·物理", title:"一茶匙，十亿吨", body:"中子星的物质密度极高，一茶匙就重达约十亿吨。", dig:"中子星密度" },
+  { domain:"宇宙·物理", title:"你看到的是8分钟前的太阳", body:"光也需要时间——阳光抵达地球，要走约8分20秒。", dig:"光行时" },
+  { domain:"宇宙·物理", title:"我们都是星尘", body:"你身体里的碳、铁、钙，来自远古恒星死亡时的核反应。", dig:"恒星核合成" },
+  { domain:"宇宙·物理", title:"引力强处，时间更慢", body:"GPS卫星必须为相对论效应校正时钟，否则每天偏差数公里。", dig:"时间膨胀" },
+  { domain:"宇宙·物理", title:"真空并不空", body:"量子涨落让粒子在虚无中不断生灭，甚至能产生可测的力。", dig:"卡西米尔效应" },
+  { domain:"宇宙·物理", title:"玻璃既非固体也非液体", body:"它是\u201c非晶态固体\u201d：原子像液体般无序排列，却不会真的流动。", dig:"非晶态" },
+
+  { domain:"数学·几何", title:"0.999… 严格等于 1", body:"这不是近似，而是相等——无穷小数的一个反直觉真相。", dig:"无穷级数" },
+  { domain:"数学·几何", title:"对折42次，够到月球", body:"一张纸每折一次厚度翻倍，42次后厚度可超地月距离。", dig:"指数增长" },
+  { domain:"数学·几何", title:"总有真而不可证的命题", body:"哥德尔证明：任何足够强的系统里，都存在无法被证明的真理。", dig:"哥德尔不完备定理" },
+  { domain:"数学·几何", title:"只有一个面的环", body:"莫比乌斯环没有正反面；沿中线剪开，不会分成两个。", dig:"莫比乌斯带" },
+  { domain:"数学·几何", title:"醉汉在二维一定能回家", body:"随机游走在一、二维必然返回原点，三维却未必。", dig:"Pólya 定理" },
+  { domain:"数学·几何", title:"花瓣里的数列", body:"向日葵、松果的螺旋常落在斐波那契数上，背后是黄金角。", dig:"黄金角" },
+
+  { domain:"生命·演化", title:"你不全是\u201c你\u201d", body:"体内的细菌细胞数量，和你自己的细胞大致旗鼓相当。", dig:"人体微生物组" },
+  { domain:"生命·演化", title:"和香蕉同源", body:"人类与香蕉共享相当一部分基因——生命底层的代码彼此相通。", dig:"基因同源" },
+  { domain:"生命·演化", title:"三颗心脏，蓝色血液", body:"章鱼有三颗心脏，约三分之二的神经元长在腕足上。", dig:"头足类神经系统" },
+  { domain:"生命·演化", title:"演化没有方向", body:"它不追求\u201c更高级\u201d，只筛选当下\u201c够用\u201d的——你我都是权宜之计。", dig:"自然选择" },
+  { domain:"生命·演化", title:"几乎杀不死的小家伙", body:"水熊虫能在真空、强辐射、近绝对零度中存活。", dig:"缓步动物" },
+  { domain:"生命·演化", title:"能返老还童的水母", body:"灯塔水母在压力下可逆转回幼体，理论上近乎\u201c不死\u201d。", dig:"灯塔水母" },
+
+  { domain:"大脑·认知", title:"记忆每次回忆都被改写", body:"回想一段往事，会在存回时被悄悄修改——记忆并不可靠。", dig:"记忆重固化" },
+  { domain:"大脑·认知", title:"你看到的是预测", body:"大脑大多时候在猜测世界，再用感官信号修正——而非直接接收。", dig:"预测加工" },
+  { domain:"大脑·认知", title:"失去比得到更痛", body:"丢掉100元的痛，约是捡到100元快乐的两倍。", dig:"损失厌恶" },
+  { domain:"大脑·认知", title:"灵感常诞生于走神", body:"放空时激活的\u201c默认模式网络\u201d，是创意与顿悟的温床。", dig:"默认模式网络" },
+  { domain:"大脑·认知", title:"越无能，越自信", body:"能力越低的人越难看清自己的不足，从而高估自己。", dig:"邓宁-克鲁格效应" },
+  { domain:"大脑·认知", title:"话到嘴边的卡顿", body:"\u201c舌尖现象\u201d是检索一时失败，而非真的遗忘。", dig:"TOT 现象" },
+
+  { domain:"经济·博弈", title:"各自理性，集体最差", body:"囚徒困境里，人人选最优，结局却对所有人都更糟。", dig:"纳什均衡" },
+  { domain:"经济·博弈", title:"人人可用，无人维护", body:"公共资源若缺乏约束，终将被过度使用而枯竭。", dig:"公地悲剧" },
+  { domain:"经济·博弈", title:"样样更强，仍该分工", body:"哪怕你做什么都更快，比较优势依然让双方合作更富。", dig:"比较优势" },
+  { domain:"经济·博弈", title:"已花的钱，别再算", body:"沉没成本不该影响当下决策，但人总是放不下。", dig:"沉没成本谬误" },
+  { domain:"经济·博弈", title:"时间是最大的杠杆", body:"复利被称作第八大奇迹——真正稀缺的不是利率，是时间。", dig:"复利" },
+  { domain:"经济·博弈", title:"该押多大比例", body:"凯利公式给出长期最优的下注比例——既不冒进，也不保守。", dig:"凯利准则" },
+
+  { domain:"历史·瞬间", title:"她离我们更近", body:"克娄巴特拉离我们的时间，比她离金字塔建成还要近。", dig:"历史时间尺度" },
+  { domain:"历史·瞬间", title:"比帝国更古老的大学", body:"牛津大学开始授课时，阿兹特克帝国还没建立。", dig:"历史错位" },
+  { domain:"历史·瞬间", title:"没有夏天的一年", body:"1816年火山喷发让全球歉收，也催生了《弗兰肯斯坦》。", dig:"坦博拉火山" },
+  { domain:"历史·瞬间", title:"三种文字的钥匙", body:"罗塞塔石碑用三种文字刻同一段话，成了破译古埃及的入口。", dig:"罗塞塔石碑" },
+
+  { domain:"哲学·思想", title:"换尽零件，还是它吗", body:"忒修斯之船：木板逐一替换，到最后它还是原来那条船吗？", dig:"同一性问题" },
+  { domain:"哲学·思想", title:"我知道我一无所知", body:"苏格拉底的智慧，始于承认自己的无知。", dig:"苏格拉底式无知" },
+  { domain:"哲学·思想", title:"分清能与不能", body:"斯多葛派：把精力只放在能控制的事上，是平静的起点。", dig:"控制二分法" },
+  { domain:"哲学·思想", title:"庄周梦蝶", body:"是你梦见成了蝴蝶，还是蝴蝶梦见成了你？", dig:"庄子·齐物论" },
+  { domain:"哲学·思想", title:"如无必要，勿增实体", body:"面对多种解释，往往最简单的那个更可能为真。", dig:"奥卡姆剃刀" },
+
+  { domain:"艺术·设计", title:"留白不是空", body:"负空间让主体有呼吸的余地——空，本身也是一种表达。", dig:"负空间" },
+  { domain:"艺术·设计", title:"在残缺里见美", body:"\u201c侘寂\u201d欣赏不完美、无常与朴素中的美感。", dig:"侘寂" },
+  { domain:"艺术·设计", title:"用金修补裂痕", body:"金缮以金漆补合破碎，让裂缝成为器物最动人的地方。", dig:"金缮" },
+  { domain:"艺术·设计", title:"形式追随功能", body:"包豪斯让设计回到用途本身，奠定了现代设计的语言。", dig:"包豪斯" },
+
+  { domain:"计算·AI", title:"测试的是错觉", body:"图灵测试问的不是机器能否思考，而是能否让你以为它在思考。", dig:"图灵测试" },
+  { domain:"计算·AI", title:"三种门，造出一切", body:"再复杂的逻辑，都能由与、或、非三种基本门搭建。", dig:"布尔逻辑" },
+  { domain:"计算·AI", title:"会自我实现的定律", body:"摩尔定律不是物理规律，更像一场被全行业兑现的预言。", dig:"摩尔定律" },
+  { domain:"计算·AI", title:"好算法差上万倍", body:"排一副乱牌，聪明的算法可能比笨办法快成千上万倍。", dig:"时间复杂度" },
+  { domain:"计算·AI", title:"两大难题", body:"据说计算机科学最难的两件事：缓存失效，和给东西起名字。", dig:"命名之难" },
+  { domain:"计算·AI", title:"它并不\u201c理解\u201d", body:"神经网络不懂含义，它在高维空间里做插值与匹配。", dig:"表示学习" },
+
+  { domain:"语言·文字", title:"语言改变你看世界", body:"你所说的语言，会悄悄影响你对颜色和时间的感知。", dig:"语言相对论" },
+  { domain:"语言·文字", title:"每两周消失一种", body:"全球语言正在快速消亡，平均每两周就有一种永远沉默。", dig:"濒危语言" },
+  { domain:"语言·文字", title:"字形即历史", body:"\u201c册\u201d像竹简串联，\u201c典\u201d是双手捧册——汉字里藏着古人的生活。", dig:"汉字构形" },
+
+  { domain:"思维模型", title:"拆到不能再拆", body:"第一性原理：回到最基本的事实，再从零往上重建。", dig:"第一性原理" },
+  { domain:"思维模型", title:"反过来想", body:"芒格说，想知道怎么成功，先研究怎么会失败，然后避开它。", dig:"逆向思维" },
+  { domain:"思维模型", title:"八成来自两成", body:"帕累托法则：少数关键因素，往往决定大部分结果。", dig:"二八法则" },
+  { domain:"思维模型", title:"地图不是疆域", body:"任何模型都只是现实的简化——别把简化当成真实本身。", dig:"地图与疆域" },
+
+  { domain:"反直觉", title:"23人就够了", body:"一屋子里只要23人，就有过半概率两人同一天生日。", dig:"生日悖论" },
+  { domain:"反直觉", title:"换一扇门赢更多", body:"蒙提霍尔问题里，改选另一扇门，获胜概率会翻倍。", dig:"蒙提霍尔问题" },
+  { domain:"反直觉", title:"分组都涨，合起来跌", body:"辛普森悖论：每个子群的趋势，可能与汇总后完全相反。", dig:"辛普森悖论" },
+  { domain:"反直觉", title:"蚂蚁与人类同级", body:"全世界蚂蚁的总质量，与全人类处于同一量级。", dig:"生物量" },
+
+  { domain:"工程·材料", title:"越压越稳的桥", body:"拱桥不靠粘合，靠重力把每块石头越压越紧。", dig:"拱结构" },
+  { domain:"工程·材料", title:"夏天会长高的铁塔", body:"热胀冷缩让埃菲尔铁塔在夏天比冬天高出约15厘米。", dig:"热膨胀" },
+  { domain:"工程·材料", title:"自行车为何不倒", body:"至今没有一个简单公认的解释能说尽它的稳定性。", dig:"自行车动力学" },
+
+  { domain:"开放问题", title:"素数的终极秘密", body:"黎曼猜想关乎素数如何分布，悬赏百万美元至今未解。", dig:"黎曼猜想" },
+  { domain:"开放问题", title:"意识从何而来", body:"神经活动如何变成\u201c感受\u201d，被称为意识的\u201c难问题\u201d。", dig:"意识难问题" },
+  { domain:"开放问题", title:"验证易，求解也易吗", body:"P=NP？这个问题的答案，可能动摇整个计算世界。", dig:"P vs NP" },
+  { domain:"开放问题", title:"外星人都在哪", body:"宇宙如此辽阔，我们却一个文明都没遇到——费米悖论。", dig:"费米悖论" },
+  { domain:"开放问题", title:"看不见的95%", body:"暗物质与暗能量占宇宙绝大部分，我们却不知它们是什么。", dig:"暗物质" },
+
+  { domain:"金融·市场", title:"事后才显然的黑天鹅", body:"罕见、冲击巨大、却总在发生后被解释得理所当然。", dig:"黑天鹅" },
+  { domain:"金融·市场", title:"价格也在塑造现实", body:"反身性：价格影响基本面，基本面又反过来影响价格。", dig:"索罗斯·反身性" },
+  { domain:"金融·市场", title:"72除以收益率", body:"用72除以年化收益率，约等于本金翻倍所需的年数。", dig:"72法则" },
+  { domain:"金融·市场", title:"投票机与称重机", body:"市场短期是投票机，长期是称重机——格雷厄姆如是说。", dig:"价值投资" }
+];
+
+const INTERVALS = [1, 3, 5, 10, 15, 30];
+const PRESETS = {
+  deepseek:   { format:"openai", endpoint:"https://api.deepseek.com/chat/completions", model:"deepseek-chat", note:"国产、价格极低。浏览器通常不能直连，建议选「通过代理」。" },
+  zhipu:      { format:"openai", endpoint:"https://open.bigmodel.cn/api/paas/v4/chat/completions", model:"glm-4-flash", note:"国产、GLM-4-Flash 免费。浏览器通常不能直连，建议选「通过代理」。" },
+  qwen:       { format:"openai", endpoint:"https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", model:"qwen-plus", note:"国产、有免费额度。浏览器通常不能直连，建议选「通过代理」。" },
+  moonshot:   { format:"openai", endpoint:"https://api.moonshot.cn/v1/chat/completions", model:"moonshot-v1-8k", note:"国产。浏览器通常不能直连，建议选「通过代理」。" },
+  gemini:     { format:"openai", endpoint:"https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", model:"gemini-2.0-flash", note:"有免费额度。境内需梯子；可浏览器直连。" },
+  openrouter: { format:"openai", endpoint:"https://openrouter.ai/api/v1/chat/completions", model:"deepseek/deepseek-chat-v3-0324:free", note:"含多个 :free 免费模型（在模型名里填）。境内需梯子；可浏览器直连。" },
+  anthropic:  { format:"anthropic", endpoint:"https://api.anthropic.com/v1/messages", model:"claude-sonnet-4-6", note:"最贵的选项。" },
+  custom:     { format:"openai", endpoint:"", model:"", note:"任意 OpenAI 兼容接口：自行填接口地址与模型名。" }
+};
+
+// ===== 部署后填这里（可选）=====
+// 把 wrangler 部署得到的 Worker 网址填进引号里，App 即默认用 DeepSeek + 代理，
+// 换任何设备打开都免配置。留空则保持精选库默认，需在设置里手动配 AI。
+const DEFAULT_PROXY_URL = "";
+// ================================
+const LIB_KEY = "iw_library", SET_KEY = "iw_settings", KEY_KEY = "iw_apikey", A2HS_KEY = "iw_a2hs_done", AIPOOL_KEY = "iw_aipool";
+
+const ICON_PLAY = '<svg class="ic ic-fill" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg>';
+const ICON_PAUSE = '<svg class="ic ic-fill" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
+const ICON_TRASH = '<svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+const ICON_COPY = '<svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const ICON_CHECK = '<svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><polyline points="20 6 9 17 4 12"/></svg>';
+
+function shuffle(a){ const r=a.slice(); for(let i=r.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=r[i]; r[i]=r[j]; r[j]=t; } return r; }
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+function $(id){ return document.getElementById(id); }
+
+const S = {
+  shuffled: shuffle(CURATED), aiPool: [], mode: "curated", index: 0, paused: false,
+  intervalMin: 5, interests: "金融投资, 计算与AI, 科学冷知识", library: [],
+  elapsed: 0, loadingAI: false, aiError: "", aiProvider: "deepseek", aiTransport: "direct", endpoint: "", model: "", proxyUrl: "", apiKey: "", wakeOn: true
+};
+
+// ---- load ----
+(function load(){
+  try{ const l = JSON.parse(lsGet(LIB_KEY) || "[]"); if(Array.isArray(l)) S.library = l; }catch(e){}
+  try{
+    const s = JSON.parse(lsGet(SET_KEY) || "{}");
+    if(INTERVALS.indexOf(s.intervalMin) >= 0) S.intervalMin = s.intervalMin;
+    if(s.mode === "curated" || s.mode === "ai") S.mode = s.mode;
+    if(typeof s.interests === "string") S.interests = s.interests;
+    if(s.aiProvider && PRESETS[s.aiProvider]) S.aiProvider = s.aiProvider;
+    if(s.aiTransport === "direct" || s.aiTransport === "proxy") S.aiTransport = s.aiTransport;
+    if(typeof s.endpoint === "string") S.endpoint = s.endpoint;
+    if(typeof s.model === "string") S.model = s.model;
+    if(typeof s.proxyUrl === "string") S.proxyUrl = s.proxyUrl;
+    if(typeof s.wakeOn === "boolean") S.wakeOn = s.wakeOn;
+  }catch(e){}
+  S.apiKey = lsGet(KEY_KEY) || "";
+  try{ const p = JSON.parse(lsGet(AIPOOL_KEY) || "[]"); if(Array.isArray(p)) S.aiPool = p.filter(function(c){ return c && c.title && c.body && c.domain; }); }catch(e){}
+})();
+if(!S.endpoint) S.endpoint = PRESETS[S.aiProvider].endpoint;
+if(!S.model) S.model = PRESETS[S.aiProvider].model;
+(function seedDefaults(){
+  if(!DEFAULT_PROXY_URL) return;
+  if(!S.proxyUrl) S.proxyUrl = DEFAULT_PROXY_URL;
+  if(!lsGet(SET_KEY)){ S.aiProvider = "deepseek"; S.aiTransport = "proxy"; S.mode = "ai"; if(!S.endpoint) S.endpoint = PRESETS.deepseek.endpoint; if(!S.model) S.model = PRESETS.deepseek.model; }
+})();
+
+function saveSettings(){ lsSet(SET_KEY, JSON.stringify({ intervalMin:S.intervalMin, mode:S.mode, interests:S.interests, aiProvider:S.aiProvider, aiTransport:S.aiTransport, endpoint:S.endpoint, model:S.model, proxyUrl:S.proxyUrl, wakeOn:S.wakeOn })); }
+function saveLibrary(){ lsSet(LIB_KEY, JSON.stringify(S.library)); }
+function saveAiPool(){ lsSet(AIPOOL_KEY, JSON.stringify(S.aiPool)); }
+
+function deck(){ if(S.mode === "ai") return S.aiPool.length ? S.aiPool.concat(S.shuffled) : S.shuffled; return S.shuffled; }
+function currentCard(){ const d = deck(); return d[S.index % d.length] || d[0]; }
+
+// ---- toast ----
+let toastT = null;
+function toast(msg){ const el = $("toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove("show"), 2400); }
+
+// ---- card render ----
+let fadeT = null;
+function setCardContent(){
+  const c = currentCard(); if(!c) return;
+  $("tag").textContent = c.domain;
+  $("title").textContent = c.title;
+  $("body").textContent = c.body;
+  if(c.dig){ $("dig").style.display = ""; $("dig").innerHTML = "深挖 · <span></span>"; $("dig").querySelector("span").textContent = c.dig; }
+  else { $("dig").style.display = "none"; }
+  updateStar();
+}
+function renderCard(animate){
+  const card = $("card");
+  if(animate){ card.classList.add("out"); clearTimeout(fadeT); fadeT = setTimeout(()=>{ setCardContent(); card.classList.remove("out"); }, 170); }
+  else { setCardContent(); }
+}
+function updateStar(){
+  const c = currentCard();
+  const inLib = c && S.library.some(x => x.title === c.title);
+  $("btnStar").classList.toggle("active", !!inLib);
+  $("starIcon").querySelector("polygon").setAttribute("fill", inLib ? "currentColor" : "none");
+}
+function updateProgress(){ $("progFill").style.width = (Math.min(1, S.elapsed/(S.intervalMin*60))*100).toFixed(2) + "%"; }
+
+function goTo(dir){
+  const d = deck(); const len = d.length;
+  S.index = ((S.index + dir) % len + len) % len;
+  S.elapsed = 0; renderCard(true); updateProgress(); maybePrefetch();
+}
+
+// ---- rotation & clock ----
+setInterval(function(){
+  if(S.paused) return;
+  S.elapsed += 0.5;
+  if(S.elapsed >= S.intervalMin*60){ goTo(1); } else { updateProgress(); }
+}, 500);
+
+function tickClock(){
+  const n = new Date();
+  const hh = String(n.getHours()).padStart(2,"0");
+  const mm = String(n.getMinutes()).padStart(2,"0");
+  const wk = ["周日","周一","周二","周三","周四","周五","周六"][n.getDay()];
+  $("clock").textContent = hh + ":" + mm;
+  $("date").textContent = (n.getMonth()+1) + "月" + n.getDate() + "日 " + wk;
+}
+setInterval(tickClock, 20000); tickClock();
+
+// ---- play / pause ----
+function renderPlay(){ $("btnPlay").innerHTML = S.paused ? ICON_PLAY : ICON_PAUSE; $("btnPlay").setAttribute("aria-label", S.paused ? "继续" : "暂停"); }
+$("btnPlay").addEventListener("click", function(){ S.paused = !S.paused; renderPlay(); });
+$("btnPrev").addEventListener("click", function(){ goTo(-1); });
+$("btnNext").addEventListener("click", function(){ goTo(1); });
+
+// ---- star / library ----
+$("btnStar").addEventListener("click", function(){
+  const c = currentCard(); if(!c) return;
+  if(S.library.some(x => x.title === c.title)){ toast("已在灵感库中"); return; }
+  S.library.unshift({ domain:c.domain, title:c.title, body:c.body, dig:c.dig, savedAt:Date.now() });
+  saveLibrary(); updateStar(); updateLibCount(); toast("已加入灵感库 ★");
+});
+function updateLibCount(){ const n = S.library.length; const el = $("libCount"); el.textContent = n; el.style.display = n>0 ? "" : "none"; }
+
+function renderLibrary(){
+  $("libNum").textContent = S.library.length;
+  const list = $("libList"), empty = $("libEmpty");
+  list.innerHTML = "";
+  if(S.library.length === 0){ empty.style.display = ""; return; }
+  empty.style.display = "none";
+  S.library.forEach(function(c){
+    const item = document.createElement("div"); item.className = "iw-lib-item";
+    const body = document.createElement("div"); body.className = "iw-lib-body";
+    const tag = document.createElement("div"); tag.className = "iw-lib-tag"; tag.textContent = c.domain;
+    const title = document.createElement("div"); title.className = "iw-lib-title"; title.textContent = c.title;
+    const text = document.createElement("div"); text.className = "iw-lib-text"; text.textContent = c.body;
+    const dig = document.createElement("div"); dig.className = "iw-lib-dig"; dig.textContent = "深挖 · " + (c.dig||"");
+    body.appendChild(tag); body.appendChild(title); body.appendChild(text); body.appendChild(dig);
+    const tr = document.createElement("button"); tr.className = "iw-trash"; tr.innerHTML = ICON_TRASH; tr.setAttribute("aria-label","移除");
+    tr.addEventListener("click", function(){ S.library = S.library.filter(x => x.title !== c.title); saveLibrary(); renderLibrary(); updateLibCount(); updateStar(); });
+    item.appendChild(body); item.appendChild(tr);
+    list.appendChild(item);
+  });
+}
+
+async function tryCopy(text){
+  try{ await navigator.clipboard.writeText(text); return true; }
+  catch(e){
+    try{ const ta = document.createElement("textarea"); ta.value = text; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); document.body.removeChild(ta); return ok; }
+    catch(e2){ return false; }
+  }
+}
+$("btnCopy").addEventListener("click", async function(){
+  if(!S.library.length) return;
+  const md = "# 我的灵感库\n\n" + S.library.map(function(c){ return "## "+c.title+"\n- 领域："+c.domain+"\n- "+c.body+"\n- 深挖方向："+c.dig; }).join("\n\n");
+  const ok = await tryCopy(md);
+  if(ok){ $("copyIcon").innerHTML = ICON_CHECK; $("copyLabel").textContent = "已复制"; setTimeout(function(){ $("copyIcon").innerHTML = ICON_COPY; $("copyLabel").textContent = "复制为 Markdown"; }, 1600); }
+  else toast("复制失败，请手动选择");
+});
+
+// ---- AI ----
+function updateRegen(){ const b = $("btnRegen"); if(!b) return; b.disabled = S.loadingAI; $("regenLabel").textContent = S.loadingAI ? "生成中…" : "换一批 AI 灵感"; }
+function updateAiStatus(){
+  const el = $("aiStatus"); if(!el) return;
+  let s = "已累积 " + S.aiPool.length + " 张 AI 卡片";
+  if(S.loadingAI) s += " · 生成中…";
+  else if(S.aiError) s += " · 上次出错：" + S.aiError;
+  el.textContent = s;
+}
+function aiConfigured(){
+  if(S.aiTransport === "proxy") return !!S.proxyUrl;
+  const fmt = PRESETS[S.aiProvider].format;
+  const ep = (fmt === "anthropic") ? "https://api.anthropic.com/v1/messages" : S.endpoint;
+  return !!S.apiKey && !!ep;
+}
+
+async function fetchAI(n, manual){
+  n = n || 8;
+  if(S.loadingAI) return;
+  if(S.mode !== "ai"){ if(manual) toast("请先把内容来源切到 AI 现编"); return; }
+  if(!aiConfigured()){ if(manual) toast(S.aiTransport === "proxy" ? "请先填入代理地址" : "请先填入 API Key（自定义还要填接口地址）"); return; }
+  const fmt = PRESETS[S.aiProvider].format;
+  S.loadingAI = true; updateRegen(); updateAiStatus();
+  try{
+    const prompt =
+      "你是一个跨领域知识与灵感卡片生成器。请生成 " + n + " 张简短、耐人寻味、适合一眼读完的卡片，" +
+      "尽量覆盖不同领域（宇宙物理/数学/生物演化/大脑认知/经济博弈/历史/哲学/艺术设计/计算与AI/语言文字/思维模型/反直觉事实/开放问题/工程/金融市场 等）。" +
+      (S.interests.trim() ? "可适度偏向这些兴趣方向：" + S.interests + "。" : "") +
+      "请尽量给出新颖、少见的内容，避免最常被引用的那几个经典例子。" +
+      "要求：内容须是公认、经得起推敲的事实，或清晰标注的概念/思想模型；避免编造数字与争议性断言。" +
+      "每张包含字段：domain(领域中文短标签，2-5字)、title(8-18字、有钩子的标题)、body(1-2句、45字内的正文)、dig(一个适合进一步深挖的中文关键词或短语)。" +
+      "只输出 JSON 数组，不要任何额外文字、解释或 Markdown 围栏。" +
+      '格式：[{"domain":"","title":"","body":"","dig":""}]';
+    let url, headers = { "content-type":"application/json" }, body;
+    if(fmt === "anthropic"){
+      body = { model: S.model || "claude-sonnet-4-6", max_tokens:1500, messages:[{ role:"user", content:prompt }] };
+      if(S.aiTransport === "proxy"){ url = S.proxyUrl; }
+      else { url = "https://api.anthropic.com/v1/messages"; headers["x-api-key"] = S.apiKey; headers["anthropic-version"] = "2023-06-01"; headers["anthropic-dangerous-direct-browser-access"] = "true"; }
+    } else {
+      body = { model: S.model || "gpt-4o-mini", messages:[{ role:"user", content:prompt }], max_tokens:1500, temperature:0.9 };
+      if(S.aiTransport === "proxy"){ url = S.proxyUrl; }
+      else { url = S.endpoint; headers["authorization"] = "Bearer " + S.apiKey; }
+    }
+    const resp = await fetch(url, { method:"POST", headers:headers, body:JSON.stringify(body) });
+    const data = await resp.json();
+    if(!resp.ok || (data && data.error)){
+      let m = (data && data.error && (data.error.message || data.error)) || ("请求失败 HTTP " + resp.status);
+      if(typeof m !== "string") m = JSON.stringify(m);
+      throw new Error(m);
+    }
+    let text;
+    if(fmt === "anthropic"){ text = (data.content || []).map(function(b){ return b.type === "text" ? b.text : ""; }).join("\n"); }
+    else { text = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || ""; }
+    const clean = String(text).replace(/```json/g,"").replace(/```/g,"").trim();
+    let arr;
+    try{ arr = JSON.parse(clean); }
+    catch(e){ const m = clean.match(/\[[\s\S]*\]/); if(m){ arr = JSON.parse(m[0]); } else { throw new Error("返回格式无法解析"); } }
+    if(!Array.isArray(arr)) throw new Error("返回格式无法解析");
+    const have = {}; CURATED.concat(S.aiPool, S.library).forEach(function(c){ have[c.title] = 1; });
+    const fresh = arr.filter(function(c){ return c && c.title && c.body && c.domain && !have[c.title]; });
+    S.aiError = "";
+    if(fresh.length){ S.aiPool = S.aiPool.concat(fresh).slice(-200); saveAiPool(); if(manual) toast("新增 " + fresh.length + " 张 AI 卡片"); }
+    else if(manual) toast("没有新内容，换个兴趣方向再试");
+  }catch(e){ S.aiError = (e && e.message) ? e.message : "请检查接入设置"; if(manual) toast("AI 现编失败：" + S.aiError); }
+  finally{ S.loadingAI = false; updateRegen(); updateAiStatus(); }
+}
+function maybePrefetch(){
+  if(S.mode !== "ai" || S.loadingAI || !aiConfigured()) return;
+  if(S.aiPool.length === 0){ fetchAI(8, false); return; }
+  const pos = S.index % deck().length;
+  if(pos >= S.aiPool.length - 3) fetchAI(8, false);
+}
+
+// ---- settings UI ----
+function renderModeSeg(){
+  $("segCurated").classList.toggle("active", S.mode === "curated");
+  $("segAi").classList.toggle("active", S.mode === "ai");
+  $("modeLabel").textContent = S.mode === "ai" ? "AI 现编" : "精选库";
+  $("btnRegen").style.display = S.mode === "ai" ? "" : "none";
+}
+$("segCurated").addEventListener("click", function(){ S.mode = "curated"; saveSettings(); renderModeSeg(); renderCard(true); });
+$("segAi").addEventListener("click", function(){ S.mode = "ai"; saveSettings(); renderModeSeg(); maybePrefetch(); });
+
+(function buildChips(){
+  const wrap = $("chips");
+  INTERVALS.forEach(function(m){
+    const b = document.createElement("button"); b.className = "iw-chip"; b.textContent = m + " 分";
+    b.addEventListener("click", function(){ S.intervalMin = m; S.elapsed = 0; saveSettings(); renderChips(); updateProgress(); });
+    wrap.appendChild(b);
+  });
+})();
+function renderChips(){ const ch = $("chips").children; for(let i=0;i<ch.length;i++){ ch[i].classList.toggle("active", INTERVALS[i] === S.intervalMin); } }
+
+$("interests").addEventListener("input", function(e){ S.interests = e.target.value; saveSettings(); });
+
+function applyProvider(){
+  const p = PRESETS[S.aiProvider];
+  if(S.aiProvider !== "custom") S.endpoint = p.endpoint;
+  S.model = p.model;
+  $("model").value = S.model;
+  $("endpoint").value = S.endpoint;
+}
+function renderAi(){
+  $("provider").value = S.aiProvider;
+  $("trDirect").classList.toggle("active", S.aiTransport === "direct");
+  $("trProxy").classList.toggle("active", S.aiTransport === "proxy");
+  $("endpointWrap").style.display = (S.aiProvider === "custom") ? "" : "none";
+  $("directKeyWrap").style.display = (S.aiTransport === "direct") ? "" : "none";
+  $("proxyWrap").style.display = (S.aiTransport === "proxy") ? "" : "none";
+  $("providerNote").textContent = PRESETS[S.aiProvider].note || "";
+}
+$("provider").addEventListener("change", function(e){ S.aiProvider = e.target.value; applyProvider(); saveSettings(); renderAi(); updateAiStatus(); });
+$("model").addEventListener("input", function(e){ S.model = e.target.value; saveSettings(); });
+$("endpoint").addEventListener("input", function(e){ S.endpoint = e.target.value.trim(); saveSettings(); });
+$("trDirect").addEventListener("click", function(){ S.aiTransport = "direct"; saveSettings(); renderAi(); });
+$("trProxy").addEventListener("click", function(){ S.aiTransport = "proxy"; saveSettings(); renderAi(); });
+$("proxyUrl").addEventListener("input", function(e){ S.proxyUrl = e.target.value.trim(); saveSettings(); });
+$("apiKey").addEventListener("input", function(e){ S.apiKey = e.target.value.trim(); lsSet(KEY_KEY, S.apiKey); });
+$("btnRegen").addEventListener("click", function(){ fetchAI(8, true); });
+
+function renderWake(){ $("wakeSwitch").classList.toggle("on", S.wakeOn); }
+$("wakeSwitch").addEventListener("click", function(){ S.wakeOn = !S.wakeOn; saveSettings(); renderWake(); if(S.wakeOn) acquireWake(); else releaseWake(); });
+
+// ---- overlays ----
+$("btnSet").addEventListener("click", function(){ $("setOverlay").classList.add("show"); });
+$("setClose").addEventListener("click", function(){ $("setOverlay").classList.remove("show"); });
+$("setOverlay").addEventListener("click", function(e){ if(e.target === $("setOverlay")) $("setOverlay").classList.remove("show"); });
+$("btnLib").addEventListener("click", function(){ renderLibrary(); $("libOverlay").classList.add("show"); });
+$("libClose").addEventListener("click", function(){ $("libOverlay").classList.remove("show"); });
+$("libOverlay").addEventListener("click", function(e){ if(e.target === $("libOverlay")) $("libOverlay").classList.remove("show"); });
+
+// ---- wake lock ----
+let wakeLock = null;
+async function acquireWake(){
+  if(!("wakeLock" in navigator) || !S.wakeOn) return;
+  try{ wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", function(){ wakeLock = null; }); }catch(e){}
+}
+function releaseWake(){ if(wakeLock){ try{ wakeLock.release(); }catch(e){} wakeLock = null; } }
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState === "visible") acquireWake(); });
+window.addEventListener("pointerdown", function(){ acquireWake(); }, { once:true });
+
+// ---- fullscreen ----
+if(document.fullscreenEnabled){
+  $("btnFs").style.display = "";
+  $("btnFs").addEventListener("click", function(){
+    if(!document.fullscreenElement){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+    else { if(document.exitFullscreen) document.exitFullscreen(); }
+  });
+}
+
+// ---- add-to-home-screen hint ----
+(function a2hs(){
+  const standalone = (window.navigator.standalone === true) || (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+  if(standalone || lsGet(A2HS_KEY)) return;
+  const bar = $("a2hs"); bar.classList.add("show");
+  $("a2hsClose").addEventListener("click", function(){ bar.classList.remove("show"); lsSet(A2HS_KEY, "1"); });
+  setTimeout(function(){ bar.classList.remove("show"); }, 12000);
+})();
+
+// ---- init ----
+$("interests").value = S.interests;
+$("proxyUrl").value = S.proxyUrl;
+$("apiKey").value = S.apiKey;
+$("model").value = S.model;
+$("endpoint").value = S.endpoint;
+renderModeSeg(); renderChips(); renderAi(); renderWake(); renderPlay();
+updateLibCount(); updateAiStatus(); renderCard(false); updateProgress();
+acquireWake();
+maybePrefetch();
+</script>
+</body>
+</html>

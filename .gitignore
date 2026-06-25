@@ -1,0 +1,7 @@
+# Cloudflare Wrangler local state/cache — never commit (contains account info)
+.wrangler/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
