@@ -1,38 +1,56 @@
-// 灵感橱窗 —— 通用 AI 代理（Cloudflare Worker）
+// 灵感橱窗 —— 通用 AI 代理 + 跨设备同步（Cloudflare Worker）
 // 作用：① 把你的 API Key 放在服务器端，浏览器看不到；
-//       ② 解决国产接口不允许浏览器跨域(CORS)的问题。
+//       ② 解决国产接口不允许浏览器跨域(CORS)的问题；
+//       ③ /sync 路由用 KV 在多台设备间同步灵感库（需绑定 KV，见下）。
 //
-// 部署步骤：
-// 1. 登录 https://dash.cloudflare.com → Workers & Pages → Create → Create Worker，
-//    把本文件全部内容粘贴进去，点 Deploy。
-// 2. 进入该 Worker 的 Settings → Variables and Secrets：
-//    · 新增 Secret：  API_KEY      = 你的服务商密钥
-//    · 新增 Variable：UPSTREAM_URL = 服务商接口地址（见下表）
-//    · 新增 Variable：AUTH_STYLE   = bearer   （仅 Anthropic 填 x-api-key）
-// 3. 把 Worker 网址（https://xxx.workers.dev）填进 App 设置的「代理地址」，
-//    «调用方式» 选「通过代理」，«AI 服务商» 选对应的那个即可。
+// ===== 代理部署（已完成的可跳过）=====
+// 1. Workers & Pages → Create Worker，把本文件粘进去 Deploy。
+// 2. Settings → Variables and Secrets：
+//    · Secret  API_KEY      = 你的服务商密钥（终端：wrangler secret put API_KEY）
+//    · Variable UPSTREAM_URL = 服务商接口地址
+//    · Variable AUTH_STYLE   = bearer （仅 Anthropic 填 x-api-key）
 //
-// 常用 UPSTREAM_URL 对照：
-//   DeepSeek     https://api.deepseek.com/chat/completions                          AUTH_STYLE=bearer
-//   智谱 GLM     https://open.bigmodel.cn/api/paas/v4/chat/completions              AUTH_STYLE=bearer
-//   通义 Qwen    https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions AUTH_STYLE=bearer
-//   Moonshot     https://api.moonshot.cn/v1/chat/completions                        AUTH_STYLE=bearer
-//   OpenRouter   https://openrouter.ai/api/v1/chat/completions                      AUTH_STYLE=bearer
-//   Anthropic    https://api.anthropic.com/v1/messages                              AUTH_STYLE=x-api-key
-//
-// 安全建议：把下面的 ALLOW_ORIGIN 改成你自己的 GitHub Pages 网址，
-// 例如 "https://yourname.github.io"，别人就无法借用你的代理。
+// ===== 开启跨设备同步（新增）=====
+// 1. 终端建一个 KV 命名空间：   wrangler kv namespace create SYNC
+//    复制输出里的 id。
+// 2. 在 wrangler.toml 里取消注释 [[kv_namespaces]] 段并填入该 id（binding 必须是 SYNC）。
+// 3. 重新部署：               wrangler deploy
+// 4. 在 App 设置「跨设备同步」里，各设备填同一句口令即可。
+// 未绑定 KV 时，/sync 会返回 501，但不影响 AI 代理正常工作。
 
-const ALLOW_ORIGIN = "*";
+const ALLOW_ORIGIN = "*"; // 可改成你的 Pages 网址，如 "https://jjotaro.github.io"
 
 export default {
   async fetch(request, env) {
     const cors = {
       "Access-Control-Allow-Origin": ALLOW_ORIGIN,
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
     if (request.method === "OPTIONS") return new Response(null, { headers: cors });
+
+    // ---- 跨设备同步：/sync ----
+    const url = new URL(request.url);
+    const path = url.pathname.replace(/\/+$/, "");
+    if (path.endsWith("/sync")) {
+      const key = url.searchParams.get("k") || "";
+      const jhead = { ...cors, "content-type": "application/json" };
+      if (key.length < 8 || key.length > 80) return new Response(JSON.stringify({ error: "bad key" }), { status: 400, headers: jhead });
+      if (!env.SYNC) return new Response(JSON.stringify({ error: "KV 未绑定：请在 wrangler.toml 配置 SYNC 后重新部署" }), { status: 501, headers: jhead });
+      if (request.method === "GET") {
+        const v = await env.SYNC.get(key);
+        return new Response(v || "{}", { status: 200, headers: jhead });
+      }
+      if (request.method === "PUT" || request.method === "POST") {
+        const data = await request.text();
+        if (data.length > 1500000) return new Response(JSON.stringify({ error: "数据过大" }), { status: 413, headers: jhead });
+        await env.SYNC.put(key, data);
+        return new Response(JSON.stringify({ ok: true }), { status: 200, headers: jhead });
+      }
+      return new Response("method not allowed", { status: 405, headers: cors });
+    }
+
+    // ---- AI 代理：POST / ----
     if (request.method !== "POST") return new Response("Only POST is allowed", { status: 405, headers: cors });
 
     const upstream = env.UPSTREAM_URL || "https://api.deepseek.com/chat/completions";
@@ -48,10 +66,10 @@ export default {
 
     const body = await request.text();
     const resp = await fetch(upstream, { method: "POST", headers, body });
-    const text = await resp.text();
-    return new Response(text, {
+    // 直接把上游响应体作为流转发：支持 stream:true 的逐字输出，普通 JSON 也照常工作。
+    return new Response(resp.body, {
       status: resp.status,
-      headers: { ...cors, "content-type": "application/json" },
+      headers: { ...cors, "content-type": resp.headers.get("content-type") || "application/json" },
     });
   },
 };

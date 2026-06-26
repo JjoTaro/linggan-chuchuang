@@ -10,3 +10,11 @@ AUTH_STYLE = "bearer"
 
 # 注意：DeepSeek 的密钥是 Secret，不写在这里。
 # 部署后由你本人在终端执行：  wrangler secret put API_KEY
+
+# ===== 跨设备同步用的 KV =====
+# 第一步，终端建命名空间：      wrangler kv namespace create SYNC
+# 第二步，把输出里的 id 填到下面，并去掉这 3 行前面的 # ：
+# [[kv_namespaces]]
+# binding = "SYNC"
+# id = "把 wrangler 输出的 id 填这里"
+# 第三步，重新部署：            wrangler deploy

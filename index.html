@@ -17,22 +17,27 @@ html,body{ margin:0; padding:0; height:100%; background:#0b0907; }
 body{ overscroll-behavior:none; }
 
 .iw-root{
+  --ac: 217,154,82; --ac1: #e0a35c;
+  --bg1:#1a1611; --bg2:#110e0b; --bg3:#0b0907; --glow: rgba(224,176,112,0.085);
+  --cs: 1;
   position:relative; min-height:100vh; min-height:100dvh; width:100%; overflow:hidden;
-  background: radial-gradient(120% 80% at 50% 8%, #1a1611 0%, #110e0b 45%, #0b0907 100%);
+  background: radial-gradient(120% 80% at 50% 8%, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
   color:#ece1cf; display:flex; flex-direction:column;
   font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
   -webkit-font-smoothing:antialiased;
 }
+.iw-root.theme-cool{ --ac:120,170,200; --ac1:#7fb6cf; --bg1:#11161a; --bg2:#0d1115; --bg3:#080b0d; --glow:rgba(130,180,210,0.08); }
+.iw-root.theme-violet{ --ac:170,142,212; --ac1:#bda6e8; --bg1:#16131c; --bg2:#100d16; --bg3:#0a080d; --glow:rgba(176,146,224,0.085); }
 .iw-glow{
   position:absolute; left:50%; top:46%; transform:translate(-50%,-50%);
   width:760px; height:560px; max-width:130vw; pointer-events:none;
-  background: radial-gradient(closest-side, rgba(224,176,112,0.085), rgba(224,176,112,0) 72%);
+  background: radial-gradient(closest-side, var(--glow), rgba(224,176,112,0) 72%);
 }
 .ic{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .ic-fill{ fill:currentColor; stroke:none; }
 
 .iw-eyebrow{
-  position:relative; z-index:2; display:flex; align-items:center; gap:9px;
+  position:relative; z-index:2; display:flex; flex-wrap:wrap; row-gap:7px; align-items:center; gap:9px;
   padding:calc(22px + env(safe-area-inset-top)) 26px 0; font-family:ui-monospace,"SF Mono",Menlo,monospace;
   font-size:12px; letter-spacing:.08em; color:#7d6f5d;
 }
@@ -50,39 +55,39 @@ body{ overscroll-behavior:none; }
 
 .iw-tag{
   display:inline-block; font-family:ui-monospace,"SF Mono",Menlo,monospace;
-  font-size:11.5px; letter-spacing:.16em; color:#d99a52;
-  padding:4px 12px; border:1px solid rgba(217,154,82,0.28); border-radius:999px; margin-bottom:26px;
+  font-size:11.5px; letter-spacing:.16em; color:var(--ac1);
+  padding:4px 12px; border:1px solid rgba(var(--ac),0.28); border-radius:999px; margin-bottom:26px;
 }
 .iw-title{
   font-family:"Songti SC","STSong",Georgia,"Times New Roman",serif;
-  font-weight:600; font-size:40px; line-height:1.28; letter-spacing:.01em; margin:0; color:#f1e7d3;
+  font-weight:600; font-size:calc(40px * var(--cs)); line-height:1.28; letter-spacing:.01em; margin:0; color:#f1e7d3;
 }
-.iw-rule{ width:38px; height:1px; margin:24px auto; background:linear-gradient(90deg, transparent, rgba(217,154,82,0.55), transparent); }
-.iw-body{ font-size:18px; line-height:1.85; color:#b8aa92; margin:0 auto; max-width:520px; font-weight:350; }
+.iw-rule{ width:38px; height:1px; margin:24px auto; background:linear-gradient(90deg, transparent, rgba(var(--ac),0.55), transparent); }
+.iw-body{ font-size:calc(18px * var(--cs)); line-height:1.85; color:#b8aa92; margin:0 auto; max-width:520px; font-weight:350; }
 .iw-dig{ margin:30px 0 0; font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12.5px; letter-spacing:.06em; color:#6f6250; }
-.iw-dig span{ color:#cf9a57; }
+.iw-dig span{ color:var(--ac1); }
 
-.iw-controls{ position:relative; z-index:2; display:flex; align-items:center; justify-content:center; gap:6px; padding:0 20px 26px; }
+.iw-controls{ position:relative; z-index:2; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px; padding:0 20px 26px; }
 .iw-btn{
   position:relative; display:flex; align-items:center; justify-content:center;
   width:44px; height:44px; border:none; background:transparent; cursor:pointer;
   color:#6c5f4e; border-radius:12px; transition:color .2s ease, background .2s ease;
 }
-.iw-btn:hover{ color:#d6b88c; background:rgba(217,154,82,0.07); }
-.iw-btn.active{ color:#e0a35c; }
-.iw-divider{ width:1px; height:22px; background:rgba(217,154,82,0.16); margin:0 10px; }
+.iw-btn:hover{ color:#d6b88c; background:rgba(var(--ac),0.07); }
+.iw-btn.active{ color:var(--ac1); }
+.iw-divider{ width:1px; height:22px; background:rgba(var(--ac),0.16); margin:0 10px; }
 .iw-count{
   position:absolute; top:5px; right:4px; min-width:15px; height:15px; padding:0 3px;
-  background:#d99a52; color:#1a1308; border-radius:8px; font-size:9.5px; font-weight:700; line-height:15px;
+  background:var(--ac1); color:#1a1308; border-radius:8px; font-size:9.5px; font-weight:700; line-height:15px;
   font-family:ui-monospace,Menlo,monospace;
 }
 
-.iw-progress{ position:relative; z-index:2; height:2px; background:rgba(217,154,82,0.07); padding-bottom:env(safe-area-inset-bottom); }
-.iw-progress-fill{ height:2px; width:0%; background:linear-gradient(90deg, rgba(217,154,82,0.4), rgba(224,163,92,0.8)); transition:width .5s linear; }
+.iw-progress{ position:relative; z-index:2; height:2px; background:rgba(var(--ac),0.07); padding-bottom:env(safe-area-inset-bottom); }
+.iw-progress-fill{ height:2px; width:0%; background:linear-gradient(90deg, rgba(var(--ac),0.4), rgba(var(--ac),0.8)); transition:width .5s linear; }
 
 .iw-toast{
   position:fixed; left:50%; bottom:96px; transform:translateX(-50%); z-index:60; max-width:84vw; text-align:center;
-  background:rgba(28,23,17,0.96); color:#e9ddc8; border:1px solid rgba(217,154,82,0.22);
+  background:rgba(28,23,17,0.96); color:#e9ddc8; border:1px solid rgba(var(--ac),0.22);
   padding:10px 18px; border-radius:999px; font-size:13.5px; letter-spacing:.02em;
   box-shadow:0 8px 30px rgba(0,0,0,0.45); opacity:0; pointer-events:none; transition:opacity .25s ease;
 }
@@ -91,7 +96,7 @@ body{ overscroll-behavior:none; }
 .iw-a2hs{
   position:fixed; left:50%; bottom:calc(96px + env(safe-area-inset-bottom)); transform:translateX(-50%); z-index:55;
   display:none; align-items:center; gap:10px; max-width:90vw;
-  background:rgba(24,20,15,0.96); border:1px solid rgba(217,154,82,0.2); border-radius:14px;
+  background:rgba(24,20,15,0.96); border:1px solid rgba(var(--ac),0.2); border-radius:14px;
   padding:11px 12px 11px 16px; font-size:12.5px; color:#bcae96; line-height:1.5;
   box-shadow:0 10px 36px rgba(0,0,0,0.5);
 }
@@ -104,13 +109,13 @@ body{ overscroll-behavior:none; }
 .iw-overlay.show{ display:flex; }
 .iw-panel{
   width:100%; max-width:440px; max-height:82vh; overflow-y:auto;
-  background:#161210; border:1px solid rgba(217,154,82,0.18); border-radius:18px;
+  background:#161210; border:1px solid rgba(var(--ac),0.18); border-radius:18px;
   box-shadow:0 24px 70px rgba(0,0,0,0.6); padding:22px 22px 26px;
 }
 .iw-panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; font-family:"Songti SC",Georgia,serif; font-size:19px; color:#eaddc7; }
-.iw-num{ font-style:normal; font-family:ui-monospace,Menlo,monospace; font-size:13px; color:#d99a52; margin-left:8px; }
+.iw-num{ font-style:normal; font-family:ui-monospace,Menlo,monospace; font-size:13px; color:var(--ac1); margin-left:8px; }
 .iw-x{ display:flex; width:32px; height:32px; align-items:center; justify-content:center; border:none; background:transparent; color:#7d6f5d; cursor:pointer; border-radius:9px; }
-.iw-x:hover{ color:#d6b88c; background:rgba(217,154,82,0.08); }
+.iw-x:hover{ color:#d6b88c; background:rgba(var(--ac),0.08); }
 
 .iw-field{ margin-bottom:22px; }
 .iw-label{ display:block; font-size:13px; color:#8a7c68; margin-bottom:11px; letter-spacing:.02em; }
@@ -118,35 +123,35 @@ body{ overscroll-behavior:none; }
 .iw-warn{ font-size:11.5px; color:#b9794f; line-height:1.6; margin:9px 0 0; }
 
 .iw-seg{ display:flex; gap:8px; }
-.iw-seg-btn{ flex:1; display:flex; align-items:center; justify-content:center; padding:11px 8px; border:1px solid rgba(217,154,82,0.2); background:transparent; color:#9a8c76; border-radius:11px; cursor:pointer; font-size:13px; transition:all .2s ease; }
-.iw-seg-btn:hover{ border-color:rgba(217,154,82,0.4); color:#cbb89c; }
-.iw-seg-btn.active{ background:rgba(217,154,82,0.14); border-color:rgba(217,154,82,0.55); color:#f0d8b0; }
+.iw-seg-btn{ flex:1; display:flex; align-items:center; justify-content:center; padding:11px 8px; border:1px solid rgba(var(--ac),0.2); background:transparent; color:#9a8c76; border-radius:11px; cursor:pointer; font-size:13px; transition:all .2s ease; }
+.iw-seg-btn:hover{ border-color:rgba(var(--ac),0.4); color:#cbb89c; }
+.iw-seg-btn.active{ background:rgba(var(--ac),0.14); border-color:rgba(var(--ac),0.55); color:#f0d8b0; }
 
 .iw-chips{ display:flex; flex-wrap:wrap; gap:8px; }
-.iw-chip{ padding:8px 15px; border:1px solid rgba(217,154,82,0.2); background:transparent; color:#9a8c76; border-radius:999px; cursor:pointer; font-size:13px; font-family:ui-monospace,Menlo,monospace; transition:all .2s ease; }
-.iw-chip:hover{ border-color:rgba(217,154,82,0.4); color:#cbb89c; }
-.iw-chip.active{ background:rgba(217,154,82,0.14); border-color:rgba(217,154,82,0.55); color:#f0d8b0; }
+.iw-chip{ padding:8px 15px; border:1px solid rgba(var(--ac),0.2); background:transparent; color:#9a8c76; border-radius:999px; cursor:pointer; font-size:13px; font-family:ui-monospace,Menlo,monospace; transition:all .2s ease; }
+.iw-chip:hover{ border-color:rgba(var(--ac),0.4); color:#cbb89c; }
+.iw-chip.active{ background:rgba(var(--ac),0.14); border-color:rgba(var(--ac),0.55); color:#f0d8b0; }
 
-.iw-textarea, .iw-input{ width:100%; box-sizing:border-box; background:#100d0a; border:1px solid rgba(217,154,82,0.18); border-radius:11px; color:#d8cab2; padding:12px 13px; font-size:14px; line-height:1.6; outline:none; }
+.iw-textarea, .iw-input{ width:100%; box-sizing:border-box; background:#100d0a; border:1px solid rgba(var(--ac),0.18); border-radius:11px; color:#d8cab2; padding:12px 13px; font-size:14px; line-height:1.6; outline:none; }
 .iw-textarea{ resize:none; font-family:-apple-system,"PingFang SC",sans-serif; }
 .iw-input{ font-family:ui-monospace,Menlo,monospace; font-size:13px; }
-.iw-textarea:focus, .iw-input:focus{ border-color:rgba(217,154,82,0.45); }
+.iw-textarea:focus, .iw-input:focus{ border-color:rgba(var(--ac),0.45); }
 .iw-textarea::placeholder, .iw-input::placeholder{ color:#5d5141; }
 .iw-sub{ margin-top:12px; }
 
-.iw-regen{ margin-top:12px; display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border:1px solid rgba(217,154,82,0.3); background:rgba(217,154,82,0.1); color:#ecc88f; border-radius:11px; cursor:pointer; font-size:13.5px; transition:all .2s ease; }
-.iw-regen:hover:not(:disabled){ background:rgba(217,154,82,0.18); }
+.iw-regen{ margin-top:12px; display:inline-flex; align-items:center; justify-content:center; padding:10px 16px; border:1px solid rgba(var(--ac),0.3); background:rgba(var(--ac),0.1); color:#ecc88f; border-radius:11px; cursor:pointer; font-size:13.5px; transition:all .2s ease; }
+.iw-regen:hover:not(:disabled){ background:rgba(var(--ac),0.18); }
 .iw-regen:disabled{ opacity:.55; cursor:default; }
 
 .iw-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.iw-switch{ width:42px; height:24px; border-radius:999px; border:1px solid rgba(217,154,82,0.3); background:#100d0a; position:relative; cursor:pointer; transition:all .2s; flex-shrink:0; }
+.iw-switch{ width:42px; height:24px; border-radius:999px; border:1px solid rgba(var(--ac),0.3); background:#100d0a; position:relative; cursor:pointer; transition:all .2s; flex-shrink:0; }
 .iw-switch::after{ content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#7d6f5d; transition:all .2s; }
-.iw-switch.on{ background:rgba(217,154,82,0.25); border-color:rgba(217,154,82,0.6); }
-.iw-switch.on::after{ left:21px; background:#e0a35c; }
+.iw-switch.on{ background:rgba(var(--ac),0.25); border-color:rgba(var(--ac),0.6); }
+.iw-switch.on::after{ left:21px; background:var(--ac1); }
 
 .iw-head-actions{ display:flex; align-items:center; gap:6px; }
-.iw-copy{ display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid rgba(217,154,82,0.22); background:transparent; color:#b6a587; border-radius:9px; cursor:pointer; font-size:12.5px; transition:all .2s ease; }
-.iw-copy:hover:not(:disabled){ color:#e6cda0; border-color:rgba(217,154,82,0.45); }
+.iw-copy{ display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border:1px solid rgba(var(--ac),0.22); background:transparent; color:#b6a587; border-radius:9px; cursor:pointer; font-size:12.5px; transition:all .2s ease; }
+.iw-copy:hover:not(:disabled){ color:#e6cda0; border-color:rgba(var(--ac),0.45); }
 .iw-copy:disabled{ opacity:.4; cursor:default; }
 
 .iw-empty{ text-align:center; padding:40px 10px; color:#9a8c76; }
@@ -154,31 +159,146 @@ body{ overscroll-behavior:none; }
 .iw-empty-sub{ font-size:13px; color:#6b5e4c; line-height:1.6; }
 
 .iw-lib-list{ display:flex; flex-direction:column; gap:10px; }
-.iw-lib-item{ display:flex; gap:10px; align-items:flex-start; padding:14px; background:#120f0c; border:1px solid rgba(217,154,82,0.12); border-radius:13px; }
+.iw-lib-item{ display:flex; gap:10px; align-items:flex-start; padding:14px; background:#120f0c; border:1px solid rgba(var(--ac),0.12); border-radius:13px; }
 .iw-lib-body{ flex:1; min-width:0; }
-.iw-lib-tag{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; letter-spacing:.1em; color:#cf9a57; margin-bottom:6px; }
+.iw-lib-tag{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; letter-spacing:.1em; color:var(--ac1); margin-bottom:6px; }
 .iw-lib-title{ font-family:"Songti SC",Georgia,serif; font-size:17px; color:#ecddc6; margin-bottom:6px; line-height:1.4; }
 .iw-lib-text{ font-size:13.5px; color:#a99b84; line-height:1.6; }
 .iw-lib-dig{ font-family:ui-monospace,Menlo,monospace; font-size:11px; color:#6b5e4c; margin-top:8px; }
 .iw-trash{ flex-shrink:0; display:flex; width:32px; height:32px; align-items:center; justify-content:center; border:none; background:transparent; color:#6b5e4c; cursor:pointer; border-radius:9px; transition:all .2s ease; }
 .iw-trash:hover{ color:#cf8a6a; background:rgba(207,138,106,0.1); }
 
-@media (max-width:520px){ .iw-title{ font-size:30px; } .iw-body{ font-size:16.5px; } .iw-stage{ padding:20px 22px; } }
+/* deep dive */
+.iw-card{ cursor:pointer; }
+.iw-dd-tag{ font-family:ui-monospace,Menlo,monospace; font-size:11px; letter-spacing:.14em; color:var(--ac1); }
+.iw-dd-title{ font-family:"Songti SC",Georgia,serif; font-size:23px; color:#f1e7d3; margin:6px 0 14px; line-height:1.4; }
+.iw-dd-search{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+.iw-dd-search a{ font-size:12px; color:#9a8c76; text-decoration:none; border:1px solid rgba(var(--ac),0.2); border-radius:999px; padding:5px 12px; transition:all .2s; }
+.iw-dd-search a:hover{ color:#e6cda0; border-color:rgba(var(--ac),0.45); }
+.iw-dd-expl{ font-size:15px; line-height:1.85; color:#c6b8a1; }
+.iw-dd-p{ margin:0 0 12px; }
+.iw-dd-p:last-child{ margin-bottom:0; }
+.iw-dd-loading{ color:#7d6f5d; font-size:14px; }
+.iw-term{ color:var(--ac1); border-bottom:1px dashed rgba(224,163,82,0.5); cursor:pointer; }
+.iw-term:hover{ background:rgba(224,163,82,0.12); }
+.iw-dd-qs{ display:flex; flex-direction:column; gap:8px; margin:20px 0 0; }
+.iw-qchip{ text-align:left; font-size:13.5px; color:#bcae96; background:rgba(var(--ac),0.06); border:1px solid rgba(var(--ac),0.16); border-radius:11px; padding:10px 13px; cursor:pointer; transition:all .2s; font-family:inherit; }
+.iw-qchip:hover{ color:#ecd9b4; border-color:rgba(var(--ac),0.4); background:rgba(var(--ac),0.1); }
+.iw-qchip::before{ content:"› "; color:var(--ac1); }
+.iw-thread{ display:flex; flex-direction:column; margin-top:6px; }
+.iw-qa{ border-top:1px solid rgba(var(--ac),0.12); padding:16px 0 2px; margin-top:14px; }
+.iw-q{ font-size:14px; color:#e6cda0; margin:0 0 9px; font-weight:500; }
+.iw-q::before{ content:"问 · "; color:var(--ac1); font-family:ui-monospace,Menlo,monospace; font-size:11.5px; }
+.iw-a{ font-size:14.5px; line-height:1.82; color:#bcae96; }
+.iw-dd-input{ display:flex; gap:8px; margin-top:20px; position:sticky; bottom:0; background:#161210; padding:12px 0; }
+.iw-dd-input .iw-input{ flex:1; font-family:-apple-system,"PingFang SC",sans-serif; }
+.iw-dd-send{ flex-shrink:0; width:44px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(var(--ac),0.3); background:rgba(var(--ac),0.12); color:#ecc88f; border-radius:11px; cursor:pointer; }
+.iw-dd-send:hover{ background:rgba(var(--ac),0.2); }
+.iw-dd-send:disabled{ opacity:.5; cursor:default; }
+.iw-dd-savebar{ margin-top:12px; }
+.iw-save-btn{ font-size:12px; color:#9a8c76; background:transparent; border:1px solid rgba(var(--ac),0.2); border-radius:999px; padding:4px 12px; cursor:pointer; transition:all .2s; }
+.iw-save-btn:hover{ color:#e6cda0; border-color:rgba(var(--ac),0.45); }
+.iw-save-btn.done{ color:var(--ac1); border-color:rgba(var(--ac),0.4); }
+.iw-qa .iw-save-btn{ margin-top:10px; }
+.iw-lib-tools{ display:flex; gap:8px; margin-bottom:14px; }
+.iw-lib-tools .iw-input{ font-family:-apple-system,"PingFang SC",sans-serif; }
+.iw-lib-tools #libSearch{ flex:1; }
+.iw-lib-tools #libDomain{ flex-shrink:0; max-width:42%; }
+.iw-lib-item.iw-lib-note .iw-lib-text{ display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden; }
+.iw-warmth{ position:fixed; inset:0; pointer-events:none; z-index:30; background:#3a1d04; opacity:0; transition:opacity 2.4s ease; }
+.iw-dd-actions{ display:flex; gap:8px; margin:2px 0 4px; }
+.iw-eyebrow-btn{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:12px; letter-spacing:.06em; color:var(--ac1); background:transparent; border:1px solid rgba(var(--ac),0.28); border-radius:999px; padding:3px 11px; cursor:pointer; transition:all .2s; }
+.iw-eyebrow-btn:hover{ border-color:rgba(var(--ac),0.5); background:rgba(var(--ac),0.08); }
+.iw-daily-q{ border:1px solid rgba(var(--ac),0.14); border-radius:16px; padding:18px 18px 16px; margin-bottom:16px; background:rgba(var(--ac),0.03); }
+.iw-daily-tag{ font-size:12px; letter-spacing:.08em; color:var(--ac1); margin-bottom:9px; }
+.iw-daily-text{ font-family:"Songti SC","STSong",Georgia,serif; font-size:22px; line-height:1.5; color:#f1e7d3; }
+.iw-daily-acts{ display:flex; gap:8px; margin-top:14px; }
+.iw-daily-jotwrap{ margin-top:12px; }
+.iw-daily-jotwrap .iw-input{ width:100%; box-sizing:border-box; resize:vertical; margin-bottom:8px; font-family:-apple-system,"PingFang SC",sans-serif; }
+.iw-daily-nudge{ margin-top:12px; color:#c6b8a1; font-size:15px; line-height:1.7; }
+.iw-daily-nudge:empty{ display:none; }
+.iw-daily-notes{ margin-top:12px; }
+.iw-daily-noteh{ font-size:12px; color:#8a7a60; letter-spacing:.05em; margin-bottom:6px; }
+.iw-daily-note{ font-size:15px; line-height:1.7; color:#c6b8a1; padding:8px 12px; border-left:2px solid rgba(var(--ac),0.3); background:rgba(var(--ac),0.04); border-radius:0 8px 8px 0; margin-bottom:7px; white-space:pre-wrap; }
+.iw-daily-review{ margin-top:8px; padding-top:18px; border-top:1px solid rgba(var(--ac),0.1); }
+.iw-daily-revhead{ font-size:12px; letter-spacing:.08em; color:#8a7a60; margin-bottom:12px; }
+.iw-daily-revitem{ margin-bottom:14px; }
+.iw-daily-revq{ font-size:14px; color:var(--ac1); margin-bottom:4px; }
+.iw-daily-reva{ font-size:15px; line-height:1.7; color:#c6b8a1; white-space:pre-wrap; }
+.iw-money-tabs{ margin-bottom:16px; }
+.iw-money-acts{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.iw-opp{ border:1px solid rgba(var(--ac),0.16); border-radius:16px; padding:18px; background:rgba(var(--ac),0.03); }
+.iw-opp-tag{ font-size:12px; letter-spacing:.08em; color:var(--ac1); margin-bottom:9px; }
+.iw-opp-title{ font-family:"Songti SC","STSong",Georgia,serif; font-size:23px; line-height:1.4; color:#f1e7d3; margin-bottom:12px; }
+.iw-opp-gap{ font-size:15px; line-height:1.75; color:#c6b8a1; }
+.iw-opp-row{ display:flex; gap:10px; margin-top:11px; font-size:14px; line-height:1.7; }
+.iw-opp-k{ flex-shrink:0; color:var(--ac1); width:4.5em; }
+.iw-opp-v{ color:#b8aa92; }
+.iw-proj-new{ display:flex; gap:8px; align-items:center; margin-bottom:16px; }
+.iw-proj{ border:1px solid rgba(var(--ac),0.16); border-radius:16px; padding:16px; margin-bottom:16px; background:rgba(var(--ac),0.03); }
+.iw-proj-done{ border-color:rgba(120,190,130,0.4); background:rgba(120,190,130,0.05); }
+.iw-proj-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.iw-proj-name{ font-family:"Songti SC",serif; font-size:19px; color:#f1e7d3; line-height:1.35; }
+.iw-proj-prog{ font-size:12px; color:#8a7a60; margin-top:4px; letter-spacing:.05em; }
+.iw-proj-del{ flex-shrink:0; font-size:12px; color:#8a7a60; background:transparent; border:1px solid rgba(var(--ac),0.16); border-radius:999px; padding:4px 11px; cursor:pointer; }
+.iw-proj-del:hover{ color:#cf8a6a; border-color:rgba(207,138,106,0.4); }
+.iw-proj-bar{ height:4px; border-radius:999px; background:rgba(var(--ac),0.12); margin:12px 0 4px; overflow:hidden; }
+.iw-proj-barfill{ height:100%; background:var(--ac1); border-radius:999px; transition:width .3s; }
+.iw-step{ border-top:1px solid rgba(var(--ac),0.1); padding:14px 0 4px; }
+.iw-step-head{ display:flex; align-items:center; gap:10px; }
+.iw-step-chk{ flex-shrink:0; width:24px; height:24px; border-radius:999px; border:1px solid rgba(var(--ac),0.35); background:transparent; color:#8a7a60; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.iw-step-chk.on{ background:var(--ac1); border-color:var(--ac1); color:#1a1308; }
+.iw-step-label{ font-size:15px; color:#ece1cf; font-weight:500; }
+.iw-step-done .iw-step-label{ color:#8a7a60; }
+.iw-step-q{ font-size:13.5px; line-height:1.65; color:#9a8c76; margin:8px 0 9px 34px; }
+.iw-step-ta{ width:100%; box-sizing:border-box; resize:vertical; font-family:-apple-system,"PingFang SC",sans-serif; margin-left:0; }
+.iw-step-acts{ margin-top:9px; }
+.iw-step-help{ margin-top:10px; font-size:14px; line-height:1.7; color:#c6b8a1; white-space:pre-wrap; }
+.iw-step-help:empty{ display:none; }
+.iw-review-panel{ display:flex; flex-direction:column; overflow:hidden; height:84vh; padding-bottom:18px; }
+.iw-review-panel .iw-panel-head, .iw-review-topic, .iw-review-foot{ flex-shrink:0; }
+.iw-review-topic{ font-size:14px; line-height:1.6; color:var(--ac1); padding:11px 13px; background:rgba(var(--ac),0.06); border-radius:10px; margin-bottom:14px; }
+.iw-review-thread{ flex:1 1 auto; overflow-y:auto; min-height:120px; margin:0 -4px; padding:4px 4px 2px; }
+.iw-rv-turn{ margin-bottom:14px; display:flex; flex-direction:column; }
+.iw-rv-user{ align-items:flex-end; }
+.iw-rv-coach{ align-items:flex-start; }
+.iw-rv-who{ font-size:11px; letter-spacing:.08em; color:#8a7a60; margin-bottom:5px; }
+.iw-rv-bubble{ max-width:88%; font-size:15px; line-height:1.72; padding:11px 14px; border-radius:14px; white-space:pre-wrap; }
+.iw-rv-user .iw-rv-bubble{ background:rgba(var(--ac),0.14); color:#f1e7d3; border-bottom-right-radius:4px; }
+.iw-rv-coach .iw-rv-bubble{ background:rgba(255,255,255,0.04); color:#d8cab0; border:1px solid rgba(var(--ac),0.12); border-bottom-left-radius:4px; }
+.iw-rv-bubble.iw-rv-hint{ background:rgba(var(--ac),0.07); color:#c6b8a1; font-style:italic; }
+.iw-rv-bubble.iw-rv-ref{ background:rgba(122,162,122,0.09); border:1px solid rgba(122,182,132,0.32); color:#dce6d8; max-width:100%; }
+.iw-rv-savewrap{ margin:2px 0 12px; }
+.iw-review-foot{ padding-top:12px; border-top:1px solid rgba(var(--ac),0.1); margin-top:8px; }
+.iw-review-actions{ display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.iw-review-inputbar{ display:flex; gap:8px; align-items:flex-end; }
+.iw-review-inputbar .iw-input{ flex:1; resize:none; font-family:-apple-system,"PingFang SC",sans-serif; }
+.iw-mic{ flex-shrink:0; width:40px; height:40px; border-radius:999px; border:1px solid rgba(var(--ac),0.3); background:transparent; color:var(--ac1); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.iw-mic:hover{ background:rgba(var(--ac),0.08); }
+.iw-mic.on{ background:#cf5a4a; border-color:#cf5a4a; color:#fff; animation:iwpulse 1.2s infinite; }
+.iw-mic .ic{ width:19px; height:19px; }
+@keyframes iwpulse{ 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
+
+@media (max-width:520px){ .iw-title{ font-size:calc(30px * var(--cs)); } .iw-body{ font-size:calc(16.5px * var(--cs)); } .iw-stage{ padding:20px 22px; } }
 @media (prefers-reduced-motion: reduce){ .iw-card{ transition:none; } .iw-progress-fill{ transition:none; } }
 .iw-panel::-webkit-scrollbar{ width:8px; }
-.iw-panel::-webkit-scrollbar-thumb{ background:rgba(217,154,82,0.18); border-radius:4px; }
+.iw-panel::-webkit-scrollbar-thumb{ background:rgba(var(--ac),0.18); border-radius:4px; }
 .iw-panel::-webkit-scrollbar-track{ background:transparent; }
 </style>
 </head>
 <body>
 <div class="iw-root">
   <div class="iw-glow"></div>
+  <div class="iw-warmth" id="warmth"></div>
 
   <div class="iw-eyebrow">
     <span class="iw-clock" id="clock">--:--</span>
     <span class="iw-dot">·</span>
     <span id="date"></span>
     <span class="iw-spacer"></span>
+    <button class="iw-eyebrow-btn" id="btnDaily">今日思考</button>
+    <button class="iw-eyebrow-btn" id="btnMoney">搞钱</button>
+    <button class="iw-eyebrow-btn" id="btnReview">复盘</button>
     <span class="iw-mode" id="modeLabel">精选库</span>
   </div>
 
@@ -199,6 +319,12 @@ body{ overscroll-behavior:none; }
     <span class="iw-divider"></span>
     <button class="iw-btn" id="btnStar" aria-label="收藏">
       <svg class="ic" id="starIcon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26"/></svg>
+    </button>
+    <button class="iw-btn" id="btnDislike" aria-label="不感兴趣，不再出现">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="5" y1="5" x2="19" y2="19"/></svg>
+    </button>
+    <button class="iw-btn" id="btnSpeak" aria-label="朗读">
+      <svg class="ic" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
     </button>
     <button class="iw-btn" id="btnLib" aria-label="灵感库">
       <svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
@@ -247,6 +373,16 @@ body{ overscroll-behavior:none; }
       </div>
 
       <div class="iw-field">
+        <div class="iw-row">
+          <div>
+            <label class="iw-label" style="margin-bottom:4px">机锋频道</label>
+            <span class="iw-hint" style="margin:0">把高级俏皮的「机锋」短句混进轮播，每句可看招式与拆解</span>
+          </div>
+          <div class="iw-switch" id="witSwitch"></div>
+        </div>
+      </div>
+
+      <div class="iw-field">
         <label class="iw-label">AI 服务商（AI 现编时使用）</label>
         <select class="iw-input" id="provider">
           <option value="deepseek">DeepSeek（国产·便宜）</option>
@@ -279,6 +415,67 @@ body{ overscroll-behavior:none; }
         <p class="iw-hint" id="aiStatus"></p>
       </div>
 
+      <div class="iw-field">
+        <div class="iw-row">
+          <div>
+            <label class="iw-label" style="margin-bottom:4px">夜间护眼</label>
+            <span class="iw-hint" style="margin:0">入夜后自动调暗、调暖，清晨复原（适合常亮屏）</span>
+          </div>
+          <div class="iw-switch" id="warmthSwitch"></div>
+        </div>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">字号</label>
+        <div class="iw-chips" id="fontChips"></div>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">主题</label>
+        <div class="iw-seg" id="themeSeg">
+          <button class="iw-seg-btn" data-theme="warm">暖</button>
+          <button class="iw-seg-btn" data-theme="cool">冷</button>
+          <button class="iw-seg-btn" data-theme="violet">紫</button>
+        </div>
+      </div>
+
+      <div class="iw-field">
+        <div class="iw-row">
+          <div>
+            <label class="iw-label" style="margin-bottom:4px">自动朗读卡片</label>
+            <span class="iw-hint" style="margin:0">每翻到新卡片自动朗读（轻点喇叭可手动朗读/停止）</span>
+          </div>
+          <div class="iw-switch" id="ttsSwitch"></div>
+        </div>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">AI 自动生成时段（省钱）</label>
+        <select class="iw-input" id="genWindow">
+          <option value="all">全天自动</option>
+          <option value="8-20">8:00–20:00</option>
+          <option value="9-18">9:00–18:00</option>
+          <option value="off">关闭（仅手动换一批）</option>
+        </select>
+        <label class="iw-label" style="margin-top:14px">每日自动生成上限</label>
+        <select class="iw-input" id="dailyCap">
+          <option value="0">不限</option>
+          <option value="50">50 批/天</option>
+          <option value="100">100 批/天</option>
+          <option value="200">200 批/天</option>
+        </select>
+        <p class="iw-hint" id="usageNote" style="margin-top:11px"></p>
+      </div>
+
+      <div class="iw-field">
+        <label class="iw-label">跨设备同步</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="iw-input" id="syncPass" type="text" autocomplete="off" placeholder="设一句同步口令（各设备填同一句）" style="flex:1">
+          <button class="iw-save-btn" id="syncBtn" style="white-space:nowrap;padding:9px 14px">立即同步</button>
+        </div>
+        <p class="iw-hint" id="syncNote" style="margin-top:11px"></p>
+      </div>
+
       <div class="iw-field" style="margin-bottom:4px">
         <div class="iw-row">
           <div>
@@ -301,8 +498,88 @@ body{ overscroll-behavior:none; }
           <button class="iw-x" id="libClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
       </header>
-      <div id="libEmpty" class="iw-empty"><p>灵感库还是空的。</p><p class="iw-empty-sub">看到喜欢的卡片，点底部的 ★ 存下来，回头一起挑方向深挖。</p></div>
+      <div class="iw-lib-tools">
+        <input class="iw-input" id="libSearch" placeholder="搜索灵感库…">
+        <select class="iw-input" id="libDomain"><option value="">全部领域</option></select>
+      </div>
+      <div id="libEmpty" class="iw-empty"><p>灵感库还是空的。</p><p class="iw-empty-sub">看到喜欢的卡片，点底部的 ★ 存下来；在深挖里也可以收藏解读与追问。回头一起挑方向深入。</p></div>
       <div class="iw-lib-list" id="libList"></div>
+    </div>
+  </div>
+
+  <!-- deep dive -->
+  <div class="iw-overlay" id="ddOverlay">
+    <div class="iw-panel iw-dd">
+      <header class="iw-panel-head">
+        <span class="iw-dd-tag" id="ddTag"></span>
+        <button class="iw-x" id="ddClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </header>
+      <h2 class="iw-dd-title" id="ddTitle"></h2>
+      <div class="iw-dd-search" id="ddSearch"></div>
+      <div class="iw-dd-actions">
+        <button class="iw-save-btn" id="ddMore">✦ 多来点这种</button>
+        <button class="iw-save-btn" id="ddShare">⤓ 分享成图</button>
+      </div>
+      <div class="iw-dd-expl" id="ddExpl"></div>
+      <div class="iw-dd-savebar" id="ddExplSave"></div>
+      <div class="iw-dd-qs" id="ddQs"></div>
+      <div class="iw-thread" id="ddThread"></div>
+      <div class="iw-dd-input">
+        <input class="iw-input" id="ddInput" placeholder="追问任何相关的问题…">
+        <button class="iw-dd-send" id="ddSend"><svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 今日思考 -->
+  <div class="iw-overlay" id="dailyOverlay">
+    <div class="iw-panel">
+      <header class="iw-panel-head">
+        <span>今日思考 <em class="iw-num" id="dailyDate"></em></span>
+        <button class="iw-x" id="dailyClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </header>
+      <p class="iw-hint" style="margin:-2px 0 16px">一天两题，带着它慢慢想。答案别问 AI——它只负责出题，卡住了点「换个角度」。</p>
+      <div id="dailyBody"></div>
+      <div class="iw-daily-review">
+        <div class="iw-daily-revhead">回看 · 最近 7 天</div>
+        <div id="dailyReview"></div>
+      </div>
+    </div>
+  <!-- 搞钱 -->
+  <div class="iw-overlay" id="moneyOverlay">
+    <div class="iw-panel">
+      <header class="iw-panel-head">
+        <span>搞钱 <em class="iw-num" id="moneyDate"></em></span>
+        <button class="iw-x" id="moneyClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </header>
+      <div class="iw-seg iw-money-tabs" id="moneyTabs">
+        <button class="iw-seg-btn active" data-mt="opp">今日机会</button>
+        <button class="iw-seg-btn" data-mt="drill">今日练习</button>
+        <button class="iw-seg-btn" data-mt="proj">0→1 项目台</button>
+      </div>
+      <p class="iw-hint" style="margin:-2px 0 16px">机会卡是去验证的线索、不是承诺。真本事在项目台：每天推进一格，有人真付才算 0→1 走通。</p>
+      <div id="moneyBody"></div>
+    </div>
+  <!-- 深度复盘 -->
+  <div class="iw-overlay" id="reviewOverlay">
+    <div class="iw-panel iw-review-panel">
+      <header class="iw-panel-head">
+        <span>深度复盘 · 红队教练</span>
+        <button class="iw-x" id="reviewClose"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </header>
+      <div class="iw-review-topic" id="reviewTopic"></div>
+      <div class="iw-review-thread" id="reviewThread"></div>
+      <div class="iw-review-foot">
+        <div class="iw-review-actions">
+          <button class="iw-save-btn" id="reviewNudge">给个角度</button>
+          <button class="iw-save-btn" id="reviewStop">我扛完了 · 看参考视角</button>
+        </div>
+        <div class="iw-review-inputbar">
+          <button class="iw-mic" id="reviewMic" aria-label="语音输入"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button>
+          <textarea class="iw-input" id="reviewInput" rows="2" placeholder="说出或写下你的观点…"></textarea>
+          <button class="iw-dd-send" id="reviewSend"><svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -400,7 +677,117 @@ const CURATED = [
   { domain:"金融·市场", title:"投票机与称重机", body:"市场短期是投票机，长期是称重机——格雷厄姆如是说。", dig:"价值投资" }
 ];
 
-const INTERVALS = [1, 3, 5, 10, 15, 30];
+// 机锋种子（手写精挑）。kind:"wit"，句子放 title，body 留空，move=招式，crack=拆解。
+const WIT = [
+  // 自负但讲逻辑
+  { kind:"wit", move:"自负但讲逻辑", title:"我不太爱争论：赢了显得胜之不武，输了又不合事实。", crack:"两头都堵死——不论输赢都默认自己在理，自负藏在那句“不合事实”里。" },
+  { kind:"wit", move:"自负但讲逻辑", title:"我改主意很慢——开口之前，我一般已经替对方把反驳说完了。", crack:"用“考虑周全”包装“我早想到了”，显得不是固执，而是无可反驳。" },
+  { kind:"wit", move:"自负但讲逻辑", title:"谦虚是美德，我也想要；可惜每次刚谦虚两句，事实就出来拆台。", crack:"假意追求谦虚，再把锅甩给“事实”，等于让客观替你吹。" },
+  { kind:"wit", move:"自负但讲逻辑", title:"别人说我有自知之明，这个我认：毕竟我最清楚自己有多难得。", crack:"把“自知之明”这个谦词反向使用——你清楚的恰恰是自己的好。" },
+  { kind:"wit", move:"自负但讲逻辑", title:"我从不说自己永远对，那太满；我只是还没碰上需要更正的场合。", crack:"先表演不自满，再用一句更狂的话收回来，越克制越狂。" },
+  { kind:"wit", move:"自负但讲逻辑", title:"我对自己的判断很放心——它毕竟只需要说服一个相当挑剔的人。", crack:"“挑剔的人”就是自己，绕一圈把自负说得理所当然。" },
+  // 偷换定义
+  { kind:"wit", move:"偷换定义", title:"——你太轴了。——我更想说，我只是对“改主意”这事要求比较高。", crack:"不接“轴”，把它换成“高要求”，贬义瞬间变褒义。" },
+  { kind:"wit", move:"偷换定义", title:"——你怎么总有理由？——那不叫理由，叫“提前想明白”的副作用。", crack:"把“找借口”重新定义成“想得早”，指控反成夸奖。" },
+  { kind:"wit", move:"偷换定义", title:"我不固执。固执是错了还坚持；我这是对了还坚持，用词请准确。", crack:"先给对方的词下定义，再说自己不符合——用咬文嚼字反杀。" },
+  { kind:"wit", move:"偷换定义", title:"——你太敏感了。——我倾向于说，是我的分辨率比一般人高一点。", crack:"把“敏感”换成“分辨率高”，缺点立刻变成性能参数。" },
+  { kind:"wit", move:"偷换定义", title:"我不是挑，我只是过了那个会将就的年纪。", crack:"把“挑剔”换成“阅历”，显得不是毛病，而是成熟。" },
+  { kind:"wit", move:"偷换定义", title:"我不抠，我只是对“这钱值不值”这件事比较有原则。", crack:"把“抠”换成“有原则”，省钱听起来像价值观。" },
+  // 假装严谨
+  { kind:"wit", move:"假装严谨", title:"我不拖延，我只是在等任务攒够它应得的紧迫感，再一次性处理。", crack:"给拖延套上“蓄势/批处理”的工程腔，一本正经就好笑。" },
+  { kind:"wit", move:"假装严谨", title:"我没迷路，我是在对计划外的区域做一次临时的实地考察。", crack:"用“实地考察”这种正经词翻译“迷路”，反差出笑点。" },
+  { kind:"wit", move:"假装严谨", title:"我不是赖床，我是在让身体完成它认为有必要的额外维护。", crack:"把赖床说成“系统维护”，仿佛身体在跑后台程序。" },
+  { kind:"wit", move:"假装严谨", title:"这不算乱花钱，这是为“快乐”这个长期项目做的小额、高频投入。", crack:"用“投资/项目”的财经腔包装乱花钱，显得很有规划。" },
+  { kind:"wit", move:"假装严谨", title:"我没忘，我只是把它放进了一个优先级极低、且暂不刷新的队列。", crack:"用数据结构的术语形容“忘了”，越精确越荒诞。" },
+  { kind:"wit", move:"假装严谨", title:"我不是话少，我只是把发言权严格留给信息量为正的句子。", crack:"用“信息量为正”这种学术标准解释沉默，自抬又好笑。" },
+  // 精确到反常
+  { kind:"wit", move:"精确到反常", title:"我有 84% 的把握；剩下 16%，是我特意留给世界、免得它太无聊。", crack:"精确到 84% 已荒诞，再把误差说成“给世界留惊喜”，双重反常。" },
+  { kind:"wit", move:"精确到反常", title:"我一年只准自己认真生气两次——今天这事，还不够格用掉一次。", crack:"给情绪上“年度配额”，用精确额度反衬这事不值一气。" },
+  { kind:"wit", move:"精确到反常", title:"我大概只有三句真心话，刚那句用掉一句了，请珍惜。", crack:"把真心话量化成“三句”，精确得荒唐，也暗藏一点真意。" },
+  // 降维收尾
+  { kind:"wit", move:"降维收尾", title:"我认真想过自由意志、时间的方向、宇宙会不会重启——然后想起锅还在火上。", crack:"格局铺到宇宙，最后一句拉回厨房，反高潮一针泄气。" },
+  { kind:"wit", move:"降维收尾", title:"我已准备好面对人生所有的不确定与刁难——以及今天中午到底吃什么。", crack:"把“终极难题”和“中午吃啥”并列，落差就是笑点。" },
+  { kind:"wit", move:"降维收尾", title:"花一下午思考“我是谁”，结论是：一个该去倒垃圾的人。", crack:"宏大的自我追问，收在最琐碎的结论上，自嘲又机智。" }
+];
+const WIT_GUIDE = {
+  "自负但讲逻辑": "用一本正经、平静的逻辑去包装一点自负，越冷静越好笑；落点是“我其实很在行”，但说得理所当然、不张扬。",
+  "偷换定义": "不反驳别人给你的标签，而是把它换成一个对你有利的说法，换完你反而占理。",
+  "假装严谨": "给一个上不了台面的行为（拖延/赖床/乱花钱/忘事）套上学术腔或工程腔的正经解释。",
+  "精确到反常": "用一个荒谬又具体的数字或限定假装很科学，精确本身就是笑点。",
+  "降维收尾": "前面把格局铺得很大（人生/宇宙/时间），最后一句突然拉回一件极小的日常事，反高潮。"
+};
+const SEED_BIZ = [
+  "你今天最嫌麻烦的一件小事，如果有人做成服务卖给你，你愿意付多少钱？",
+  "你最近一次心甘情愿掏钱、且事后不后悔，买的是什么？它安抚了你哪种情绪？",
+  "只靠现有的本事，这周末要赚到 500 块，你冒出的第一个念头是什么？",
+  "你身边谁把一件普通事做出了“让人想多给钱”的感觉？他多做了什么？",
+  "你今天重复做了三遍以上的动作是什么？它值不值得被一次性解决？",
+  "你上一个“差点就买、最后没买”的东西，是什么拦住了你？"
+];
+const SEED_AI = [
+  "你今天用得最顺的那个 App，接上 AI，你最想它替你省掉哪一步？",
+  "你见过最“克制”的 AI 功能是哪个——它因为没做什么反而更好用？",
+  "给最懂你的那个 AI 加一个它现在没有的小能力，你先加哪个？为什么？",
+  "你最近被哪个产品的某个细节取悦到？换成 AI 来做会更好还是会毁掉它？",
+  "今天有没有哪个瞬间，你心想“这事真该有个 AI 帮我”？那是什么事？",
+  "若只能给一类人做一个 AI 工具，你会选谁、解决他哪个具体痛点？"
+];
+// 搞钱 · 机会卡种子（诚实版信息差：缝隙在哪 / AI 帮哪步 / 怎么最小验证）。偏向“会写代码 + 金融数据”的本钱。
+const MONEY_OPPS = [
+  { title:"把“查”卖成结论", gap:"小老板要的是结论，不是工具。用脚本+AI 半自动出一份《某细分行业本周速报》（政策、价格、招投标、对手动向）。", ai:"抓取、摘要、写成人话。", verify:"免费发 3 个相关老板一周，看有没有人问“能不能一直发给我”。" },
+  { title:"无聊行业的小工具", gap:"殡葬、回收、二手设备、小作坊报价——软件烂、从业者不碰 AI，缝隙最大。", ai:"把他们反复手算手抄的那一个动作做成网页小工具。", verify:"在对应行业群/贴吧潜水一周，记下被反复手动重复的那个动作，就是入口。" },
+  { title:"复杂文本的“人话版”", gap:"财报、合同、政策、理财条款——能把复杂条款翻成“人话+风险点”的人很稀缺，正贴你的金融底子。", ai:"翻译+标风险，你把关专业性。", verify:"挑一份真实的写成一页，发到对的群，看转发和“能不能也帮我看看这份”。" },
+  { title:"给中小企业做“数据体检”", gap:"很多公司有一堆 Excel 却从没被好好看过。一次性出一份“你的数据告诉你这几件事”的诊断报告。", ai:"清洗、找异常、出图出结论。", verify:"免费给 1 家做一份，看对方看完第一反应是不是“还能再深一点吗”。" },
+  { title:"把工作流打包成模板", gap:"你为自己搭过的脚本/提示词/小工具，很可能正是同行在手动熬夜做的。", ai:"把私货整理成别人能用的模板。", verify:"在你混的专业社群发一个免费精简版，看 star/留资/私信。" },
+  { title:"垂直领域的“陪问”知识库", gap:"某个窄领域（某类考证、某软件、某政策申报）信息散、客服烂。喂资料做个能准确答该领域问题的问答小站。", ai:"整理资料、做检索问答。", verify:"先在问答社区免费答一周该领域问题，看是否有人追问、愿付费要“一次问够”。" },
+  { title:"本地服务的线上化缝隙", gap:"本地某个线下生意（搬家、维修、宠物、托管）还在用微信手记。给它做个最小的预约/报价/记录页。", ai:"快速搭页面、自动算价/排期。", verify:"找 1 家真实小店问“我帮你做个这个你用不用”——他犹豫还是眼睛一亮，就是答案。" },
+  { title:"信息整理型的一次性付费", gap:"“把 XX 都整理好”这类需求长期存在（某地落户、某类补贴、某考试资料、某行业供应商名录）。做一份持续更新、买一次给一份的整理。", ai:"搜集、结构化、定期更新。", verify:"把目录和样张发出去预售，看有没有人愿意先付。" }
+];
+const MONEY_DRILLS = [
+  "你今天用过的一个付费产品，拆它靠什么收钱、定价锚在哪、你会怎么让它多收 30%？",
+  "为“你最近想做的那个点子”找出 5 个可能真付费的人——具体到谁、在哪，写下你从哪能接触他们。",
+  "把你最近做的一个小东西，写一句“谁会为它付钱、付多少”的报价，越具体越好。",
+  "你所在行业里，哪个环节大家还在手动重复做？如果你来自动化它，第一个会买的人是谁？",
+  "只用你现有的本事，明天就要收到第一笔钱，你冒出的第一个动作是什么？现在能不能就做？",
+  "挑一个你常用的免费产品，设计它的付费版：你会对谁、收什么钱、卡在哪个功能后面？"
+];
+// 0→1 项目台的固定五步
+const PROJ_STEPS = [
+  { key:"pain",  label:"痛点 & 谁痛",       q:"这解决谁的什么痛？具体到一类人——他为这事现在有多难受？" },
+  { key:"pay",   label:"谁掏钱、掏多少",    q:"具体哪个人会掏钱？掏多少？（不是“很多人”，是某个真实的人和一个数字）" },
+  { key:"mvp",   label:"最小可卖",          q:"这周你能交付的、最小的、能收钱的东西是什么？" },
+  { key:"reach", label:"前 10 个客户在哪",  q:"前 10 个客户具体在哪能找到？哪个群、哪个平台、哪些人？" },
+  { key:"proof", label:"验证 · 有人真付吗", q:"有没有 1 个人真愿意付钱、甚至预付？这是 0→1 是否走通的唯一标准。" }
+];
+// 深度复盘 · 红队教练提示词
+const RED_TEAM_SYS = `你是一个极其犀利的商业思维教练，扮演"红队/魔鬼代言人"。用户会就一个商业点子或问题陈述观点，你的任务不是认同他，而是逼他把逻辑想到能站住为止。这是一场激烈但有用的对抗。
+
+核心姿态：默认他的答案有漏洞，让他来证明。每一轮都先假设他错，逼他拿证据、数字、具体的人名或例子顶回来。
+
+专打含糊与乐观。凡是"很多人""刚需""市场很大""应该会买""未来会爆发""做个App/平台"这类舒服的空话，立刻揪住追问到具体：哪个人？多少钱？上次为这事花过钱吗？不做产品能不能先验证？现在为什么没人做——是你更聪明，还是这里有个你没看见的坑？
+
+扮演他的对手。该站到竞品、到不掏钱的客户、到泼冷水的投资人那一边，用最真实扎心的角度怼："我凭什么不用免费的、非要付钱给你？""这事大厂顺手就做了，你怎么办？"
+
+揪矛盾。他这一轮和前面自相打架，立刻拎出来对质。
+
+节奏：一次只递一两刀，最关键的那刀。别一口气抛七个问题淹没他。每次锁定他逻辑链上最脆弱的一环，钉穿，再走下一环。顺着这条线推进：痛点&谁在痛 → 现在怎么解决的、为什么不够 → 谁掏钱、掏多少 → 你凭什么是你做、护城河 → 怎么用最小成本验证。
+
+三条不可逾越的红线：
+1. 对事不对人。你攻击的永远是论证，不是这个人。说"这个推理有个洞"，绝不说"你不行"。不准羞辱、不准人身评判。
+2. 每一刀必须具体。空泛地抬杠（"你确定吗""真的吗""有道理吗"）是垃圾，禁止。每句反驳都要明确指出哪里站不住、为什么，最好带一个反例或一个对手视角。
+3. 肯认输。当他真的用证据、用具体的人和数字把你顶回去了，立刻承认："这条你扛住了。"然后推进到下一环。绝不为了赢而无限抬杠、死不松口、循环纠缠。
+
+绝不替他回答。在他喊停之前，你只提问、只反驳、只给视角，一个现成答案都不给。
+
+全程中文，口语，像一个真懂行、又不留情面、但打心底想让他变强的人。每轮回复简短有力，别长篇大论。`;
+const NUDGE_SYS = `用户在思考中卡住了，向你求助。不要替他回答，给他一个他没想到的切入角度、或一个能撬开思路的反问，一句话。把他推回去继续想。中文，简短。`;
+const REF_SYS = `对抗结束。现在给一份参考拆解，按"痛点 → 谁掏钱 → 最小可卖 → 护城河 → 怎么验证"几个关键点，讲一个有经验的人可能会怎么想这件事。开头第一句必须是："这只是一种思路，你的未必比它差。"
+
+结尾必须另起两行，明确点出：
+· 你这轮最站得住的一点（他哪一刀扛住了）
+· 最该补的一个洞（哪里还虚）
+
+诚恳、具体、到此为止，不要再反问。中文。`;
 const PRESETS = {
   deepseek:   { format:"openai", endpoint:"https://api.deepseek.com/chat/completions", model:"deepseek-chat", note:"国产、价格极低。浏览器通常不能直连，建议选「通过代理」。" },
   zhipu:      { format:"openai", endpoint:"https://open.bigmodel.cn/api/paas/v4/chat/completions", model:"glm-4-flash", note:"国产、GLM-4-Flash 免费。浏览器通常不能直连，建议选「通过代理」。" },
@@ -417,7 +804,7 @@ const PRESETS = {
 // 换任何设备打开都免配置。留空则保持精选库默认，需在设置里手动配 AI。
 const DEFAULT_PROXY_URL = "https://linggan-chuchuang-proxy.orange0390.workers.dev";
 // ================================
-const LIB_KEY = "iw_library", SET_KEY = "iw_settings", KEY_KEY = "iw_apikey", A2HS_KEY = "iw_a2hs_done", AIPOOL_KEY = "iw_aipool";
+const LIB_KEY = "iw_library", SET_KEY = "iw_settings", KEY_KEY = "iw_apikey", A2HS_KEY = "iw_a2hs_done", AIPOOL_KEY = "iw_aipool", SEEN_KEY = "iw_seen", BL_KEY = "iw_blacklist", USAGE_KEY = "iw_usage", BLDOM_KEY = "iw_blockdom", SYNC_LS = "iw_sync", WITPOOL_KEY = "iw_witpool", DAILY_KEY = "iw_daily", MONEY_KEY = "iw_money", MONEYOPP_KEY = "iw_moneyopps", PROJ_KEY = "iw_projects";
 
 const ICON_PLAY = '<svg class="ic ic-fill" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20"/></svg>';
 const ICON_PAUSE = '<svg class="ic ic-fill" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>';
@@ -429,11 +816,23 @@ function shuffle(a){ const r=a.slice(); for(let i=r.length-1;i>0;i--){ const j=M
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function today(){ const d = new Date(); return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(); }
 
 const S = {
-  shuffled: shuffle(CURATED), aiPool: [], mode: "curated", index: 0, paused: false,
-  intervalMin: 5, interests: "金融投资, 计算与AI, 科学冷知识", library: [],
-  elapsed: 0, loadingAI: false, aiError: "", aiProvider: "deepseek", aiTransport: "direct", endpoint: "", model: "", proxyUrl: "", apiKey: "", wakeOn: true
+  aiPool: [], mode: "curated",
+  history: [], histPos: 0, seen: {}, blacklist: {}, blockDomains: {},
+  paused: false, intervalMin: 5, interests: "金融投资, 计算与AI, 科学冷知识", library: [],
+  elapsed: 0, loadingAI: false, aiError: "",
+  aiProvider: "deepseek", aiTransport: "direct", endpoint: "", model: "", proxyUrl: "", apiKey: "", wakeOn: true,
+  warmthOn: true, ttsAuto: false, fontScale: 1, theme: "warm",
+  genWindow: "all", dailyCap: 0,
+  syncPass: "", syncKey: "", syncAt: 0,
+  witOn: false, witPool: [], witLoading: false,
+  daily: { date: "", biz: "", ai: "" }, dailyLoading: false,
+  money: { date: "", opp: null, drill: "" }, moneyOppPool: [], moneyLoading: false, projects: [],
+  usage: { day: "", count: 0, tokens: 0, total: 0, totalTokens: 0 }
 };
 
 // ---- load ----
@@ -450,9 +849,27 @@ const S = {
     if(typeof s.model === "string") S.model = s.model;
     if(typeof s.proxyUrl === "string") S.proxyUrl = s.proxyUrl;
     if(typeof s.wakeOn === "boolean") S.wakeOn = s.wakeOn;
+    if(typeof s.warmthOn === "boolean") S.warmthOn = s.warmthOn;
+    if(typeof s.ttsAuto === "boolean") S.ttsAuto = s.ttsAuto;
+    if([0.85,1,1.22,1.5].indexOf(s.fontScale) >= 0) S.fontScale = s.fontScale;
+    if(["warm","cool","violet"].indexOf(s.theme) >= 0) S.theme = s.theme;
+    if(["all","8-20","9-18","off"].indexOf(s.genWindow) >= 0) S.genWindow = s.genWindow;
+    if([0,50,100,200].indexOf(s.dailyCap) >= 0) S.dailyCap = s.dailyCap;
+    if(typeof s.witOn === "boolean") S.witOn = s.witOn;
   }catch(e){}
   S.apiKey = lsGet(KEY_KEY) || "";
   try{ const p = JSON.parse(lsGet(AIPOOL_KEY) || "[]"); if(Array.isArray(p)) S.aiPool = p.filter(function(c){ return c && c.title && c.body && c.domain; }); }catch(e){}
+  try{ const sn = JSON.parse(lsGet(SEEN_KEY) || "{}"); if(sn && typeof sn === "object") S.seen = sn; }catch(e){}
+  try{ const bl = JSON.parse(lsGet(BL_KEY) || "{}"); if(bl && typeof bl === "object") S.blacklist = bl; }catch(e){}
+  try{ const bd = JSON.parse(lsGet(BLDOM_KEY) || "{}"); if(bd && typeof bd === "object") S.blockDomains = bd; }catch(e){}
+  try{ const u = JSON.parse(lsGet(USAGE_KEY) || "{}"); if(u && typeof u === "object") S.usage = Object.assign(S.usage, u); }catch(e){}
+  try{ const sy = JSON.parse(lsGet(SYNC_LS) || "{}"); if(sy && typeof sy === "object"){ S.syncPass = sy.pass || ""; S.syncKey = sy.key || ""; } }catch(e){}
+  try{ const wp = JSON.parse(lsGet(WITPOOL_KEY) || "[]"); if(Array.isArray(wp)) S.witPool = wp.filter(function(c){ return c && c.title && c.kind === "wit"; }); }catch(e){}
+  try{ const dl = JSON.parse(lsGet(DAILY_KEY) || "{}"); if(dl && typeof dl === "object" && dl.date) S.daily = { date: dl.date||"", biz: dl.biz||"", ai: dl.ai||"" }; }catch(e){}
+  try{ const mo = JSON.parse(lsGet(MONEY_KEY) || "{}"); if(mo && typeof mo === "object" && mo.date) S.money = { date: mo.date||"", opp: mo.opp||null, drill: mo.drill||"" }; }catch(e){}
+  try{ const mp = JSON.parse(lsGet(MONEYOPP_KEY) || "[]"); if(Array.isArray(mp)) S.moneyOppPool = mp.filter(function(c){ return c && c.title && c.gap; }); }catch(e){}
+  try{ const pj = JSON.parse(lsGet(PROJ_KEY) || "[]"); if(Array.isArray(pj)) S.projects = pj.filter(function(p){ return p && p.id && p.name; }); }catch(e){}
+  if(S.usage.day !== today()){ S.usage.day = today(); S.usage.count = 0; S.usage.tokens = 0; }
 })();
 if(!S.endpoint) S.endpoint = PRESETS[S.aiProvider].endpoint;
 if(!S.model) S.model = PRESETS[S.aiProvider].model;
@@ -462,12 +879,62 @@ if(!S.model) S.model = PRESETS[S.aiProvider].model;
   if(!lsGet(SET_KEY)){ S.aiProvider = "deepseek"; S.aiTransport = "proxy"; S.mode = "ai"; if(!S.endpoint) S.endpoint = PRESETS.deepseek.endpoint; if(!S.model) S.model = PRESETS.deepseek.model; }
 })();
 
-function saveSettings(){ lsSet(SET_KEY, JSON.stringify({ intervalMin:S.intervalMin, mode:S.mode, interests:S.interests, aiProvider:S.aiProvider, aiTransport:S.aiTransport, endpoint:S.endpoint, model:S.model, proxyUrl:S.proxyUrl, wakeOn:S.wakeOn })); }
+function saveSettings(){ lsSet(SET_KEY, JSON.stringify({ intervalMin:S.intervalMin, mode:S.mode, interests:S.interests, aiProvider:S.aiProvider, aiTransport:S.aiTransport, endpoint:S.endpoint, model:S.model, proxyUrl:S.proxyUrl, wakeOn:S.wakeOn, warmthOn:S.warmthOn, ttsAuto:S.ttsAuto, fontScale:S.fontScale, theme:S.theme, genWindow:S.genWindow, dailyCap:S.dailyCap, witOn:S.witOn })); }
 function saveLibrary(){ lsSet(LIB_KEY, JSON.stringify(S.library)); }
 function saveAiPool(){ lsSet(AIPOOL_KEY, JSON.stringify(S.aiPool)); }
+function saveWitPool(){ lsSet(WITPOOL_KEY, JSON.stringify(S.witPool)); }
+function saveDaily(){ lsSet(DAILY_KEY, JSON.stringify(S.daily)); }
+function saveMoney(){ lsSet(MONEY_KEY, JSON.stringify(S.money)); }
+function saveMoneyOpps(){ lsSet(MONEYOPP_KEY, JSON.stringify(S.moneyOppPool)); }
+function saveProjects(){ lsSet(PROJ_KEY, JSON.stringify(S.projects)); }
+function saveSeen(){ lsSet(SEEN_KEY, JSON.stringify(S.seen)); }
+function saveBlacklist(){ lsSet(BL_KEY, JSON.stringify(S.blacklist)); }
+function saveBlockDomains(){ lsSet(BLDOM_KEY, JSON.stringify(S.blockDomains)); }
+function saveUsage(){ lsSet(USAGE_KEY, JSON.stringify(S.usage)); }
+function saveSync(){ lsSet(SYNC_LS, JSON.stringify({ pass:S.syncPass, key:S.syncKey })); }
 
-function deck(){ if(S.mode === "ai") return S.aiPool.length ? S.aiPool.concat(S.shuffled) : S.shuffled; return S.shuffled; }
-function currentCard(){ const d = deck(); return d[S.index % d.length] || d[0]; }
+function candidatePool(){
+  let base = (S.mode === "ai") ? CURATED.concat(S.aiPool) : CURATED.slice();
+  if(S.witOn) base = base.concat(WIT, S.witPool);
+  return base.filter(function(c){ return c && c.title && !S.blacklist[c.title]; });
+}
+function unseenCount(){ const pool = candidatePool(); let n = 0; for(let i=0;i<pool.length;i++){ if(!S.seen[pool[i].title]) n++; } return n; }
+function likeScores(){
+  const sc = {};
+  S.library.forEach(function(it){ if(it && it.domain){ sc[it.domain] = (sc[it.domain]||0) + (((it.type||"card")==="card") ? 2 : 1); } });
+  return sc;
+}
+function domainWeight(domain, likes){
+  const s = (likes[domain]||0) - 0.7*(S.blockDomains[domain]||0);
+  return Math.max(0.35, Math.min(4, 1 + 0.55*s));
+}
+function weightedPick(cands){
+  if(cands.length <= 1) return cands[0];
+  const likes = likeScores();
+  const w = cands.map(function(c){ return domainWeight(c.domain, likes); });
+  let total = 0; for(let i=0;i<w.length;i++) total += w[i];
+  let r = Math.random() * total;
+  for(let i=0;i<cands.length;i++){ r -= w[i]; if(r <= 0) return cands[i]; }
+  return cands[cands.length-1];
+}
+function pickNext(){
+  const pool = candidatePool();
+  if(pool.length === 0) return currentCard() || CURATED[0];
+  const recent = {};
+  const k = Math.min(40, Math.max(1, pool.length - 1));
+  S.history.slice(-k).forEach(function(c){ recent[c.title] = 1; });
+  const cur = currentCard(); if(cur) recent[cur.title] = 1;
+  let cands = pool.filter(function(c){ return !S.seen[c.title] && !recent[c.title]; });
+  if(cands.length) return weightedPick(cands);
+  cands = pool.filter(function(c){ return !recent[c.title]; });
+  if(cands.length) return weightedPick(cands);
+  cands = pool.filter(function(c){ return !cur || c.title !== cur.title; });
+  if(!cands.length) cands = pool;
+  return cands[Math.floor(Math.random() * cands.length)];
+}
+function markSeen(c){ if(c && c.title && !S.seen[c.title]){ S.seen[c.title] = 1; saveSeen(); } }
+function pushNew(){ const c = pickNext(); S.history.push(c); if(S.history.length > 400) S.history = S.history.slice(-400); S.histPos = S.history.length - 1; markSeen(c); return c; }
+function currentCard(){ return S.history[S.histPos] || null; }
 
 // ---- toast ----
 let toastT = null;
@@ -483,6 +950,7 @@ function setCardContent(){
   if(c.dig){ $("dig").style.display = ""; $("dig").innerHTML = "深挖 · <span></span>"; $("dig").querySelector("span").textContent = c.dig; }
   else { $("dig").style.display = "none"; }
   updateStar();
+  if(S.ttsAuto) speakCard(c); else stopSpeak();
 }
 function renderCard(animate){
   const card = $("card");
@@ -491,23 +959,36 @@ function renderCard(animate){
 }
 function updateStar(){
   const c = currentCard();
-  const inLib = c && S.library.some(x => x.title === c.title);
+  const inLib = c && S.library.some(x => (x.type||"card")==="card" && x.title === c.title);
   $("btnStar").classList.toggle("active", !!inLib);
   $("starIcon").querySelector("polygon").setAttribute("fill", inLib ? "currentColor" : "none");
 }
 function updateProgress(){ $("progFill").style.width = (Math.min(1, S.elapsed/(S.intervalMin*60))*100).toFixed(2) + "%"; }
 
-function goTo(dir){
-  const d = deck(); const len = d.length;
-  S.index = ((S.index + dir) % len + len) % len;
+function goNext(){
+  if(S.histPos < S.history.length - 1){ S.histPos++; }
+  else { pushNew(); }
   S.elapsed = 0; renderCard(true); updateProgress(); maybePrefetch();
+}
+function goPrev(){
+  if(S.histPos > 0){ S.histPos--; S.elapsed = 0; renderCard(true); updateProgress(); }
+}
+function dislikeCurrent(){
+  const c = currentCard(); if(!c) return;
+  S.blacklist[c.title] = 1; saveBlacklist();
+  if(c.domain){ S.blockDomains[c.domain] = (S.blockDomains[c.domain]||0) + 1; saveBlockDomains(); }
+  S.aiPool = S.aiPool.filter(function(x){ return x.title !== c.title; }); saveAiPool();
+  S.history = S.history.filter(function(x){ return x.title !== c.title; });
+  pushNew();
+  S.elapsed = 0; renderCard(true); updateProgress(); maybePrefetch();
+  toast("已隐藏，不再出现"); scheduleSync();
 }
 
 // ---- rotation & clock ----
 setInterval(function(){
-  if(S.paused) return;
+  if(S.paused || anyOverlay()) return;
   S.elapsed += 0.5;
-  if(S.elapsed >= S.intervalMin*60){ goTo(1); } else { updateProgress(); }
+  if(S.elapsed >= S.intervalMin*60){ goNext(); } else { updateProgress(); }
 }, 500);
 
 function tickClock(){
@@ -520,41 +1001,96 @@ function tickClock(){
 }
 setInterval(tickClock, 20000); tickClock();
 
-// ---- play / pause ----
+// ---- play / pause / nav ----
 function renderPlay(){ $("btnPlay").innerHTML = S.paused ? ICON_PLAY : ICON_PAUSE; $("btnPlay").setAttribute("aria-label", S.paused ? "继续" : "暂停"); }
 $("btnPlay").addEventListener("click", function(){ S.paused = !S.paused; renderPlay(); });
-$("btnPrev").addEventListener("click", function(){ goTo(-1); });
-$("btnNext").addEventListener("click", function(){ goTo(1); });
+$("btnPrev").addEventListener("click", function(){ goPrev(); });
+$("btnNext").addEventListener("click", function(){ goNext(); });
+$("btnDislike").addEventListener("click", function(){ dislikeCurrent(); });
+
+// ---- text to speech ----
+let speaking = false;
+function pickZhVoice(){
+  try{ const vs = window.speechSynthesis.getVoices() || []; return vs.find(function(v){ return /zh|chinese|cmn/i.test(v.lang + " " + v.name); }) || null; }catch(e){ return null; }
+}
+function stopSpeak(){ try{ window.speechSynthesis.cancel(); }catch(e){} speaking = false; updateSpeakBtn(); }
+function speakCard(c){
+  if(!("speechSynthesis" in window) || !c) return;
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(c.title + "。" + c.body);
+    u.lang = "zh-CN"; const v = pickZhVoice(); if(v) u.voice = v; u.rate = 0.98;
+    u.onend = function(){ speaking = false; updateSpeakBtn(); };
+    u.onerror = function(){ speaking = false; updateSpeakBtn(); };
+    speaking = true; updateSpeakBtn();
+    window.speechSynthesis.speak(u);
+  }catch(e){ speaking = false; updateSpeakBtn(); }
+}
+function updateSpeakBtn(){ const b = $("btnSpeak"); if(b) b.classList.toggle("active", speaking); }
+$("btnSpeak").addEventListener("click", function(){ if(speaking) stopSpeak(); else speakCard(currentCard()); });
+if(!("speechSynthesis" in window)) $("btnSpeak").style.display = "none";
 
 // ---- star / library ----
 $("btnStar").addEventListener("click", function(){
   const c = currentCard(); if(!c) return;
-  if(S.library.some(x => x.title === c.title)){ toast("已在灵感库中"); return; }
-  S.library.unshift({ domain:c.domain, title:c.title, body:c.body, dig:c.dig, savedAt:Date.now() });
-  saveLibrary(); updateStar(); updateLibCount(); toast("已加入灵感库 ★");
+  if(S.library.some(x => (x.type||"card")==="card" && x.title === c.title)){ toast("已在灵感库中"); return; }
+  S.library.unshift({ type:"card", domain:c.domain, title:c.title, body:c.body, dig:c.dig, savedAt:Date.now() });
+  saveLibrary(); updateStar(); updateLibCount(); toast("已加入灵感库 ★"); scheduleSync();
 });
 function updateLibCount(){ const n = S.library.length; const el = $("libCount"); el.textContent = n; el.style.display = n>0 ? "" : "none"; }
+
+function saveNote(obj){
+  obj.type = "note"; obj.savedAt = Date.now();
+  if(S.library.some(x => x.type==="note" && x.title===obj.title && x.body===obj.body)){ toast("已在灵感库中"); return false; }
+  S.library.unshift(obj); saveLibrary(); updateLibCount(); toast("已收藏到灵感库 ★"); scheduleSync(); return true;
+}
+function makeSaveBtn(getNote){
+  const b = document.createElement("button"); b.className = "iw-save-btn"; b.textContent = "收藏";
+  b.addEventListener("click", function(){ const ok = saveNote(getNote()); if(ok){ b.textContent = "已收藏"; b.classList.add("done"); b.disabled = true; } });
+  return b;
+}
+
+function populateLibDomains(){
+  const sel = $("libDomain"); const cur = sel.value;
+  const doms = []; S.library.forEach(function(c){ if(c.domain && doms.indexOf(c.domain)<0) doms.push(c.domain); });
+  sel.innerHTML = '<option value="">全部领域</option>' + doms.map(function(d){ return '<option value="'+d.replace(/"/g,"&quot;")+'">'+d+'</option>'; }).join("");
+  if(doms.indexOf(cur)>=0) sel.value = cur;
+}
+function openLibrary(){ populateLibDomains(); renderLibrary(); $("libOverlay").classList.add("show"); }
 
 function renderLibrary(){
   $("libNum").textContent = S.library.length;
   const list = $("libList"), empty = $("libEmpty");
+  const q = ($("libSearch").value || "").trim().toLowerCase();
+  const dom = $("libDomain").value || "";
   list.innerHTML = "";
-  if(S.library.length === 0){ empty.style.display = ""; return; }
+  const items = S.library.filter(function(c){
+    if(dom && c.domain !== dom) return false;
+    if(q){ const hay = ((c.title||"")+" "+(c.body||"")+" "+(c.domain||"")+" "+(c.dig||"")+" "+(c.source||"")).toLowerCase(); if(hay.indexOf(q)<0) return false; }
+    return true;
+  });
+  if(S.library.length === 0){ empty.style.display = ""; empty.querySelector("p").textContent = "灵感库还是空的。"; return; }
+  if(items.length === 0){ empty.style.display = ""; empty.querySelector("p").textContent = "没有匹配的内容。"; return; }
   empty.style.display = "none";
-  S.library.forEach(function(c){
-    const item = document.createElement("div"); item.className = "iw-lib-item";
+  items.forEach(function(c){
+    const isNote = c.type === "note";
+    const item = document.createElement("div"); item.className = "iw-lib-item" + (isNote ? " iw-lib-note" : "");
     const body = document.createElement("div"); body.className = "iw-lib-body";
-    const tag = document.createElement("div"); tag.className = "iw-lib-tag"; tag.textContent = c.domain;
+    const tag = document.createElement("div"); tag.className = "iw-lib-tag"; tag.textContent = (isNote ? "笔记 · " : "") + (c.domain||"");
     const title = document.createElement("div"); title.className = "iw-lib-title"; title.textContent = c.title;
     const text = document.createElement("div"); text.className = "iw-lib-text"; text.textContent = c.body;
-    const dig = document.createElement("div"); dig.className = "iw-lib-dig"; dig.textContent = "深挖 · " + (c.dig||"");
-    body.appendChild(tag); body.appendChild(title); body.appendChild(text); body.appendChild(dig);
+    body.appendChild(tag); body.appendChild(title); body.appendChild(text);
+    const meta = document.createElement("div"); meta.className = "iw-lib-dig";
+    meta.textContent = isNote ? ("来自《" + (c.source||"") + "》") : ("深挖 · " + (c.dig||""));
+    body.appendChild(meta);
     const tr = document.createElement("button"); tr.className = "iw-trash"; tr.innerHTML = ICON_TRASH; tr.setAttribute("aria-label","移除");
-    tr.addEventListener("click", function(){ S.library = S.library.filter(x => x.title !== c.title); saveLibrary(); renderLibrary(); updateLibCount(); updateStar(); });
+    tr.addEventListener("click", function(){ S.library = S.library.filter(function(x){ return x.savedAt !== c.savedAt || x.title !== c.title; }); saveLibrary(); populateLibDomains(); renderLibrary(); updateLibCount(); updateStar(); });
     item.appendChild(body); item.appendChild(tr);
     list.appendChild(item);
   });
 }
+$("libSearch").addEventListener("input", renderLibrary);
+$("libDomain").addEventListener("change", renderLibrary);
 
 async function tryCopy(text){
   try{ await navigator.clipboard.writeText(text); return true; }
@@ -565,7 +1101,10 @@ async function tryCopy(text){
 }
 $("btnCopy").addEventListener("click", async function(){
   if(!S.library.length) return;
-  const md = "# 我的灵感库\n\n" + S.library.map(function(c){ return "## "+c.title+"\n- 领域："+c.domain+"\n- "+c.body+"\n- 深挖方向："+c.dig; }).join("\n\n");
+  const md = "# 我的灵感库\n\n" + S.library.map(function(c){
+    if(c.type === "note") return "## " + c.title + "\n来自《" + (c.source||"") + "》（" + (c.domain||"") + "）\n\n" + c.body;
+    return "## " + c.title + "\n- 领域：" + c.domain + "\n- " + c.body + "\n- 深挖方向：" + c.dig;
+  }).join("\n\n");
   const ok = await tryCopy(md);
   if(ok){ $("copyIcon").innerHTML = ICON_CHECK; $("copyLabel").textContent = "已复制"; setTimeout(function(){ $("copyIcon").innerHTML = ICON_COPY; $("copyLabel").textContent = "复制为 Markdown"; }, 1600); }
   else toast("复制失败，请手动选择");
@@ -587,7 +1126,15 @@ function aiConfigured(){
   return !!S.apiKey && !!ep;
 }
 
-async function fetchAI(n, manual){
+function prefsHint(){
+  const likes = likeScores(); let hint = "";
+  const liked = Object.keys(likes).sort(function(a,b){ return likes[b]-likes[a]; }).slice(0,4);
+  if(liked.length) hint += "我尤其常收藏这些方向，可多一些：" + liked.join("、") + "。";
+  const blk = Object.keys(S.blockDomains).filter(function(d){ return S.blockDomains[d] > 0; }).sort(function(a,b){ return S.blockDomains[b]-S.blockDomains[a]; }).slice(0,3);
+  if(blk.length) hint += "我不太感兴趣、请尽量少或避免这些方向：" + blk.join("、") + "。";
+  return hint;
+}
+async function fetchAI(n, manual, focus){
   n = n || 8;
   if(S.loadingAI) return;
   if(S.mode !== "ai"){ if(manual) toast("请先把内容来源切到 AI 现编"); return; }
@@ -595,15 +1142,23 @@ async function fetchAI(n, manual){
   const fmt = PRESETS[S.aiProvider].format;
   S.loadingAI = true; updateRegen(); updateAiStatus();
   try{
-    const prompt =
-      "你是一个跨领域知识与灵感卡片生成器。请生成 " + n + " 张简短、耐人寻味、适合一眼读完的卡片，" +
-      "尽量覆盖不同领域（宇宙物理/数学/生物演化/大脑认知/经济博弈/历史/哲学/艺术设计/计算与AI/语言文字/思维模型/反直觉事实/开放问题/工程/金融市场 等）。" +
-      (S.interests.trim() ? "可适度偏向这些兴趣方向：" + S.interests + "。" : "") +
+    const common =
       "请尽量给出新颖、少见的内容，避免最常被引用的那几个经典例子。" +
       "要求：内容须是公认、经得起推敲的事实，或清晰标注的概念/思想模型；避免编造数字与争议性断言。" +
       "每张包含字段：domain(领域中文短标签，2-5字)、title(8-18字、有钩子的标题)、body(1-2句、45字内的正文)、dig(一个适合进一步深挖的中文关键词或短语)。" +
       "只输出 JSON 数组，不要任何额外文字、解释或 Markdown 围栏。" +
       '格式：[{"domain":"","title":"","body":"","dig":""}]';
+    let prompt;
+    if(focus){
+      prompt =
+        "你是知识灵感卡片生成器。请围绕「" + (focus.domain||"") + "」这个方向，参考这张卡片的调性与深度：《" + focus.title + "》——" + focus.body + "。" +
+        "生成 " + n + " 张题材相近、同样一眼读完、但彼此不同、且不要与上面那张重复的卡片。" + common;
+    } else {
+      prompt =
+        "你是一个跨领域知识与灵感卡片生成器。请生成 " + n + " 张简短、耐人寻味、适合一眼读完的卡片，" +
+        "尽量覆盖不同领域（宇宙物理/数学/生物演化/大脑认知/经济博弈/历史/哲学/艺术设计/计算与AI/语言文字/思维模型/反直觉事实/开放问题/工程/金融市场 等）。" +
+        (S.interests.trim() ? "可适度偏向这些兴趣方向：" + S.interests + "。" : "") + prefsHint() + common;
+    }
     let url, headers = { "content-type":"application/json" }, body;
     if(fmt === "anthropic"){
       body = { model: S.model || "claude-sonnet-4-6", max_tokens:1500, messages:[{ role:"user", content:prompt }] };
@@ -631,17 +1186,276 @@ async function fetchAI(n, manual){
     if(!Array.isArray(arr)) throw new Error("返回格式无法解析");
     const have = {}; CURATED.concat(S.aiPool, S.library).forEach(function(c){ have[c.title] = 1; });
     const fresh = arr.filter(function(c){ return c && c.title && c.body && c.domain && !have[c.title]; });
-    S.aiError = "";
+    S.aiError = ""; recordUsage(data && data.usage, true);
     if(fresh.length){ S.aiPool = S.aiPool.concat(fresh).slice(-200); saveAiPool(); if(manual) toast("新增 " + fresh.length + " 张 AI 卡片"); }
     else if(manual) toast("没有新内容，换个兴趣方向再试");
   }catch(e){ S.aiError = (e && e.message) ? e.message : "请检查接入设置"; if(manual) toast("AI 现编失败：" + S.aiError); }
   finally{ S.loadingAI = false; updateRegen(); updateAiStatus(); }
 }
 function maybePrefetch(){
-  if(S.mode !== "ai" || S.loadingAI || !aiConfigured()) return;
+  if(S.mode !== "ai" || S.loadingAI || !aiConfigured() || !genAllowed()) return;
   if(S.aiPool.length === 0){ fetchAI(8, false); return; }
-  const pos = S.index % deck().length;
-  if(pos >= S.aiPool.length - 3) fetchAI(8, false);
+  if(unseenCount() <= 3) fetchAI(8, false);
+}
+async function fetchWit(move, n){
+  n = n || 6;
+  if(S.witLoading) return;
+  if(!aiConfigured()){ toast("先在设置里配置 AI"); return; }
+  if(!WIT_GUIDE[move]){ move = "自负但讲逻辑"; }
+  S.witLoading = true;
+  try{
+    const prompt =
+      "你在帮我练习“高级机锋”式的中文俏皮话。请写 " + n + " 句，全部属于「" + move + "」这一招：" + WIT_GUIDE[move] +
+      " 总体要求：高级、克制、像王尔德或钱钟书那种干冷机智；绝不油腻、不肉麻、不冒犯、不卖惨，不要用烂梗或网络词（如“bug”“识货”“上线”“社死”之类）；每句独立成立、读完会心一笑、且结构清晰到能被学走。" +
+      "每句再配一句“拆解”，点破这句的机关（为什么高/为什么好笑）。" +
+      "只输出 JSON 数组：[{\"line\":\"\",\"crack\":\"\"}]，不要任何额外文字或 Markdown 围栏。";
+    const raw = await callLLM(prompt, 1200);
+    const clean = String(raw).replace(/```json/g, "").replace(/```/g, "").trim();
+    let arr;
+    try{ arr = JSON.parse(clean); }catch(e){ const m = clean.match(/\[[\s\S]*\]/); arr = m ? JSON.parse(m[0]) : null; }
+    if(!Array.isArray(arr)) throw new Error("返回格式无法解析");
+    const have = {}; WIT.concat(S.witPool, S.library).forEach(function(c){ have[c.title] = 1; });
+    const fresh = [];
+    arr.forEach(function(o){
+      const line = o && (o.line || o.title); if(!line) return;
+      const t = String(line).trim();
+      if(have[t] || S.blacklist[t]) return;
+      fresh.push({ kind:"wit", move:move, domain:"机锋 · " + move, title:t, body:"", dig:"", crack:String((o && o.crack) || "").trim() });
+      have[t] = 1;
+    });
+    if(fresh.length){ S.witPool = S.witPool.concat(fresh).slice(-120); saveWitPool(); toast("新增 " + fresh.length + " 句机锋"); }
+    else toast("没有新句子，过会儿再试");
+  }catch(e){ toast("生成失败：" + ((e && e.message) || "请检查 AI 设置")); }
+  finally{ S.witLoading = false; }
+}
+
+// ---- deep dive ----
+async function callLLM(prompt, maxTokens){
+  if(!aiConfigured()) throw new Error("未配置 AI");
+  const fmt = PRESETS[S.aiProvider].format;
+  let url, headers = { "content-type":"application/json" }, body;
+  if(fmt === "anthropic"){
+    body = { model: S.model || "claude-sonnet-4-6", max_tokens: maxTokens || 1024, messages:[{ role:"user", content:prompt }] };
+    if(S.aiTransport === "proxy"){ url = S.proxyUrl; }
+    else { url = "https://api.anthropic.com/v1/messages"; headers["x-api-key"] = S.apiKey; headers["anthropic-version"] = "2023-06-01"; headers["anthropic-dangerous-direct-browser-access"] = "true"; }
+  } else {
+    body = { model: S.model || "gpt-4o-mini", messages:[{ role:"user", content:prompt }], max_tokens: maxTokens || 1024, temperature:0.7 };
+    if(S.aiTransport === "proxy"){ url = S.proxyUrl; }
+    else { url = S.endpoint; headers["authorization"] = "Bearer " + S.apiKey; }
+  }
+  const resp = await fetch(url, { method:"POST", headers:headers, body:JSON.stringify(body) });
+  const data = await resp.json();
+  if(!resp.ok || (data && data.error)){ let m = (data && data.error && (data.error.message || data.error)) || ("请求失败 HTTP " + resp.status); if(typeof m !== "string") m = JSON.stringify(m); throw new Error(m); }
+  if(data && data.usage) recordUsage(data.usage, false);
+  if(fmt === "anthropic") return (data.content || []).map(function(b){ return b.type === "text" ? b.text : ""; }).join("\n");
+  return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || "";
+}
+function parseJsonLoose(text){
+  const clean = String(text).replace(/```json/g,"").replace(/```/g,"").trim();
+  try{ return JSON.parse(clean); }catch(e){ const m = clean.match(/\{[\s\S]*\}/); if(m) return JSON.parse(m[0]); throw new Error("解析失败"); }
+}
+async function streamInto(el, prompt, maxTokens){
+  const url = (S.aiTransport === "proxy") ? S.proxyUrl : S.endpoint;
+  const headers = { "content-type":"application/json" };
+  if(S.aiTransport !== "proxy") headers["authorization"] = "Bearer " + S.apiKey;
+  const body = { model: S.model || "gpt-4o-mini", messages:[{ role:"user", content:prompt }], max_tokens: maxTokens || 900, temperature:0.7, stream:true, stream_options:{ include_usage:true } };
+  const resp = await fetch(url, { method:"POST", headers:headers, body:JSON.stringify(body) });
+  if(!resp.ok){ let m = "请求失败 HTTP " + resp.status; try{ const d = await resp.json(); const dm = d && d.error && (d.error.message || d.error); if(dm) m = (typeof dm === "string") ? dm : JSON.stringify(dm); }catch(e){} throw new Error(m); }
+  const reader = resp.body.getReader(); const dec = new TextDecoder();
+  let buf = "", raw = "", full = "", sawDelta = false, usageObj = null;
+  el.textContent = "";
+  while(true){
+    const r = await reader.read(); if(r.done) break;
+    const chunk = dec.decode(r.value, { stream:true }); raw += chunk; buf += chunk;
+    let idx;
+    while((idx = buf.indexOf("\n")) >= 0){
+      const line = buf.slice(0, idx).trim(); buf = buf.slice(idx + 1);
+      if(!line || line.charAt(0) === ":") continue;
+      if(line.indexOf("data:") === 0){
+        const p = line.slice(5).trim();
+        if(p === "[DONE]") continue;
+        try{ const j = JSON.parse(p); if(j.usage) usageObj = j.usage; const piece = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content; if(piece){ sawDelta = true; full += piece; el.textContent = full; } }catch(e){}
+      }
+    }
+  }
+  if(!sawDelta){ try{ const j = JSON.parse(raw.trim()); const c = j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content; if(c) full = c; if(j.usage) usageObj = j.usage; }catch(e){} }
+  if(usageObj) recordUsage(usageObj, false);
+  renderRich(el, full || "（无内容）");
+  return full;
+}
+function showExplSave(c, explanation){
+  const bar = $("ddExplSave"); bar.innerHTML = "";
+  if(!explanation) return;
+  bar.appendChild(makeSaveBtn(function(){ return { domain: c.domain, title: "解读 · " + c.title, body: explanation, source: c.title }; }));
+}
+
+let ddCard = null;
+function anyOverlay(){ return $("setOverlay").classList.contains("show") || $("libOverlay").classList.contains("show") || $("ddOverlay").classList.contains("show") || $("dailyOverlay").classList.contains("show") || $("moneyOverlay").classList.contains("show") || $("reviewOverlay").classList.contains("show"); }
+function ddCacheGet(t){ try{ const m = JSON.parse(lsGet("iw_ddcache") || "{}"); return m[t] || null; }catch(e){ return null; } }
+function ddCacheSet(t, v){ try{ const m = JSON.parse(lsGet("iw_ddcache") || "{}"); m[t] = v; const ks = Object.keys(m); if(ks.length > 60) delete m[ks[0]]; lsSet("iw_ddcache", JSON.stringify(m)); }catch(e){} }
+function searchLinks(q){ const e = encodeURIComponent(q); return [["Bing","https://cn.bing.com/search?q="+e],["百度","https://www.baidu.com/s?wd="+e],["Google","https://www.google.com/search?q="+e]]; }
+
+function renderRich(container, text){
+  container.innerHTML = "";
+  String(text).split(/\n{2,}/).forEach(function(p){
+    if(!p.trim()) return;
+    const el = document.createElement("p"); el.className = "iw-dd-p";
+    let html = esc(p);
+    html = html.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+    html = html.replace(/\n/g, "<br>");
+    html = html.replace(/\[\[(.+?)\]\]/g, function(_, t){ return '<span class="iw-term" data-term="' + t.replace(/"/g, "&quot;") + '">' + t + "</span>"; });
+    el.innerHTML = html;
+    container.appendChild(el);
+  });
+  container.querySelectorAll(".iw-term").forEach(function(s){ s.addEventListener("click", function(){ ask("解释「" + s.getAttribute("data-term") + "」"); }); });
+}
+
+function openDeepDive(){
+  const c = currentCard(); if(!c) return;
+  ddCard = c;
+  $("ddTag").textContent = c.domain;
+  $("ddTitle").textContent = c.title;
+  const sw = $("ddSearch");
+  $("ddQs").innerHTML = ""; $("ddThread").innerHTML = ""; $("ddInput").value = ""; $("ddExplSave").innerHTML = "";
+  $("ddOverlay").classList.add("show");
+  if(c.kind === "wit"){
+    sw.innerHTML = ""; sw.style.display = "none";
+    $("ddMore").textContent = "✦ 再来几句这个招式";
+    $("ddInput").placeholder = "想把这句改改或换个说法？问我…";
+    const expl = $("ddExpl"); expl.innerHTML = "";
+    const h = document.createElement("p"); h.className = "iw-dd-p"; h.innerHTML = "<b>拆解机关 · " + esc(c.move || "") + "</b>";
+    const p = document.createElement("p"); p.className = "iw-dd-p"; p.textContent = c.crack || "这一招的骨架，见招式分类。";
+    expl.appendChild(h); expl.appendChild(p);
+    showExplSave(c, "【" + (c.move || "") + "】" + c.title + "\n拆解：" + (c.crack || ""));
+  } else {
+    sw.style.display = "";
+    searchLinks(c.title).forEach(function(p){ const a = document.createElement("a"); a.href = p[1]; a.target = "_blank"; a.rel = "noopener"; a.textContent = "搜 " + p[0]; sw.appendChild(a); });
+    $("ddMore").textContent = "✦ 多来点这种";
+    $("ddInput").placeholder = "追问任何相关的问题…";
+    loadExplanation(c);
+  }
+}
+function closeDeepDive(){ $("ddOverlay").classList.remove("show"); }
+
+async function loadExplanation(c){
+  const expl = $("ddExpl");
+  const cached = ddCacheGet(c.title);
+  if(cached){ renderRich(expl, cached.explanation); renderQuestions(cached.questions); showExplSave(c, cached.explanation); return; }
+  if(!aiConfigured()){ expl.innerHTML = '<p class="iw-dd-loading">配置 AI 后可在这里展开详细解读；目前可先用上面的搜索链接。</p>'; return; }
+  expl.innerHTML = '<p class="iw-dd-loading">正在展开详细解读…</p>';
+  try{
+    const prompt = "这是一张知识卡片，标题《" + c.title + "》，内容：「" + c.body + "」。请基于公认知识，用中文写一段更详细、准确、好懂的展开解读（约150-300字，可分两段），避免空话套话；在其中最值得进一步了解的 3-6 个关键概念或术语两侧用 [[ ]] 标注（例如 [[纳什均衡]]）。再给出我可能想继续追问的 3 个延伸问题。只输出 JSON：{\"explanation\":\"...\",\"questions\":[\"...\",\"...\",\"...\"]}";
+    const raw = await callLLM(prompt, 1024);
+    const obj = parseJsonLoose(raw);
+    const explanation = (obj && obj.explanation) ? obj.explanation : raw;
+    const questions = (obj && Array.isArray(obj.questions)) ? obj.questions.slice(0, 4) : [];
+    renderRich(expl, explanation);
+    renderQuestions(questions);
+    showExplSave(c, explanation);
+    ddCacheSet(c.title, { explanation: explanation, questions: questions });
+  }catch(e){ expl.innerHTML = '<p class="iw-dd-loading">展开失败：' + esc((e && e.message) || "请检查 AI 设置") + '。可先用上面的搜索链接。</p>'; }
+}
+function renderQuestions(questions){
+  const qs = $("ddQs"); qs.innerHTML = "";
+  (questions || []).forEach(function(q){ const b = document.createElement("button"); b.className = "iw-qchip"; b.textContent = q; b.addEventListener("click", function(){ ask(q); }); qs.appendChild(b); });
+}
+async function ask(text){
+  text = (text || "").trim(); if(!text) return;
+  const thread = $("ddThread");
+  const qa = document.createElement("div"); qa.className = "iw-qa";
+  const qEl = document.createElement("div"); qEl.className = "iw-q"; qEl.textContent = text;
+  const aEl = document.createElement("div"); aEl.className = "iw-a"; aEl.innerHTML = '<p class="iw-dd-loading">…</p>';
+  qa.appendChild(qEl); qa.appendChild(aEl); thread.appendChild(qa);
+  aEl.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  if(!aiConfigured()){ aEl.innerHTML = '<p class="iw-dd-loading">未配置 AI，无法追问。</p>'; return; }
+  let ansText = "";
+  try{
+    const prompt = "围绕知识卡片《" + (ddCard ? ddCard.title : "") + "》（" + (ddCard ? ddCard.body : "") + "）这个话题，简洁、准确地回答或解释：「" + text + "」。中文，必要时举一个例子；在其中关键概念两侧用 [[ ]] 标注；直接给内容，不要任何前缀。";
+    if(PRESETS[S.aiProvider].format === "openai"){ ansText = await streamInto(aEl, prompt, 900); }
+    else { ansText = await callLLM(prompt, 900); renderRich(aEl, ansText); }
+  }catch(e){ aEl.innerHTML = '<p class="iw-dd-loading">回答失败：' + esc((e && e.message) || "") + '</p>'; return; }
+  if(ansText && ansText.trim()){
+    qa.appendChild(makeSaveBtn(function(){ return { domain: ddCard ? ddCard.domain : "", title: text, body: ansText, source: ddCard ? ddCard.title : "" }; }));
+  }
+}
+$("card").addEventListener("click", openDeepDive);
+$("ddClose").addEventListener("click", closeDeepDive);
+$("ddOverlay").addEventListener("click", function(e){ if(e.target === $("ddOverlay")) closeDeepDive(); });
+$("ddSend").addEventListener("click", function(){ const v = $("ddInput").value; $("ddInput").value = ""; ask(v); });
+$("ddInput").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); const v = $("ddInput").value; $("ddInput").value = ""; ask(v); } });
+$("ddMore").addEventListener("click", function(){
+  const c = ddCard || currentCard(); if(!c) return;
+  if(!aiConfigured()){ toast("先在设置里配置 AI"); return; }
+  if(c.kind === "wit"){
+    if(!S.witOn){ S.witOn = true; saveSettings(); renderWit(); }
+    toast("正在生成同招式的机锋…");
+    fetchWit(c.move, 6);
+    return;
+  }
+  if(S.mode !== "ai"){ S.mode = "ai"; saveSettings(); renderModeSeg(); }
+  toast("正在生成同类灵感…");
+  fetchAI(6, true, { domain:c.domain, title:c.title, body:c.body });
+});
+$("ddShare").addEventListener("click", function(){ shareCard(ddCard || currentCard()); });
+
+const SHARE_TH = {
+  warm:   { bg1:"#241c13", bg2:"#0d0a07", ac:"#e0a35c", title:"#f1e7d3", body:"#c6b29a" },
+  cool:   { bg1:"#141c22", bg2:"#080b0d", ac:"#7fb6cf", title:"#e6eef2", body:"#aebcc6" },
+  violet: { bg1:"#1c1623", bg2:"#0a080d", ac:"#bda6e8", title:"#ece6f5", body:"#bcb0cc" }
+};
+function wrapCJK(ctx, text, maxW){
+  const lines = []; let line = "";
+  const arr = Array.from(String(text));
+  for(let i=0;i<arr.length;i++){
+    const ch = arr[i];
+    if(ch === "\n"){ lines.push(line); line = ""; continue; }
+    const test = line + ch;
+    if(ctx.measureText(test).width > maxW && line){ lines.push(line); line = ch; }
+    else line = test;
+  }
+  if(line) lines.push(line);
+  return lines;
+}
+function shareCard(c){
+  if(!c) return;
+  const W = 1080, H = 1350, pad = 96;
+  const th = SHARE_TH[S.theme] || SHARE_TH.warm;
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const ctx = cv.getContext("2d");
+  const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, th.bg1); g.addColorStop(1, th.bg2);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  const rg = ctx.createRadialGradient(W*0.5, H*0.12, 0, W*0.5, H*0.12, W*0.7);
+  rg.addColorStop(0, th.ac + "22"); rg.addColorStop(1, th.ac + "00");
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+  ctx.textBaseline = "top";
+  // domain tag
+  ctx.fillStyle = th.ac; ctx.font = "600 30px -apple-system,'PingFang SC',sans-serif";
+  ctx.fillText(String(c.domain || ""), pad, 150);
+  // title (serif, wrapped)
+  ctx.fillStyle = th.title; ctx.font = "600 66px 'Songti SC','STSong',Georgia,serif";
+  const tLines = wrapCJK(ctx, c.title, W - pad*2);
+  let y = 250; const tLH = 92;
+  tLines.forEach(function(ln){ ctx.fillText(ln, pad, y); y += tLH; });
+  // body (wrapped)
+  y += 28; ctx.fillStyle = th.body; ctx.font = "350 38px -apple-system,'PingFang SC',sans-serif";
+  const bLines = wrapCJK(ctx, c.body, W - pad*2);
+  const bLH = 62; bLines.forEach(function(ln){ ctx.fillText(ln, pad, y); y += bLH; });
+  // dig
+  if(c.dig){ ctx.fillStyle = th.ac; ctx.font = "400 32px -apple-system,'PingFang SC',sans-serif"; ctx.fillText("深挖 · " + c.dig, pad, H - 250); }
+  // footer
+  ctx.fillStyle = th.ac + "cc"; ctx.font = "600 28px 'Songti SC',serif"; ctx.fillText("灵感橱窗", pad, H - 150);
+  ctx.fillStyle = th.body + "88"; ctx.font = "350 24px -apple-system,sans-serif"; ctx.fillText("一次一张，慢慢看", pad, H - 110);
+  // export
+  const name = (String(c.title).replace(/[\\\/:*?"<>|\s]+/g, "_").slice(0, 24) || "card") + ".png";
+  cv.toBlob(async function(blob){
+    if(!blob){ toast("生成图片失败"); return; }
+    try{
+      const file = new File([blob], name, { type:"image/png" });
+      if(navigator.canShare && navigator.canShare({ files:[file] }) && navigator.share){ await navigator.share({ files:[file], title:c.title }); return; }
+    }catch(e){}
+    const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    toast("已生成图片");
+  }, "image/png");
 }
 
 // ---- settings UI ----
@@ -694,11 +1508,556 @@ $("btnRegen").addEventListener("click", function(){ fetchAI(8, true); });
 function renderWake(){ $("wakeSwitch").classList.toggle("on", S.wakeOn); }
 $("wakeSwitch").addEventListener("click", function(){ S.wakeOn = !S.wakeOn; saveSettings(); renderWake(); if(S.wakeOn) acquireWake(); else releaseWake(); });
 
+// ---- appearance: font size / theme / auto-tts ----
+const ROOT = document.querySelector(".iw-root");
+const FONTS = [["小",0.85],["中",1],["大",1.22],["特大",1.5]];
+function applyAppearance(){
+  ROOT.className = "iw-root" + (S.theme === "warm" ? "" : " theme-" + S.theme);
+  ROOT.style.setProperty("--cs", String(S.fontScale));
+}
+(function buildFontChips(){
+  const wrap = $("fontChips");
+  FONTS.forEach(function(f){
+    const b = document.createElement("button"); b.className = "iw-chip"; b.textContent = f[0];
+    b.addEventListener("click", function(){ S.fontScale = f[1]; saveSettings(); renderFontChips(); applyAppearance(); });
+    wrap.appendChild(b);
+  });
+})();
+function renderFontChips(){ const ch = $("fontChips").children; for(let i=0;i<ch.length;i++){ ch[i].classList.toggle("active", FONTS[i][1] === S.fontScale); } }
+function renderTheme(){ $("themeSeg").querySelectorAll(".iw-seg-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-theme") === S.theme); }); }
+$("themeSeg").querySelectorAll(".iw-seg-btn").forEach(function(b){ b.addEventListener("click", function(){ S.theme = b.getAttribute("data-theme"); saveSettings(); renderTheme(); applyAppearance(); }); });
+function renderTts(){ $("ttsSwitch").classList.toggle("on", S.ttsAuto); }
+$("ttsSwitch").addEventListener("click", function(){ S.ttsAuto = !S.ttsAuto; saveSettings(); renderTts(); if(S.ttsAuto) speakCard(currentCard()); else stopSpeak(); });
+
+// ---- cost: generation window / daily cap / usage ----
+function renderGen(){ $("genWindow").value = S.genWindow; $("dailyCap").value = String(S.dailyCap); }
+$("genWindow").addEventListener("change", function(e){ S.genWindow = e.target.value; saveSettings(); maybePrefetch(); });
+$("dailyCap").addEventListener("change", function(e){ S.dailyCap = parseInt(e.target.value,10) || 0; saveSettings(); updateUsageNote(); });
+function genAllowed(){
+  if(S.genWindow === "off") return false;
+  if(S.dailyCap > 0 && S.usage.day === today() && S.usage.count >= S.dailyCap) return false;
+  if(S.genWindow === "8-20" || S.genWindow === "9-18"){
+    const h = new Date().getHours();
+    const lo = (S.genWindow === "8-20") ? 8 : 9, hi = (S.genWindow === "8-20") ? 20 : 18;
+    if(h < lo || h >= hi) return false;
+  }
+  return true;
+}
+function recordUsage(usage, isGen){
+  if(S.usage.day !== today()){ S.usage.day = today(); S.usage.count = 0; S.usage.tokens = 0; }
+  if(isGen) S.usage.count += 1;
+  let tk = 0;
+  if(usage) tk = usage.total_tokens || ((usage.prompt_tokens||0) + (usage.completion_tokens||0)) || ((usage.input_tokens||0) + (usage.output_tokens||0)) || 0;
+  if(tk){ S.usage.tokens += tk; S.usage.totalTokens = (S.usage.totalTokens||0) + tk; }
+  saveUsage(); updateUsageNote();
+}
+function updateUsageNote(){
+  const el = $("usageNote"); if(!el) return;
+  const cap = S.dailyCap > 0 ? (" / 上限 " + S.dailyCap) : "";
+  el.textContent = "今日自动生成 " + (S.usage.count||0) + " 批" + cap + " · 今日约 " + (S.usage.tokens||0) + " tokens · 累计约 " + (S.usage.totalTokens||0) + " tokens";
+}
+
+// ---- nighttime warmth (auto dim/warm) ----
+function warmthAlpha(){
+  if(!S.warmthOn) return 0;
+  const h = new Date().getHours() + new Date().getMinutes()/60;
+  if(h >= 6 && h < 18) return 0;
+  let a;
+  if(h >= 18 && h < 22) a = (h - 18) / 4 * 0.34;
+  else if(h >= 22 && h < 24) a = 0.34 + (h - 22) / 2 * 0.06;
+  else if(h >= 0 && h < 5) a = 0.40;
+  else a = 0.40 * (1 - (h - 5)); // 5-6 复原
+  return Math.max(0, Math.min(0.40, a));
+}
+function applyWarmth(){ const el = $("warmth"); if(el) el.style.opacity = String(warmthAlpha()); }
+function renderWarmth(){ $("warmthSwitch").classList.toggle("on", S.warmthOn); }
+$("warmthSwitch").addEventListener("click", function(){ S.warmthOn = !S.warmthOn; saveSettings(); renderWarmth(); applyWarmth(); });
+setInterval(applyWarmth, 60000);
+document.addEventListener("visibilitychange", function(){ if(!document.hidden) applyWarmth(); });
+
+
+// ---- cross-device sync (Worker + KV) ----
+async function sha256hex(s){ const b = new TextEncoder().encode(s); const h = await crypto.subtle.digest("SHA-256", b); return Array.from(new Uint8Array(h)).map(function(x){ return x.toString(16).padStart(2,"0"); }).join(""); }
+function persistAll(){ saveLibrary(); saveBlacklist(); saveBlockDomains(); saveSeen(); saveAiPool(); saveProjects(); }
+function syncSnapshot(){ return { v:1, library:S.library, blacklist:S.blacklist, blockDomains:S.blockDomains, seen:S.seen, aiPool:S.aiPool, projects:S.projects, savedAt:Date.now() }; }
+function mergeRemote(r){
+  if(!r || typeof r !== "object") return;
+  if(Array.isArray(r.library)){
+    const key = function(it){ return (it.type||"card") + "|" + (it.title||"") + "|" + ((it.body||"").slice(0,40)); };
+    const have = {}; S.library.forEach(function(it){ have[key(it)] = 1; });
+    r.library.forEach(function(it){ if(it && it.title && !have[key(it)]){ S.library.push(it); have[key(it)] = 1; } });
+    S.library.sort(function(a,b){ return (b.savedAt||0) - (a.savedAt||0); });
+  }
+  if(r.blacklist) Object.keys(r.blacklist).forEach(function(t){ S.blacklist[t] = 1; });
+  if(r.blockDomains) Object.keys(r.blockDomains).forEach(function(d){ const v = r.blockDomains[d]||0; if((S.blockDomains[d]||0) < v) S.blockDomains[d] = v; });
+  if(r.seen) Object.keys(r.seen).forEach(function(t){ S.seen[t] = 1; });
+  if(Array.isArray(r.aiPool)){
+    const have = {}; S.aiPool.forEach(function(c){ have[c.title] = 1; });
+    r.aiPool.forEach(function(c){ if(c && c.title && c.body && c.domain && !have[c.title] && !S.blacklist[c.title]){ S.aiPool.push(c); have[c.title] = 1; } });
+    S.aiPool = S.aiPool.slice(-200);
+  }
+  if(Array.isArray(r.projects)){
+    const byId = {}; S.projects.forEach(function(p){ byId[p.id] = p; });
+    r.projects.forEach(function(p){ if(!p || !p.id) return; const cur = byId[p.id]; if(!cur){ S.projects.push(p); byId[p.id] = p; } else if((p.updatedAt||0) > (cur.updatedAt||0)){ Object.assign(cur, p); } });
+    S.projects.sort(function(a,b){ return (b.updatedAt||b.createdAt||0) - (a.updatedAt||a.createdAt||0); });
+  }
+}
+let syncBusy = false, syncT = null;
+async function syncNow(silent){
+  if(!S.syncKey){ if(!silent) toast("先设置同步口令"); return; }
+  if(!S.proxyUrl){ if(!silent) toast("同步需要先填「代理地址」（带 KV 的 Worker）"); return; }
+  if(syncBusy) return; syncBusy = true; if(!silent) toast("同步中…");
+  const base = S.proxyUrl.replace(/\/+$/, "");
+  try{
+    let remote = null;
+    const rp = await fetch(base + "/sync?k=" + encodeURIComponent(S.syncKey));
+    if(rp.status === 501){ if(!silent) toast("Worker 还没绑定 KV（见同步说明）"); syncBusy = false; return; }
+    if(rp.ok){ try{ remote = await rp.json(); }catch(e){} }
+    mergeRemote(remote); persistAll();
+    updateLibCount(); if($("libOverlay").classList.contains("show")){ populateLibDomains(); renderLibrary(); }
+    const put = await fetch(base + "/sync?k=" + encodeURIComponent(S.syncKey), { method:"PUT", headers:{ "content-type":"application/json" }, body: JSON.stringify(syncSnapshot()) });
+    if(put.status === 501){ if(!silent) toast("Worker 还没绑定 KV（见同步说明）"); }
+    else { S.syncAt = Date.now(); if(!silent) toast("已同步 ✓"); }
+    updateSyncNote();
+  }catch(e){ if(!silent) toast("同步失败：" + ((e && e.message) || "网络错误")); }
+  finally{ syncBusy = false; }
+}
+function scheduleSync(){ if(!S.syncKey || !S.proxyUrl) return; clearTimeout(syncT); syncT = setTimeout(function(){ syncNow(true); }, 4000); }
+async function setSyncPass(pass){
+  pass = (pass || "").trim();
+  if(!pass){ S.syncPass = ""; S.syncKey = ""; saveSync(); updateSyncNote(); return; }
+  S.syncPass = pass;
+  const hex = await sha256hex("iw-sync::" + pass);
+  S.syncKey = "iw_" + hex.slice(0, 40);
+  saveSync(); updateSyncNote(); syncNow(false);
+}
+function updateSyncNote(){
+  const el = $("syncNote"); if(!el) return;
+  if(!S.proxyUrl){ el.textContent = "同步需要先在上面配置「代理地址」（带 KV 的 Worker）。"; return; }
+  if(!S.syncKey){ el.textContent = "在每台设备填同一句口令即可同步灵感库与偏好。口令只用于生成同步标识、不会上传明文；建议用一句别人猜不到的话。"; return; }
+  el.textContent = "口令已设 · 各设备填相同口令即可。收藏/拉黑会自动同步，也可随时点「立即同步」。";
+}
+$("syncPass").addEventListener("change", function(e){ setSyncPass(e.target.value); });
+$("syncBtn").addEventListener("click", function(){ syncNow(false); });
+
+// ---- 机锋频道开关 ----
+function renderWit(){ const sw = $("witSwitch"); if(sw) sw.classList.toggle("on", S.witOn); }
+if($("witSwitch")) $("witSwitch").addEventListener("click", function(){ S.witOn = !S.witOn; saveSettings(); renderWit(); toast(S.witOn ? "机锋已混入轮播" : "机锋已关闭"); });
+
+// ---- 今日思考 ----
+function el(tag, cls, txt){ const e = document.createElement(tag); if(cls) e.className = cls; if(txt != null) e.textContent = txt; return e; }
+function monthDay(){ const n = new Date(); return (n.getMonth()+1) + "月" + n.getDate() + "日"; }
+function seedDaily(){
+  const n = new Date(); const idx = n.getFullYear()*372 + n.getMonth()*31 + n.getDate();
+  S.daily = { date: today(), biz: SEED_BIZ[idx % SEED_BIZ.length], ai: SEED_AI[idx % SEED_AI.length] };
+  saveDaily();
+}
+async function ensureDaily(force){
+  if(!force && S.daily.date === today() && S.daily.biz && S.daily.ai) return;
+  if(!aiConfigured()){ seedDaily(); renderDaily(); return; }
+  if(S.dailyLoading) return;
+  S.dailyLoading = true; renderDaily();
+  try{
+    const prompt =
+      "请各出一道“每日思考题”，分别属于两个维度，用于我每天带着它自己琢磨——务必不要给出答案。" +
+      "维度一“玩商/商业嗅觉”：勾连我的日常生活与消费、训练我发现机会与价值的开放问题。" +
+      "维度二“AI 产品”：让我从用户或创造者视角观察、想象 AI 产品的开放问题；重启发、可迁移，别追一周就过时的热点。" +
+      "两题都要：开放、没有标准答案、具体勾着日常、各一句话、28 字以内、口语、不端着。" +
+      "只输出 JSON：{\"biz\":\"\",\"ai\":\"\"}，不要任何额外文字或 Markdown。";
+    const raw = await callLLM(prompt, 400);
+    const obj = parseJsonLoose(raw);
+    if(obj && obj.biz && obj.ai){ S.daily = { date: today(), biz: String(obj.biz).trim(), ai: String(obj.ai).trim() }; saveDaily(); }
+    else seedDaily();
+  }catch(e){ seedDaily(); }
+  finally{ S.dailyLoading = false; renderDaily(); }
+}
+function renderDailyNotes(container, q){
+  container.innerHTML = "";
+  const ns = S.library.filter(function(it){ return it.type === "note" && (it.domain||"").indexOf("今日思考") === 0 && it.title === q; });
+  if(!ns.length) return;
+  container.appendChild(el("div", "iw-daily-noteh", "你记下的"));
+  ns.forEach(function(it){ container.appendChild(el("div", "iw-daily-note", it.body)); });
+}
+async function giveNudge(out, label, q){
+  if(!aiConfigured()){ toast("配置 AI 后可给思路提示"); return; }
+  out.textContent = "想个角度…";
+  try{
+    const prompt = "我在思考这道“" + label + "”的开放问题：「" + q + "」。请不要替我回答，只给我一个能打开思路的新角度、或一个反问，一句话、30 字内，引导我自己继续想。直接给那句话。";
+    const raw = await callLLM(prompt, 200);
+    out.textContent = "💡 " + String(raw).trim();
+  }catch(e){ out.textContent = "提示获取失败"; }
+}
+function renderReview(){
+  const box = $("dailyReview"); if(!box) return; box.innerHTML = "";
+  const wk = Date.now() - 7*24*3600*1000;
+  const ns = S.library
+    .filter(function(it){ return it.type === "note" && (it.domain||"").indexOf("今日思考") === 0 && (it.savedAt||0) >= wk; })
+    .sort(function(a,b){ return (b.savedAt||0) - (a.savedAt||0); });
+  if(!ns.length){ box.innerHTML = '<p class="iw-hint" style="margin:0">这周还没记下思考。想到什么就点「记一笔」，周末回看就有了。</p>'; return; }
+  ns.forEach(function(it){
+    const item = el("div", "iw-daily-revitem");
+    item.appendChild(el("div", "iw-daily-revq", it.title));
+    item.appendChild(el("div", "iw-daily-reva", it.body));
+    box.appendChild(item);
+  });
+}
+function renderDaily(){
+  $("dailyDate").textContent = monthDay();
+  const body = $("dailyBody"); if(!body) return; body.innerHTML = "";
+  [["biz", "玩商", S.daily.biz], ["ai", "AI 产品", S.daily.ai]].forEach(function(row){
+    const label = row[1], q = row[2];
+    const block = el("div", "iw-daily-q");
+    block.appendChild(el("div", "iw-daily-tag", label));
+    if(!q){
+      block.appendChild(el("div", "iw-daily-text", S.dailyLoading ? "正在出题…" : "出题没成功"));
+      if(!S.dailyLoading){ const acts = el("div", "iw-daily-acts"); const retry = el("button", "iw-save-btn", "重试"); retry.addEventListener("click", function(){ ensureDaily(true); }); acts.appendChild(retry); block.appendChild(acts); }
+      body.appendChild(block); return;
+    }
+    block.appendChild(el("div", "iw-daily-text", q));
+    const acts = el("div", "iw-daily-acts");
+    const jotBtn = el("button", "iw-save-btn", "记一笔");
+    const nudgeBtn = el("button", "iw-save-btn", "换个角度");
+    const rvBtn = el("button", "iw-save-btn", "深度复盘");
+    rvBtn.addEventListener("click", function(){ $("dailyOverlay").classList.remove("show"); openReview(q); });
+    acts.appendChild(jotBtn); acts.appendChild(nudgeBtn); acts.appendChild(rvBtn); block.appendChild(acts);
+    const jotwrap = el("div", "iw-daily-jotwrap"); jotwrap.style.display = "none";
+    const ta = document.createElement("textarea"); ta.className = "iw-input"; ta.rows = 3; ta.placeholder = "写下你此刻的想法…";
+    const saveBtn = el("button", "iw-save-btn", "存入思考库");
+    jotwrap.appendChild(ta); jotwrap.appendChild(saveBtn); block.appendChild(jotwrap);
+    const nudgeOut = el("div", "iw-daily-nudge"); block.appendChild(nudgeOut);
+    const notes = el("div", "iw-daily-notes"); block.appendChild(notes);
+    jotBtn.addEventListener("click", function(){ jotwrap.style.display = (jotwrap.style.display === "none") ? "" : "none"; if(jotwrap.style.display === "") ta.focus(); });
+    saveBtn.addEventListener("click", function(){
+      const v = ta.value.trim(); if(!v){ toast("写点什么再存"); return; }
+      saveNote({ domain: "今日思考 · " + label, title: q, body: v, source: "今日思考" });
+      ta.value = ""; jotwrap.style.display = "none"; renderDailyNotes(notes, q); scheduleSync();
+    });
+    nudgeBtn.addEventListener("click", function(){ giveNudge(nudgeOut, label, q); });
+    renderDailyNotes(notes, q);
+    body.appendChild(block);
+  });
+  renderReview();
+}
+function openDaily(){ $("dailyOverlay").classList.add("show"); renderDaily(); ensureDaily(false); }
+$("btnDaily").addEventListener("click", openDaily);
+$("dailyClose").addEventListener("click", function(){ $("dailyOverlay").classList.remove("show"); });
+$("dailyOverlay").addEventListener("click", function(e){ if(e.target === $("dailyOverlay")) $("dailyOverlay").classList.remove("show"); });
+
+// ---- 搞钱 ----
+let moneyTab = "opp";
+function moneyPool(){ return MONEY_OPPS.concat(S.moneyOppPool); }
+function pickDailyOpp(){ const pool = moneyPool(); const n = new Date(); const idx = n.getFullYear()*372 + n.getMonth()*31 + n.getDate(); return pool[idx % pool.length]; }
+function seedMoneyDrill(){ const n = new Date(); const idx = n.getFullYear()*372 + n.getMonth()*31 + n.getDate(); return MONEY_DRILLS[idx % MONEY_DRILLS.length]; }
+async function ensureMoney(force){
+  if(force || S.money.date !== today() || !S.money.opp){ S.money.opp = pickDailyOpp(); }
+  if(force || S.money.date !== today() || !S.money.drill){
+    if(aiConfigured()){
+      try{
+        const prompt = "请出一道“搞钱小练习”，让我今天 15 分钟内就能动手做，用于训练商业嗅觉与执行力。要求：具体、可立即执行、是思维或行动的练习（不是知识问答），一句话、30 字内、口语。只输出这句话本身，不要引号或解释。";
+        const raw = await callLLM(prompt, 160);
+        S.money.drill = String(raw).trim().replace(/^["“]|["”]$/g, "") || seedMoneyDrill();
+      }catch(e){ S.money.drill = seedMoneyDrill(); }
+    } else { S.money.drill = seedMoneyDrill(); }
+  }
+  S.money.date = today(); saveMoney();
+}
+async function fetchMoneyOpps(n){
+  n = n || 5;
+  if(S.moneyLoading) return;
+  if(!aiConfigured()){ toast("先在设置里配置 AI"); return; }
+  S.moneyLoading = true; toast("正在挖几个机会…");
+  try{
+    const prompt =
+      "你在帮我找“可去验证的搞钱缝隙”，不是热门快讯、不是空泛点子。请给 " + n + " 个机会，" +
+      "每个都聚焦一个真实存在、还没被做透的小缝隙，并明确：缝隙在哪、AI 能帮你做哪一步、怎样用最小成本验证（是线索不是承诺）。" +
+      "尽量偏向“会写代码、有金融/数据底子的人”能落地的方向，避免泛泛的搬运、带货、刷量。" +
+      "每个含字段：title(6-12字钩子)、gap(缝隙与做法，1-2句)、ai(AI帮哪步，短句)、verify(最小验证怎么做，1句)。" +
+      "只输出 JSON 数组：[{\"title\":\"\",\"gap\":\"\",\"ai\":\"\",\"verify\":\"\"}]，不要任何额外文字或 Markdown。";
+    const raw = await callLLM(prompt, 1400);
+    const clean = String(raw).replace(/```json/g, "").replace(/```/g, "").trim();
+    let arr; try{ arr = JSON.parse(clean); }catch(e){ const m = clean.match(/\[[\s\S]*\]/); arr = m ? JSON.parse(m[0]) : null; }
+    if(!Array.isArray(arr)) throw new Error("返回格式无法解析");
+    const have = {}; moneyPool().forEach(function(c){ have[c.title] = 1; });
+    const fresh = [];
+    arr.forEach(function(o){ if(o && o.title && o.gap && !have[o.title]){ fresh.push({ title:String(o.title).trim(), gap:String(o.gap).trim(), ai:String(o.ai||"").trim(), verify:String(o.verify||"").trim() }); have[o.title] = 1; } });
+    if(fresh.length){ S.moneyOppPool = S.moneyOppPool.concat(fresh).slice(-60); saveMoneyOpps(); toast("新增 " + fresh.length + " 个机会"); if(moneyTab === "opp") renderMoneyBody(); }
+    else toast("没有新机会，过会儿再试");
+  }catch(e){ toast("生成失败：" + ((e && e.message) || "请检查 AI 设置")); }
+  finally{ S.moneyLoading = false; }
+}
+function uid(){ return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+function newProject(name){
+  name = (name || "").trim(); if(!name){ toast("先给项目起个名"); return; }
+  const p = { id: uid(), name: name, createdAt: Date.now(), updatedAt: Date.now(), vals: {}, done: {} };
+  S.projects.unshift(p); saveProjects(); scheduleSync();
+  moneyTab = "proj"; renderMoneyTabs(); renderMoneyBody();
+}
+function projProgress(p){ let n = 0; PROJ_STEPS.forEach(function(s){ if(p.done && p.done[s.key]) n++; }); return n; }
+async function moneyStepHelp(p, step, out){
+  if(!aiConfigured()){ toast("配置 AI 后可让它帮你想"); return; }
+  out.textContent = "想几条…";
+  try{
+    let ctx = ""; PROJ_STEPS.forEach(function(s){ const v = p.vals && p.vals[s.key]; if(v) ctx += "（" + s.label + "：" + v + "）"; });
+    const prompt = "我在做一个搞钱项目「" + p.name + "」。" + (ctx ? "目前进展：" + ctx + "。" : "") +
+      "现在卡在这一步：「" + step.label + "」——" + step.q +
+      " 请给我具体、可执行、针对这个项目的建议或线索，3-5 条，每条一句话，别空话套话。直接给要点。";
+    const raw = await callLLM(prompt, 700);
+    out.textContent = String(raw).trim();
+  }catch(e){ out.textContent = "提示获取失败：" + ((e && e.message) || ""); }
+}
+function renderProjects(host){
+  host.innerHTML = "";
+  const head = el("div", "iw-proj-new");
+  const inp = document.createElement("input"); inp.className = "iw-input"; inp.placeholder = "新项目名（或从“今日机会”一键立项）"; inp.style.flex = "1";
+  const add = el("button", "iw-save-btn", "新建项目"); add.addEventListener("click", function(){ newProject(inp.value); inp.value = ""; });
+  head.appendChild(inp); head.appendChild(add); host.appendChild(head);
+  if(!S.projects.length){ host.appendChild(el("p", "iw-hint", "选一个点子立项，每天推进一格。走完五步、有人真付，才算 0→1 通关。")); return; }
+  S.projects.forEach(function(p){
+    const done = projProgress(p), total = PROJ_STEPS.length, clear = (p.done && p.done.proof);
+    const card = el("div", "iw-proj" + (clear ? " iw-proj-done" : ""));
+    const top = el("div", "iw-proj-top");
+    const nameWrap = el("div", "iw-proj-namewrap");
+    nameWrap.appendChild(el("div", "iw-proj-name", (clear ? "✅ " : "") + p.name));
+    nameWrap.appendChild(el("div", "iw-proj-prog", clear ? "0→1 走通了 🎉" : ("进度 " + done + "/" + total)));
+    top.appendChild(nameWrap);
+    const del = el("button", "iw-proj-del", "删除"); del.addEventListener("click", function(){ if(confirm("删除项目「" + p.name + "」？")){ S.projects = S.projects.filter(function(x){ return x.id !== p.id; }); saveProjects(); scheduleSync(); renderMoneyBody(); } });
+    top.appendChild(del); card.appendChild(top);
+    // progress bar
+    const bar = el("div", "iw-proj-bar"); const fill = el("div", "iw-proj-barfill"); fill.style.width = Math.round(done/total*100) + "%"; bar.appendChild(fill); card.appendChild(bar);
+    PROJ_STEPS.forEach(function(s, i){
+      const stepDone = !!(p.done && p.done[s.key]);
+      const st = el("div", "iw-step" + (stepDone ? " iw-step-done" : ""));
+      const sh = el("div", "iw-step-head");
+      const chk = el("button", "iw-step-chk" + (stepDone ? " on" : ""), stepDone ? "✓" : (i + 1));
+      chk.addEventListener("click", function(){ p.done = p.done || {}; p.done[s.key] = !p.done[s.key]; p.updatedAt = Date.now(); saveProjects(); scheduleSync(); renderMoneyBody(); });
+      sh.appendChild(chk); sh.appendChild(el("div", "iw-step-label", s.label)); st.appendChild(sh);
+      st.appendChild(el("div", "iw-step-q", s.q));
+      const ta = document.createElement("textarea"); ta.className = "iw-input iw-step-ta"; ta.rows = 2; ta.placeholder = "写你的答案/进展…"; ta.value = (p.vals && p.vals[s.key]) || "";
+      ta.addEventListener("change", function(){ p.vals = p.vals || {}; p.vals[s.key] = ta.value.trim(); p.updatedAt = Date.now(); saveProjects(); scheduleSync(); });
+      st.appendChild(ta);
+      const acts = el("div", "iw-step-acts");
+      const helpBtn = el("button", "iw-save-btn", "AI 帮我想"); const out = el("div", "iw-step-help");
+      helpBtn.addEventListener("click", function(){ moneyStepHelp(p, s, out); });
+      acts.appendChild(helpBtn); st.appendChild(acts); st.appendChild(out);
+      card.appendChild(st);
+    });
+    host.appendChild(card);
+  });
+}
+function renderMoneyOpp(host){
+  host.innerHTML = "";
+  const o = S.money.opp; if(!o){ host.appendChild(el("p", "iw-hint", "正在挑今天的机会…")); return; }
+  const card = el("div", "iw-opp");
+  card.appendChild(el("div", "iw-opp-tag", "今日机会"));
+  card.appendChild(el("div", "iw-opp-title", o.title));
+  card.appendChild(el("div", "iw-opp-gap", o.gap));
+  if(o.ai){ const r = el("div", "iw-opp-row"); r.appendChild(el("span", "iw-opp-k", "AI 帮你")); r.appendChild(el("span", "iw-opp-v", o.ai)); card.appendChild(r); }
+  if(o.verify){ const r = el("div", "iw-opp-row"); r.appendChild(el("span", "iw-opp-k", "最小验证")); r.appendChild(el("span", "iw-opp-v", o.verify)); card.appendChild(r); }
+  host.appendChild(card);
+  const acts = el("div", "iw-money-acts");
+  const saveBtn = el("button", "iw-save-btn", "收进想法库");
+  saveBtn.addEventListener("click", function(){ saveNote({ domain: "搞钱 · 机会", title: o.title, body: o.gap + "\nAI 帮：" + (o.ai||"") + "\n验证：" + (o.verify||"") }); scheduleSync(); });
+  const projBtn = el("button", "iw-save-btn", "据此立项");
+  projBtn.addEventListener("click", function(){ newProject(o.title); });
+  const moreBtn = el("button", "iw-save-btn", "AI 再挖几个");
+  moreBtn.addEventListener("click", function(){ fetchMoneyOpps(5); });
+  const rvBtn = el("button", "iw-save-btn", "复盘这个");
+  rvBtn.addEventListener("click", function(){ $("moneyOverlay").classList.remove("show"); openReview("这个搞钱机会靠不靠谱：" + o.title + "——" + o.gap); });
+  acts.appendChild(saveBtn); acts.appendChild(projBtn); acts.appendChild(moreBtn); acts.appendChild(rvBtn); host.appendChild(acts);
+}
+function renderMoneyDrill(host){
+  host.innerHTML = "";
+  const q = S.money.drill; if(!q){ host.appendChild(el("p", "iw-hint", S.moneyLoading ? "正在出题…" : "出题没成功")); return; }
+  const card = el("div", "iw-opp");
+  card.appendChild(el("div", "iw-opp-tag", "今日练习 · 15 分钟"));
+  card.appendChild(el("div", "iw-opp-title", q));
+  host.appendChild(card);
+  const acts = el("div", "iw-money-acts");
+  const jotBtn = el("button", "iw-save-btn", "记一笔");
+  const hintBtn = el("button", "iw-save-btn", "给点提示");
+  const rvBtn = el("button", "iw-save-btn", "深度复盘");
+  rvBtn.addEventListener("click", function(){ $("moneyOverlay").classList.remove("show"); openReview(q); });
+  acts.appendChild(jotBtn); acts.appendChild(hintBtn); acts.appendChild(rvBtn); host.appendChild(acts);
+  const jotwrap = el("div", "iw-daily-jotwrap"); jotwrap.style.display = "none";
+  const ta = document.createElement("textarea"); ta.className = "iw-input"; ta.rows = 3; ta.placeholder = "写下你的解法…"; ta.style.width = "100%"; ta.style.boxSizing = "border-box";
+  const saveBtn = el("button", "iw-save-btn", "存入想法库");
+  jotwrap.appendChild(ta); jotwrap.appendChild(saveBtn); host.appendChild(jotwrap);
+  const hintOut = el("div", "iw-daily-nudge"); host.appendChild(hintOut);
+  const notes = el("div", "iw-daily-notes"); host.appendChild(notes);
+  jotBtn.addEventListener("click", function(){ jotwrap.style.display = (jotwrap.style.display === "none") ? "" : "none"; if(jotwrap.style.display === "") ta.focus(); });
+  saveBtn.addEventListener("click", function(){ const v = ta.value.trim(); if(!v){ toast("写点什么再存"); return; } saveNote({ domain: "搞钱 · 练习", title: q, body: v, source: "搞钱练习" }); ta.value = ""; jotwrap.style.display = "none"; renderDailyNotes(notes, q); scheduleSync(); });
+  hintBtn.addEventListener("click", function(){ giveNudge(hintOut, "搞钱练习", q); });
+  renderDailyNotes(notes, q);
+}
+function renderMoneyBody(){
+  const host = $("moneyBody"); if(!host) return;
+  if(moneyTab === "opp") renderMoneyOpp(host);
+  else if(moneyTab === "drill") renderMoneyDrill(host);
+  else renderProjects(host);
+}
+function renderMoneyTabs(){ $("moneyTabs").querySelectorAll(".iw-seg-btn").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-mt") === moneyTab); }); }
+function openMoney(){ $("moneyDate").textContent = monthDay(); $("moneyOverlay").classList.add("show"); renderMoneyTabs(); renderMoneyBody(); ensureMoney(false).then(function(){ renderMoneyBody(); }); }
+$("moneyTabs").querySelectorAll(".iw-seg-btn").forEach(function(b){ b.addEventListener("click", function(){ moneyTab = b.getAttribute("data-mt"); renderMoneyTabs(); renderMoneyBody(); }); });
+$("btnMoney").addEventListener("click", openMoney);
+$("moneyClose").addEventListener("click", function(){ $("moneyOverlay").classList.remove("show"); });
+$("moneyOverlay").addEventListener("click", function(e){ if(e.target === $("moneyOverlay")) $("moneyOverlay").classList.remove("show"); });
+
+// ---- 深度复盘（红队教练）----
+let reviewSession = { topic: "", messages: [], done: false }, reviewBusy = false;
+let recog = null, recognizing = false;
+function srSupported(){ return !!(window.SpeechRecognition || window.webkitSpeechRecognition); }
+function normalizeMsgs(msgs){
+  const out = [];
+  (msgs || []).forEach(function(m){
+    if(!m || !m.content) return;
+    if(out.length && out[out.length-1].role === m.role){ out[out.length-1].content += "\n" + m.content; }
+    else out.push({ role: m.role, content: m.content });
+  });
+  while(out.length && out[0].role === "assistant") out.shift();
+  return out;
+}
+async function coachCall(sys, history, elOut){
+  history = normalizeMsgs(history);
+  const fmt = PRESETS[S.aiProvider].format;
+  const url = (S.aiTransport === "proxy") ? S.proxyUrl : S.endpoint;
+  const headers = { "content-type":"application/json" };
+  if(S.aiTransport !== "proxy"){
+    if(fmt === "anthropic"){ headers["x-api-key"] = S.apiKey; headers["anthropic-version"] = "2023-06-01"; }
+    else headers["authorization"] = "Bearer " + S.apiKey;
+  }
+  if(fmt === "anthropic"){
+    const body = { model: S.model || "claude-3-5-sonnet-20241022", max_tokens: 800, system: sys, messages: history };
+    const resp = await fetch(url, { method:"POST", headers: headers, body: JSON.stringify(body) });
+    const data = await resp.json();
+    if(!resp.ok || (data && data.error)){ let m = (data && data.error && (data.error.message || data.error)) || ("HTTP " + resp.status); if(typeof m !== "string") m = JSON.stringify(m); throw new Error(m); }
+    if(data && data.usage) recordUsage(data.usage, false);
+    const text = (data.content || []).map(function(b){ return b.type === "text" ? b.text : ""; }).join("");
+    elOut.textContent = text; return text;
+  }
+  const body = { model: S.model || "gpt-4o-mini", max_tokens: 800, temperature: 0.85, stream: true, stream_options:{ include_usage:true }, messages: [{ role:"system", content: sys }].concat(history) };
+  const resp = await fetch(url, { method:"POST", headers: headers, body: JSON.stringify(body) });
+  if(!resp.ok){ let m = "HTTP " + resp.status; try{ const d = await resp.json(); const dm = d && d.error && (d.error.message || d.error); if(dm) m = (typeof dm === "string") ? dm : JSON.stringify(dm); }catch(e){} throw new Error(m); }
+  const reader = resp.body.getReader(); const dec = new TextDecoder();
+  let buf = "", raw = "", full = "", sawDelta = false, usageObj = null;
+  elOut.textContent = "";
+  const thread = $("reviewThread");
+  while(true){
+    const r = await reader.read(); if(r.done) break;
+    const chunk = dec.decode(r.value, { stream:true }); raw += chunk; buf += chunk;
+    let idx;
+    while((idx = buf.indexOf("\n")) >= 0){
+      const line = buf.slice(0, idx).trim(); buf = buf.slice(idx + 1);
+      if(!line || line.charAt(0) === ":") continue;
+      if(line.indexOf("data:") === 0){
+        const p = line.slice(5).trim(); if(p === "[DONE]") continue;
+        try{ const j = JSON.parse(p); if(j.usage) usageObj = j.usage; const piece = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content; if(piece){ sawDelta = true; full += piece; elOut.textContent = full; if(thread) thread.scrollTop = thread.scrollHeight; } }catch(e){}
+      }
+    }
+  }
+  if(!sawDelta){ try{ const j = JSON.parse(raw.trim()); const c = j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content; if(c) full = c; if(j.usage) usageObj = j.usage; }catch(e){} }
+  if(usageObj) recordUsage(usageObj, false);
+  elOut.textContent = full || "（无回应）"; return full;
+}
+function reviewSysWithTopic(){ return RED_TEAM_SYS + (reviewSession.topic ? ("\n\n用户这次要复盘的主题/点子是：「" + reviewSession.topic + "」。") : ""); }
+function addReviewBubble(role, text, cls){
+  const thread = $("reviewThread");
+  const wrap = el("div", "iw-rv-turn iw-rv-" + role);
+  const who = (role === "user") ? "我" : (cls === "ref" ? "参考视角" : (cls === "hint" ? "给个角度" : "教练"));
+  wrap.appendChild(el("div", "iw-rv-who", who));
+  const b = el("div", "iw-rv-bubble" + (cls ? (" iw-rv-" + cls) : ""));
+  if(text != null) b.textContent = text;
+  wrap.appendChild(b); thread.appendChild(wrap);
+  thread.scrollTop = thread.scrollHeight;
+  return b;
+}
+async function coachTurn(){
+  if(reviewBusy) return; reviewBusy = true;
+  const b = addReviewBubble("coach", "…");
+  try{ const full = await coachCall(reviewSysWithTopic(), reviewSession.messages, b); reviewSession.messages.push({ role:"assistant", content: full }); }
+  catch(e){ b.textContent = "出错了：" + ((e && e.message) || ""); }
+  finally{ reviewBusy = false; $("reviewThread").scrollTop = $("reviewThread").scrollHeight; }
+}
+function reviewSend(){
+  const inp = $("reviewInput"); const v = (inp.value || "").trim(); if(!v) return;
+  if(reviewBusy){ toast("等教练说完再发"); return; }
+  if(recognizing && recog){ try{ recog.stop(); }catch(e){} }
+  if(!aiConfigured()){ addReviewBubble("user", v); addReviewBubble("coach", "未配置 AI，没法复盘。先去设置里配一下 AI。"); inp.value = ""; return; }
+  reviewSession.messages.push({ role:"user", content: v });
+  addReviewBubble("user", v); inp.value = "";
+  coachTurn();
+}
+async function reviewNudge(){
+  if(reviewBusy){ toast("等教练说完"); return; }
+  if(!reviewSession.messages.length){ toast("先说说你的想法"); return; }
+  if(!aiConfigured()){ toast("配置 AI 后可用"); return; }
+  reviewBusy = true; const b = addReviewBubble("coach", "…", "hint");
+  try{ const temp = reviewSession.messages.concat([{ role:"user", content:"我卡住了，给我一个没想到的角度或一个反问，别替我回答。" }]); const full = await coachCall(NUDGE_SYS, temp, b); }
+  catch(e){ b.textContent = "出错了：" + ((e && e.message) || ""); }
+  finally{ reviewBusy = false; }
+}
+async function reviewStop(){
+  if(reviewBusy){ toast("等教练说完"); return; }
+  if(!reviewSession.messages.length){ toast("还没开始呢，先亮出你的观点"); return; }
+  if(!aiConfigured()){ toast("配置 AI 后可用"); return; }
+  reviewBusy = true; reviewSession.done = true;
+  const b = addReviewBubble("coach", "…", "ref");
+  try{
+    const temp = reviewSession.messages.concat([{ role:"user", content:"我说完了。请按要求给我参考视角和战报。" }]);
+    const full = await coachCall(REF_SYS, temp, b);
+    reviewSession.messages.push({ role:"assistant", content: full });
+    const thread = $("reviewThread");
+    const saveWrap = el("div", "iw-rv-savewrap");
+    const saveBtn = el("button", "iw-save-btn", "存入想法库");
+    saveBtn.addEventListener("click", function(){ archiveReview(); saveBtn.textContent = "已存入 ✓"; saveBtn.disabled = true; });
+    saveWrap.appendChild(saveBtn); thread.appendChild(saveWrap); thread.scrollTop = thread.scrollHeight;
+  }catch(e){ b.textContent = "出错了：" + ((e && e.message) || ""); }
+  finally{ reviewBusy = false; }
+}
+function archiveReview(){
+  const lines = reviewSession.messages.map(function(m){ return (m.role === "user" ? "我：" : "教练：") + m.content; }).join("\n\n");
+  const title = reviewSession.topic || (reviewSession.messages[0] ? reviewSession.messages[0].content.slice(0, 24) : "复盘");
+  saveNote({ domain:"深度复盘", title: title, body: lines, source:"深度复盘" });
+  scheduleSync();
+}
+function openReview(topic){
+  reviewSession = { topic: topic || "", messages: [], done: false };
+  $("reviewThread").innerHTML = "";
+  $("reviewTopic").textContent = topic ? ("复盘：" + topic) : "想理清哪个点子？先说出或写下你的想法——我会往死里追问，直到你能扛住。";
+  $("reviewInput").value = "";
+  $("reviewMic").style.display = srSupported() ? "" : "none";
+  $("reviewOverlay").classList.add("show");
+  setTimeout(function(){ $("reviewInput").focus(); }, 120);
+}
+function updateMic(){ const m = $("reviewMic"); if(m) m.classList.toggle("on", recognizing); }
+function toggleMic(){
+  if(!srSupported()){ toast("这个浏览器不支持语音输入，直接打字吧"); return; }
+  if(recognizing){ try{ recog.stop(); }catch(e){} return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recog = new SR(); recog.lang = "zh-CN"; recog.continuous = true; recog.interimResults = true;
+  const ta = $("reviewInput");
+  let finalText = ta.value ? (ta.value + " ") : "";
+  recog.onresult = function(e){
+    let interim = "";
+    for(let i = e.resultIndex; i < e.results.length; i++){ const t = e.results[i][0].transcript; if(e.results[i].isFinal) finalText += t; else interim += t; }
+    ta.value = finalText + interim;
+  };
+  recog.onerror = function(ev){ recognizing = false; updateMic(); if(ev && ev.error === "not-allowed") toast("麦克风没授权，去浏览器权限里开一下"); };
+  recog.onend = function(){ recognizing = false; updateMic(); };
+  try{ recog.start(); recognizing = true; updateMic(); }catch(e){ recognizing = false; updateMic(); }
+}
+$("reviewMic").addEventListener("click", toggleMic);
+$("reviewSend").addEventListener("click", reviewSend);
+$("reviewNudge").addEventListener("click", reviewNudge);
+$("reviewStop").addEventListener("click", reviewStop);
+$("btnReview").addEventListener("click", function(){ openReview(""); });
+$("reviewClose").addEventListener("click", function(){ if(recognizing && recog){ try{ recog.stop(); }catch(e){} } $("reviewOverlay").classList.remove("show"); });
+$("reviewOverlay").addEventListener("click", function(e){ if(e.target === $("reviewOverlay")){ if(recognizing && recog){ try{ recog.stop(); }catch(e){} } $("reviewOverlay").classList.remove("show"); } });
+
 // ---- overlays ----
 $("btnSet").addEventListener("click", function(){ $("setOverlay").classList.add("show"); });
 $("setClose").addEventListener("click", function(){ $("setOverlay").classList.remove("show"); });
 $("setOverlay").addEventListener("click", function(e){ if(e.target === $("setOverlay")) $("setOverlay").classList.remove("show"); });
-$("btnLib").addEventListener("click", function(){ renderLibrary(); $("libOverlay").classList.add("show"); });
+$("btnLib").addEventListener("click", function(){ openLibrary(); });
 $("libClose").addEventListener("click", function(){ $("libOverlay").classList.remove("show"); });
 $("libOverlay").addEventListener("click", function(e){ if(e.target === $("libOverlay")) $("libOverlay").classList.remove("show"); });
 
@@ -736,10 +2095,19 @@ $("proxyUrl").value = S.proxyUrl;
 $("apiKey").value = S.apiKey;
 $("model").value = S.model;
 $("endpoint").value = S.endpoint;
-renderModeSeg(); renderChips(); renderAi(); renderWake(); renderPlay();
+$("syncPass").value = S.syncPass;
+applyAppearance(); applyWarmth();
+renderModeSeg(); renderChips(); renderAi(); renderWake(); renderWarmth(); renderPlay();
+renderFontChips(); renderTheme(); renderTts(); renderGen(); renderWit(); updateUsageNote(); updateSyncNote();
+if(S.history.length === 0) pushNew();
 updateLibCount(); updateAiStatus(); renderCard(false); updateProgress();
 acquireWake();
 maybePrefetch();
+if(S.syncKey && S.proxyUrl) setTimeout(function(){ syncNow(true); }, 1200);
+if("serviceWorker" in navigator && location.protocol.indexOf("http") === 0){
+  window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
+}
+if(!lsGet("iw_dd_hint")){ setTimeout(function(){ toast("轻点卡片，可展开详解与追问"); lsSet("iw_dd_hint", "1"); }, 2800); }
 </script>
 </body>
 </html>
