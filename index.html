@@ -173,6 +173,7 @@ body{ overscroll-behavior:none; }
 .iw-dd-tag{ font-family:ui-monospace,Menlo,monospace; font-size:11px; letter-spacing:.14em; color:var(--ac1); }
 .iw-dd-title{ font-family:"Songti SC",Georgia,serif; font-size:23px; color:#f1e7d3; margin:6px 0 14px; line-height:1.4; }
 .iw-dd-search{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+.iw-term-search{ margin:7px 0 2px; }
 .iw-dd-search a{ font-size:12px; color:#9a8c76; text-decoration:none; border:1px solid rgba(var(--ac),0.2); border-radius:999px; padding:5px 12px; transition:all .2s; }
 .iw-dd-search a:hover{ color:#e6cda0; border-color:rgba(var(--ac),0.45); }
 .iw-dd-expl{ font-size:15px; line-height:1.85; color:#c6b8a1; }
@@ -677,6 +678,8 @@ const CURATED = [
   { domain:"金融·市场", title:"投票机与称重机", body:"市场短期是投票机，长期是称重机——格雷厄姆如是说。", dig:"价值投资" }
 ];
 
+const INTERVALS = [1, 3, 5, 10, 15, 30];
+
 // 机锋种子（手写精挑）。kind:"wit"，句子放 title，body 留空，move=招式，crack=拆解。
 const WIT = [
   // 自负但讲逻辑
@@ -1033,7 +1036,13 @@ if(!("speechSynthesis" in window)) $("btnSpeak").style.display = "none";
 // ---- star / library ----
 $("btnStar").addEventListener("click", function(){
   const c = currentCard(); if(!c) return;
-  if(S.library.some(x => (x.type||"card")==="card" && x.title === c.title)){ toast("已在灵感库中"); return; }
+  const exists = S.library.some(function(x){ return (x.type||"card")==="card" && x.title === c.title; });
+  if(exists){
+    S.library = S.library.filter(function(x){ return !((x.type||"card")==="card" && x.title === c.title); });
+    saveLibrary(); updateStar(); updateLibCount(); toast("已从灵感库移除"); scheduleSync();
+    if($("libOverlay").classList.contains("show")){ populateLibDomains(); renderLibrary(); }
+    return;
+  }
   S.library.unshift({ type:"card", domain:c.domain, title:c.title, body:c.body, dig:c.dig, savedAt:Date.now() });
   saveLibrary(); updateStar(); updateLibCount(); toast("已加入灵感库 ★"); scheduleSync();
 });
@@ -1307,7 +1316,7 @@ function renderRich(container, text){
     el.innerHTML = html;
     container.appendChild(el);
   });
-  container.querySelectorAll(".iw-term").forEach(function(s){ s.addEventListener("click", function(){ ask("解释「" + s.getAttribute("data-term") + "」"); }); });
+  container.querySelectorAll(".iw-term").forEach(function(s){ s.addEventListener("click", function(){ explainTerm(s.getAttribute("data-term")); }); });
 }
 
 function openDeepDive(){
@@ -1315,11 +1324,11 @@ function openDeepDive(){
   ddCard = c;
   $("ddTag").textContent = c.domain;
   $("ddTitle").textContent = c.title;
-  const sw = $("ddSearch");
+  const sw = $("ddSearch"); sw.innerHTML = "";
   $("ddQs").innerHTML = ""; $("ddThread").innerHTML = ""; $("ddInput").value = ""; $("ddExplSave").innerHTML = "";
   $("ddOverlay").classList.add("show");
   if(c.kind === "wit"){
-    sw.innerHTML = ""; sw.style.display = "none";
+    sw.style.display = "none";
     $("ddMore").textContent = "✦ 再来几句这个招式";
     $("ddInput").placeholder = "想把这句改改或换个说法？问我…";
     const expl = $("ddExpl"); expl.innerHTML = "";
@@ -1344,8 +1353,8 @@ async function loadExplanation(c){
   if(!aiConfigured()){ expl.innerHTML = '<p class="iw-dd-loading">配置 AI 后可在这里展开详细解读；目前可先用上面的搜索链接。</p>'; return; }
   expl.innerHTML = '<p class="iw-dd-loading">正在展开详细解读…</p>';
   try{
-    const prompt = "这是一张知识卡片，标题《" + c.title + "》，内容：「" + c.body + "」。请基于公认知识，用中文写一段更详细、准确、好懂的展开解读（约150-300字，可分两段），避免空话套话；在其中最值得进一步了解的 3-6 个关键概念或术语两侧用 [[ ]] 标注（例如 [[纳什均衡]]）。再给出我可能想继续追问的 3 个延伸问题。只输出 JSON：{\"explanation\":\"...\",\"questions\":[\"...\",\"...\",\"...\"]}";
-    const raw = await callLLM(prompt, 1024);
+    const prompt = "这是一张知识卡片，标题《" + c.title + "》，内容：「" + c.body + "」。请基于公认知识，用中文写一段丰富、准确、好懂的展开解读，分 3-4 个小段、约 400-600 字：先把核心说清楚，再讲它为什么重要或关键洞见在哪，最后给一个具体例子或贴切的类比。可用 **小标题** 来分段。在其中最值得进一步了解的 5-8 个关键概念、人物或术语两侧用 [[ ]] 标注（例如 [[纳什均衡]]），优先标那些读者可能不熟、值得延伸检索的。再给出我可能想继续追问的 3-4 个延伸问题。只输出 JSON：{\"explanation\":\"...\",\"questions\":[\"...\",\"...\",\"...\"]}";
+    const raw = await callLLM(prompt, 1800);
     const obj = parseJsonLoose(raw);
     const explanation = (obj && obj.explanation) ? obj.explanation : raw;
     const questions = (obj && Array.isArray(obj.questions)) ? obj.questions.slice(0, 4) : [];
@@ -1358,6 +1367,26 @@ async function loadExplanation(c){
 function renderQuestions(questions){
   const qs = $("ddQs"); qs.innerHTML = "";
   (questions || []).forEach(function(q){ const b = document.createElement("button"); b.className = "iw-qchip"; b.textContent = q; b.addEventListener("click", function(){ ask(q); }); qs.appendChild(b); });
+}
+async function explainTerm(term){
+  term = (term || "").trim(); if(!term) return;
+  const thread = $("ddThread");
+  const qa = document.createElement("div"); qa.className = "iw-qa";
+  const qEl = document.createElement("div"); qEl.className = "iw-q"; qEl.textContent = "划线 · " + term;
+  const aEl = document.createElement("div"); aEl.className = "iw-a"; aEl.innerHTML = '<p class="iw-dd-loading">…</p>';
+  qa.appendChild(qEl); qa.appendChild(aEl); thread.appendChild(qa);
+  aEl.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  const links = document.createElement("div"); links.className = "iw-dd-search iw-term-search";
+  searchLinks(term).forEach(function(p){ const a = document.createElement("a"); a.href = p[1]; a.target = "_blank"; a.rel = "noopener"; a.textContent = "搜 " + p[0]; links.appendChild(a); });
+  if(!aiConfigured()){ aEl.innerHTML = '<p class="iw-dd-loading">未配置 AI。可用下面的链接延伸检索：</p>'; qa.appendChild(links); return; }
+  let ansText = "";
+  try{
+    const prompt = "在《" + (ddCard ? ddCard.title : "") + "》这个话题下，用中文简洁、准确地解释概念「" + term + "」：它是什么、和这个话题有什么关系，必要时举一个例子。若其中还涉及别的关键概念，在两侧用 [[ ]] 标注。直接给内容，不要任何前缀。";
+    if(PRESETS[S.aiProvider].format === "openai"){ ansText = await streamInto(aEl, prompt, 700); }
+    else { ansText = await callLLM(prompt, 700); renderRich(aEl, ansText); }
+  }catch(e){ aEl.innerHTML = '<p class="iw-dd-loading">解释失败：' + esc((e && e.message) || "") + '。可用下面的链接检索：</p>'; qa.appendChild(links); return; }
+  qa.appendChild(links);
+  if(ansText && ansText.trim()){ qa.appendChild(makeSaveBtn(function(){ return { domain: ddCard ? ddCard.domain : "", title: "术语 · " + term, body: ansText, source: ddCard ? ddCard.title : "" }; })); }
 }
 async function ask(text){
   text = (text || "").trim(); if(!text) return;
@@ -2107,7 +2136,7 @@ if(S.syncKey && S.proxyUrl) setTimeout(function(){ syncNow(true); }, 1200);
 if("serviceWorker" in navigator && location.protocol.indexOf("http") === 0){
   window.addEventListener("load", function(){ navigator.serviceWorker.register("sw.js").catch(function(){}); });
 }
-if(!lsGet("iw_dd_hint")){ setTimeout(function(){ toast("轻点卡片，可展开详解与追问"); lsSet("iw_dd_hint", "1"); }, 2800); }
+if(!lsGet("iw_dd_hint")){ setTimeout(function(){ toast("轻点卡片展开详解；解读里划线的词可点开延伸学习"); lsSet("iw_dd_hint", "1"); }, 2800); }
 </script>
 </body>
 </html>
